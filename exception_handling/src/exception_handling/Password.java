@@ -11,15 +11,15 @@ class InvalidPasswordException extends Exception{
 
 public class Password {
 	public static void isValid(String s) throws InvalidPasswordException {
-	    String n = ".*[0-9].*";
-	    String a = ".*[a-z].*";
-	    String A = ".*[A-Z].*";
+	    String num = ".*[0-9].*";
+	    String lower = ".*[a-z].*";
+	    String upper = ".*[A-Z].*";
 	    
 	    if(s.length()<8 ) {
-			throw new InvalidPasswordException("The length of password should atleast be 8");
+			throw new InvalidPasswordException("The length of password should be atleast 8");
 		}
 	    
-	    if(!(s.matches(n) && (s.matches(a) || s.matches(A)))) {
+	    if(!(s.matches(num) && (s.matches(lower) || s.matches(upper)))) {
 	    	throw new InvalidPasswordException("Invalid password!");
 	    }
 	}
