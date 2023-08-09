@@ -10,7 +10,7 @@
     <persistedState key="workingSets" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workingSets/>"/>
     <persistedState key="aggregateWorkingSetId" value="Aggregate for window 1690105465534"/>
     <tags>topLevel</tags>
-    <tags>shellMaximized</tags>
+    <tags>shellMinimized</tags>
     <children xsi:type="basic:PartSashContainer" xmi:id="_2MCmwi42Ee6S5o3cOb1yEw" selectedElement="_2MCmwy42Ee6S5o3cOb1yEw" horizontal="true">
       <children xsi:type="advanced:PerspectiveStack" xmi:id="_2MCmwy42Ee6S5o3cOb1yEw" elementId="org.eclipse.ui.ide.perspectivestack" containerData="7500" selectedElement="_2MCmxC42Ee6S5o3cOb1yEw">
         <children xsi:type="advanced:Perspective" xmi:id="_2MCmxC42Ee6S5o3cOb1yEw" elementId="org.eclipse.jdt.ui.JavaPerspective" selectedElement="_2MCmxS42Ee6S5o3cOb1yEw" label="Java" iconURI="platform:/plugin/org.eclipse.jdt.ui/$nl$/icons/full/eview16/jperspective.png">
@@ -394,10 +394,11 @@
       <tags>categoryTag:Help</tags>
     </sharedElements>
     <sharedElements xsi:type="advanced:Area" xmi:id="_2MCo2C42Ee6S5o3cOb1yEw" elementId="org.eclipse.ui.editorss" selectedElement="_2MCo2S42Ee6S5o3cOb1yEw">
-      <children xsi:type="basic:PartStack" xmi:id="_2MCo2S42Ee6S5o3cOb1yEw" elementId="org.eclipse.e4.primaryDataStack" selectedElement="_-2FVADWlEe6d3Nj1UGvyNw">
+      <children xsi:type="basic:PartStack" xmi:id="_2MCo2S42Ee6S5o3cOb1yEw" elementId="org.eclipse.e4.primaryDataStack" selectedElement="_3s9WMDWlEe6d3Nj1UGvyNw">
         <tags>org.eclipse.e4.primaryDataStack</tags>
         <tags>EditorStack</tags>
         <tags>active</tags>
+        <tags>noFocus</tags>
         <children xsi:type="basic:Part" xmi:id="_94Vm4DVDEe698oo3WXADIA" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="SpringBootCrudApplication.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
           <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SpringBootCrudApplication.java&quot; partName=&quot;SpringBootCrudApplication.java&quot; title=&quot;SpringBootCrudApplication.java&quot; tooltip=&quot;spring-boot-crud/src/main/java/com/springboot/project/springbootcrud/SpringBootCrudApplication.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/spring-boot-crud/src/main/java/com/springboot/project/springbootcrud/SpringBootCrudApplication.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;0&quot; selectionTopPixel=&quot;0&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
@@ -405,10 +406,12 @@
           <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
         </children>
         <children xsi:type="basic:Part" xmi:id="_3s9WMDWlEe6d3Nj1UGvyNw" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="EmployeeController.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;EmployeeController.java&quot; partName=&quot;EmployeeController.java&quot; title=&quot;EmployeeController.java&quot; tooltip=&quot;spring-boot-crud/src/main/java/com/springboot/project/springbootcrud/controller/EmployeeController.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/spring-boot-crud/src/main/java/com/springboot/project/springbootcrud/controller/EmployeeController.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;0&quot; selectionTopPixel=&quot;0&quot;/>&#xD;&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;EmployeeController.java&quot; partName=&quot;EmployeeController.java&quot; title=&quot;EmployeeController.java&quot; tooltip=&quot;spring-boot-crud/src/main/java/com/springboot/project/springbootcrud/controller/EmployeeController.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/spring-boot-crud/src/main/java/com/springboot/project/springbootcrud/controller/EmployeeController.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;914&quot; selectionTopPixel=&quot;0&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>removeOnHide</tags>
           <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
+          <tags>active</tags>
+          <tags>activeOnClose</tags>
         </children>
         <children xsi:type="basic:Part" xmi:id="_43RNMDWlEe6d3Nj1UGvyNw" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="Employee.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.png" closeable="true">
           <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Employee.java&quot; partName=&quot;Employee.java&quot; title=&quot;Employee.java&quot; tooltip=&quot;spring-boot-crud/src/main/java/com/springboot/project/springbootcrud/model/Employee.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/spring-boot-crud/src/main/java/com/springboot/project/springbootcrud/model/Employee.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;0&quot; selectionTopPixel=&quot;0&quot;/>&#xD;&#xA;&lt;/editor>"/>
@@ -421,8 +424,6 @@
           <tags>Editor</tags>
           <tags>removeOnHide</tags>
           <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
-          <tags>active</tags>
-          <tags>activeOnClose</tags>
         </children>
       </children>
     </sharedElements>
@@ -653,7 +654,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_2MCp5y42Ee6S5o3cOb1yEw" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_o9DzQDWlEe6d3Nj1UGvyNw" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_2MCz3i42Ee6S5o3cOb1yEw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_y1IK4DZxEe6Prrb6XQT4Cw" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_2MCz3i42Ee6S5o3cOb1yEw"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_2MCp9C42Ee6S5o3cOb1yEw" elementId="group.edit" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -693,7 +694,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_2MCqMS42Ee6S5o3cOb1yEw" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_o9NkRzWlEe6d3Nj1UGvyNw" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_2MCzmS42Ee6S5o3cOb1yEw"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_y1LOMDZxEe6Prrb6XQT4Cw" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_2MCzmS42Ee6S5o3cOb1yEw"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_2MCqPS42Ee6S5o3cOb1yEw" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
