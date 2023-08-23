@@ -9,10 +9,10 @@ import lombok.Data;
 public class Employee {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //auto increments the primary key
 	private long id;
 	
-	@Column(name = "first_name", nullable = false)
+	@Column(name = "first_name", nullable = false) //optional, default col gets created as firstName
 	private String firstName;
 	
 	@Column(name = "last_name")
