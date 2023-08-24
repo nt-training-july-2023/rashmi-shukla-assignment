@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,16 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.assesmentportal.entities.User;
 import com.project.assesmentportal.services.UserService;
 
+@CrossOrigin("*")
 @RestController
-
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value="/register", method =RequestMethod.POST)
-	public ResponseEntity<User> register(@RequestBody User user){
-		return new ResponseEntity<User>(userService.register(user), HttpStatus.CREATED);
+	@RequestMapping(value="user/register", method =RequestMethod.POST)
+	public ResponseEntity<String> register(@RequestBody User user){
+		User registerdUser = userService.register(user);
+		if(registerdUser == null) {
+			return ResponseEntity.badRequest().body("Invalid");
+		}
+		return ResponseEntity.ok(registerdUser.getFirstName()+"Registered Successfully");
 	}
 	
 	@RequestMapping(value="/users", method =RequestMethod.GET)
@@ -30,7 +36,7 @@ public class UserController {
 		return userService.getAllUsers();
 	}
 
-	@RequestMapping(value="/login", method =RequestMethod.POST)
+	@RequestMapping(value="user/login", method =RequestMethod.POST)
 	public ResponseEntity<String> login(@RequestBody User user){
 		if(userService.login(user) == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("wrong credentials");
