@@ -1,5 +1,6 @@
   
 .Auth-form-container {
+  background-color:darkslategrey;
   display: flex;
   justify-content: center;
   align-items: center;

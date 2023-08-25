@@ -8,8 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.assesmentportal.entities.User;
-import com.project.assesmentportal.exceptions.DuplicateEmailException;
-import com.project.assesmentportal.exceptions.UserNotFoundException;
+import com.project.assesmentportal.exceptions.DuplicateResourceException;
+import com.project.assesmentportal.exceptions.ResourceNotFoundException;
 import com.project.assesmentportal.repositories.UserRepository;
 import com.project.assesmentportal.services.UserService;
 
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService{
 	public User register(User user) {
 		Optional<User> checkExistingUser = userRepository.findByEmail(user.getEmail());
 		if(checkExistingUser.isPresent()) {
-			throw new DuplicateEmailException("The email-id already exists");
+			throw new DuplicateResourceException("The email-id already exists");
 		}
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User login(User inputUser) {
-		User registeredUser = userRepository.findByEmail(inputUser.getEmail()).orElseThrow(()-> new UserNotFoundException());
+		User registeredUser = userRepository.findByEmail(inputUser.getEmail()).orElseThrow(()-> new ResourceNotFoundException("User is not Registered!"));
 		if(registeredUser!= null && passwordEncoder.matches(inputUser.getPassword(), registeredUser.getPassword()))
 		{
 			return registeredUser;
