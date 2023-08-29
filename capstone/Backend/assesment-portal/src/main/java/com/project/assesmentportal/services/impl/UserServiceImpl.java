@@ -23,6 +23,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public User register(User user) {
+		if(!user.getEmail().endsWith("@nucleusteq.com")) {
+			throw new ResourceNotFoundException("Email should end with domain @nucleusteq.com");
+		}
 		Optional<User> checkExistingUser = userRepository.findByEmail(user.getEmail());
 		if(checkExistingUser.isPresent()) {
 			throw new DuplicateResourceException("The email-id already exists");
@@ -34,10 +37,14 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User login(User inputUser) {
-		User registeredUser = userRepository.findByEmail(inputUser.getEmail()).orElseThrow(()-> new ResourceNotFoundException("User is not Registered!"));
+		User registeredUser = userRepository.findByEmail(inputUser.getEmail()).orElseThrow(()-> new ResourceNotFoundException("Invalid username or password"));
+		
 		if(registeredUser!= null && passwordEncoder.matches(inputUser.getPassword(), registeredUser.getPassword()))
 		{
 			return registeredUser;
+		}
+		else if(!passwordEncoder.matches(inputUser.getPassword(), registeredUser.getPassword())) {
+			throw new ResourceNotFoundException("Invalid credentials");
 		}
 		return null;
 		

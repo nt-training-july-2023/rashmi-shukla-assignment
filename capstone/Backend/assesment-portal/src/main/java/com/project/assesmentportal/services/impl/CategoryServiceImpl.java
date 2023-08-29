@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.assesmentportal.entities.Category;
-import com.project.assesmentportal.entities.User;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
 import com.project.assesmentportal.repositories.CategoryRepository;
@@ -23,7 +22,7 @@ public class CategoryServiceImpl implements CategoryService{
 	public Category addCategory(Category category) {
 		Optional<Category> checkExistingCategory = categoryRepository.findByCategoryTitle(category.getCategoryTitle());
 		if(checkExistingCategory.isPresent()) {
-			throw new DuplicateResourceException("This category already exists");
+			throw new DuplicateResourceException("Category already exists");
 		}
 		return categoryRepository.save(category);
 	}
@@ -49,11 +48,6 @@ public class CategoryServiceImpl implements CategoryService{
 		Category existingCategory = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category doesnot exists"));
 		existingCategory.setCategoryTitle(category.getCategoryTitle());
 		existingCategory.setCategoryDescription(category.getCategoryDescription());
-		
-		Optional<Category> checkExistingCategory = categoryRepository.findByCategoryTitle(existingCategory.getCategoryTitle());
-		if(checkExistingCategory.isPresent()) {
-			throw new DuplicateResourceException("This category already exists");
-		}
 		
 		categoryRepository.save(existingCategory);
 		return existingCategory;

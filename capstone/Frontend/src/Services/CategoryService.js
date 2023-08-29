@@ -4,8 +4,8 @@ const CATEGORY_BASE_URL = 'http://localhost:8080/categories';
 
 class CategoryService{
 
-    addCategory(){
-        return axios.post(CATEGORY_BASE_URL);
+    addCategory(Category){
+        return axios.post(CATEGORY_BASE_URL, Category);
     }
 
     getAllCategories(){
@@ -16,14 +16,13 @@ class CategoryService{
         return axios.get(CATEGORY_BASE_URL+'/'+id);
     }
 
-    updateCategory(id){
-        return axios.put(CATEGORY_BASE_URL+'/'+id);
+    updateCategory(id, Category){
+        return axios.put(CATEGORY_BASE_URL+'/'+id,Category);
     }
 
     deleteCategory(id){
         return axios.delete(CATEGORY_BASE_URL+'/'+id);
-    }
-
-   
-
+    } 
 }
+
+export default new CategoryService();
