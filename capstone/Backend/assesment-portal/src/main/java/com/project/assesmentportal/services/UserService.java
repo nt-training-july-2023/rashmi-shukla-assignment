@@ -2,12 +2,13 @@ package com.project.assesmentportal.services;
 
 import java.util.List;
 
-import com.project.assesmentportal.entities.User;
+import com.project.assesmentportal.dto.UserDto;
 
 public interface UserService {
-	
-	User register(User user);
-	User login(User user);
-	List<User> getAllUsers();
-	
+    UserDto register(UserDto user);
+
+    UserDto login(UserDto user);
+
+    List<UserDto> getAllUsers();
+
 }

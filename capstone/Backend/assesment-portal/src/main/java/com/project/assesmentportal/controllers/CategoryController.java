@@ -12,40 +12,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.assesmentportal.entities.Category;
+import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.services.CategoryService;
 
 @CrossOrigin("*")
 @RestController
 public class CategoryController {
-	
-	@Autowired
-	private CategoryService categoryService;
-	
-	@RequestMapping(value="/categories", method =RequestMethod.POST)
-	public ResponseEntity<Category> addCategory(@RequestBody Category category ){
-		return new ResponseEntity<Category>(categoryService.addCategory(category), HttpStatus.CREATED);
-	}
-	
-	@RequestMapping(value="/categories", method =RequestMethod.GET)
-	public List<Category> getAllCategories(){
-		return categoryService.getAllCategories();
-	}
-	
-	@RequestMapping(value="/categories/{id}", method =RequestMethod.GET)
-	public ResponseEntity<Category> getCategoryById(@PathVariable("id") long catId){
-		return new ResponseEntity<Category>(categoryService.getCategoryById(catId), HttpStatus.OK);
-	}
-	@RequestMapping(value="/categories/{id}", method =RequestMethod.PUT)
-	public ResponseEntity<Category> updateCategory(@PathVariable("id") long catId,@RequestBody Category category){
-		return new ResponseEntity<Category>(categoryService.updateCategory(category, catId), HttpStatus.OK);
-	}
-	
-	@RequestMapping(value="/categories/{id}", method =RequestMethod.DELETE)
-	public ResponseEntity<String> deleteCategory(@PathVariable("id") long catId){
-		categoryService.deleteCategory(catId);
-		return new ResponseEntity<String>("Category deleted successfully!", HttpStatus.OK);
-	}
-	
-	
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @RequestMapping(value = "/categories", method = RequestMethod.POST)
+    public final ResponseEntity<CategoryDto> addCategory(
+            @RequestBody final CategoryDto categoryDto) {
+        CategoryDto addCategoryDto = this.categoryService
+                .addCategory(categoryDto);
+        return new ResponseEntity<CategoryDto>(addCategoryDto,
+                HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/categories", method = RequestMethod.GET)
+    public final List<CategoryDto> getAllCategories() {
+        return categoryService.getAllCategories();
+    }
+
+    @RequestMapping(value = "/categories/{id}", method = RequestMethod.GET)
+    public final ResponseEntity<CategoryDto> getCategoryById(
+            @PathVariable("id") final long catId) {
+        return new ResponseEntity<CategoryDto>(
+                categoryService.getCategoryById(catId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/categories/{id}", method = RequestMethod.PUT)
+    public final ResponseEntity<CategoryDto> updateCategory(
+            @PathVariable("id") final long catId,
+            @RequestBody CategoryDto categoryDto) {
+        return new ResponseEntity<CategoryDto>(
+                categoryService.updateCategory(categoryDto, catId),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/categories/{id}", method = RequestMethod.DELETE)
+    public final ResponseEntity<String> deleteCategory(
+            @PathVariable("id") final long catId) {
+        categoryService.deleteCategory(catId);
+        return new ResponseEntity<String>("Category deleted successfully!",
+                HttpStatus.OK);
+    }
+
 }

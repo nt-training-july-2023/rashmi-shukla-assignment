@@ -2,12 +2,16 @@ package com.project.assesmentportal.services;
 
 import java.util.List;
 
-import com.project.assesmentportal.entities.Category;
+import com.project.assesmentportal.dto.CategoryDto;
 
 public interface CategoryService {
-	Category addCategory(Category category);
-	List<Category> getAllCategories();
-	Category getCategoryById(long categoryId);
-	Category updateCategory(Category category, long categoryId);
-	void deleteCategory(long categoryId);
+    CategoryDto addCategory(CategoryDto categoryDto);
+
+    List<CategoryDto> getAllCategories();
+
+    CategoryDto getCategoryById(long categoryId);
+
+    CategoryDto updateCategory(CategoryDto categoryDto, long categoryId);
+
+    void deleteCategory(long categoryId);
 }
