@@ -2,16 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import './Category.css';
 import CategoryService from '../../../Services/CategoryService';
+import Navbar from '../Navbar/Navbar';
 
 const ListCategory = () => {
     const navigate = useNavigate();
-    useEffect(() => {
-        window.history.pushState(null, '', '/ListCategory');
-        window.addEventListener('popstate', () => {
-          window.history.pushState(null, '', '/ListCategory');
-        });
-      }, []);
-
     const[categories, setCategories] = useState([]);
 
     useEffect(()=>{
@@ -38,9 +32,10 @@ const ListCategory = () => {
     }
 
     return (
-    <div>
+        <div className='page-container'>
+        <Navbar/>
       <div className='table-container'>
-      <h2>List of Categories</h2>
+      <Link to="/AddCategory" className='add-category-link'>Add Category</Link>
         <table className='category-table'>
             <thead>
                 <tr>
@@ -51,22 +46,21 @@ const ListCategory = () => {
                 </tr>
             </thead>
             <tbody>
-                {categories.map((category) => (
-                    <tr key={category.categoryId}>
-                        <td>{category.categoryId}</td>
+                {categories.map((category,index) => (
+                    <tr key={index}>
+                        <td>{++index}</td>
                         <td>{category.categoryTitle}</td>
                         <td>{category.categoryDescription}</td>
                         <td>
-                            <button onClick={()=> navigate(`/UpdateCategory/${category.categoryId}`)}>Update</button>
-                            <button onClick={()=>deleteCategory(category.categoryId)}>Delete</button>
+                            <button className='action-buttons update-button' onClick={()=> navigate(`/UpdateCategory/${category.categoryId}`)}>Update</button>
+                            <button className='action-buttons delete-button' onClick={()=>deleteCategory(category.categoryId)}>Delete</button>
                         </td>
                     </tr>
                 ))}
             </tbody>
         </table>
-        <Link to="/AddCategory" className='add-category-link'>Add Category</Link>
       </div>
-    </div>
+      </div>
   )
 }
 

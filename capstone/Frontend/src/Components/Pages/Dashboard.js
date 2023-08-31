@@ -1,6 +1,6 @@
 import React,{useEffect} from 'react'
-import { useNavigate,  } from 'react-router-dom'
-
+import Navbar from './Navbar/Navbar'
+import './Dashboard.css'
 
 const Dashboard = () => {
 
@@ -11,17 +11,9 @@ const Dashboard = () => {
     });
   }, []);
 
-  const navigate = useNavigate();
-  const handleLogout = () =>{
-    localStorage.removeItem("IsLoggedIn")
-    localStorage.removeItem("role")
-    navigate('/')
-  }
   return (
     <div>
-      ADMIN DASHBOARD!
-      <button onClick={handleLogout}>Logout</button>
-      <button onClick={()=>navigate('/ListCategory')}>Category</button>
+      <Navbar/>
     </div>
   )
 }

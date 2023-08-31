@@ -6,31 +6,64 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+/**
+ * Entity class representing a user.
+ */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
 
+    /**
+     * The unique identifier of the user.
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increments the primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increments
+                                                        // the primary key
     private long userId;
 
-    @Column(name = "first_name", nullable = false) // optional, default col gets created as firstName
+    /**
+     * The first name of the user.
+     */
+    @Column(name = "first_name", nullable = false) // optional, default col
+                                                   // gets created as
+                                                   // firstName
     private String firstName;
 
+    /**
+     * The last name of the user.
+     */
     @Column(name = "last_name")
     private String lastName;
 
+    /**
+     * The password of the user.
+     */
     @Column(nullable = false)
     private String password;
 
+    /**
+     * The email address of the user.
+     */
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
+    /**
+     * The phone number of the user.
+     */
     @Column(name = "phone_number")
     private long phoneNumber;
 
+    /**
+     * The role of the user. Default value is "user".
+     */
     private String role = "user";
 }

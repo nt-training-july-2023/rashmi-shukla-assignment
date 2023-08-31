@@ -15,27 +15,51 @@ import com.project.assesmentportal.exceptions.ResourceNotFoundException;
 import com.project.assesmentportal.repositories.CategoryRepository;
 import com.project.assesmentportal.services.CategoryService;
 
+/**
+ * Implementation of the CategoryService interface for managing
+ * category-related operations.
+ */
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
+    /**
+     * instance of Modelmapper.
+     */
     @Autowired
     private ModelMapper modelMapper;
+    /**
+     * instance of CategoryRepository interface.
+     */
     @Autowired
     private CategoryRepository categoryRepository;
 
+    /**
+     * Adds a new category.
+     * @param categoryDto The CategoryDto representing the category to be
+     *                    added.
+     * @return The CategoryDto of the added category.
+     * @throws DuplicateResourceException If a category with the same title
+     *                                    already exists.
+     */
     @Override
     public final CategoryDto addCategory(final CategoryDto categoryDto) {
-        Category category = this.modelMapper.map(categoryDto, Category.class);
+        Category category = this.modelMapper.map(categoryDto,
+                Category.class);
         Optional<Category> checkExistingCategory = categoryRepository
                 .findByCategoryTitle(category.getCategoryTitle());
         if (checkExistingCategory.isPresent()) {
-            throw new DuplicateResourceException("Category already exists");
+            throw new DuplicateResourceException(
+                    "Category already exists");
         }
 
         Category savedCategory = this.categoryRepository.save(category);
         return this.modelMapper.map(savedCategory, CategoryDto.class);
     }
 
+    /**
+     * Retrieves a list of all categories.
+     * @return A list of CategoryDto objects representing all categories.
+     */
     @Override
     public final List<CategoryDto> getAllCategories() {
         List<Category> categories = this.categoryRepository.findAll();
@@ -46,9 +70,17 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDtos;
     }
 
+    /**
+     * Retrieves a category by its ID.
+     * @param categoryId The ID of the category to retrieve.
+     * @return The CategoryDto of the retrieved category.
+     * @throws ResourceNotFoundException If the category with the specified
+     *                                   ID does not exist.
+     */
     @Override
     public final CategoryDto getCategoryById(final long categoryId) {
-        Optional<Category> category = categoryRepository.findById(categoryId);
+        Optional<Category> category = categoryRepository
+                .findById(categoryId);
         if (category.isPresent()) {
             return this.modelMapper.map(category.get(), CategoryDto.class);
         } else {
@@ -56,6 +88,14 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    /**
+     * Updates a category.
+     * @param categoryDto The updated CategoryDto.
+     * @param categoryId  The ID of the category to update.
+     * @return The CategoryDto of the updated category.
+     * @throws ResourceNotFoundException If the category with the specified
+     *                                   ID does not exist.
+     */
     @Override
     public final CategoryDto updateCategory(final CategoryDto categoryDto,
             final long categoryId) {
@@ -63,13 +103,20 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Category doesnot exists"));
         existingCategory.setCategoryTitle(categoryDto.getCategoryTitle());
-        existingCategory
-                .setCategoryDescription(categoryDto.getCategoryDescription());
+        existingCategory.setCategoryDescription(
+                categoryDto.getCategoryDescription());
 
-        Category updatedCategory = categoryRepository.save(existingCategory);
+        Category updatedCategory = categoryRepository
+                .save(existingCategory);
         return this.modelMapper.map(updatedCategory, CategoryDto.class);
     }
 
+    /**
+     * Deletes a category by its ID.
+     * @param categoryId The ID of the category to delete.
+     * @throws ResourceNotFoundException If the category with the specified
+     *                                   ID doesnot exist.
+     */
     @Override
     public final void deleteCategory(final long categoryId) {
         categoryRepository.findById(categoryId)

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './Category.css'
 import CategoryService from '../../../Services/CategoryService';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar';
 
 const AddCategory = () => {
   const [categoryTitle, setCategoryTitle] = useState('');
@@ -52,21 +53,22 @@ const AddCategory = () => {
         console.log(error)
       })
     }
-  },[])
+  },[id])
 
   const heading =() =>{
     if(id) {
-      return <h2>Update Category</h2>
+      return <h2 style={{textAlign:'center'}}>UPDATE CATEGORY</h2>
     }else{
-      return <h2>Add Category</h2>
+      return <h2 style={{textAlign:'center'}}>ADD CATEGORY</h2>
     }
   }
 
   return (
+    <div className='page-container'>
+      <Navbar/>
     <div className='cat-container'>
       <div>{heading()}
       <form className='cat-form'>
-        <div>
           <label>Category Title</label>
           <input
             type="text"
@@ -77,8 +79,6 @@ const AddCategory = () => {
             }}
             //required
           />
-        </div>
-        <div>
           <label>Category Description </label>
           <input
             type="text"
@@ -90,17 +90,15 @@ const AddCategory = () => {
             //required
           />
           <span>{errors}</span>
-        </div>
-        <div>
           <button onClick={(e)=>saveCategory(e)}  className='cat-button'>
             Submit
           </button>
           <Link to="/ListCategory">
             <button>Cancel</button>
           </Link>
-        </div>
         
       </form>
+    </div>
     </div>
   </div>
   )
