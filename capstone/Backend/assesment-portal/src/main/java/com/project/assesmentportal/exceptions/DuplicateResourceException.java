@@ -17,11 +17,11 @@ public class DuplicateResourceException extends RuntimeException {
 
     /**
      * Constructs a new DuplicateResourceException with the specified
-     * detail message. 
+     * detail message.
      * @param message The detail message explaining the cause of the
      *                exception.
      */
-    public DuplicateResourceException(String message) {
+    public DuplicateResourceException(final String message) {
         super(message);
     }
 }

@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Invalid username or password"));
 
-        if (registeredUser != null && passwordEncoder.matches(
+        if (passwordEncoder.matches(
                 inputUser.getPassword(), registeredUser.getPassword())) {
 
             return this.userToDto(registeredUser);

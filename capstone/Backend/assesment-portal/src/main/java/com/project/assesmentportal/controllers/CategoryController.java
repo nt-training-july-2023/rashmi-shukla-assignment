@@ -23,7 +23,7 @@ import com.project.assesmentportal.services.CategoryService;
 public class CategoryController {
 
     /**
-     * instance of CategoryService
+     * instance of CategoryService.
      */
     @Autowired
     private CategoryService categoryService;
@@ -68,7 +68,7 @@ public class CategoryController {
 
     /**
      * Updates a category.
-     * @param catId       The ID of the category to update.
+     * @param catId The ID of the category to update.
      * @param categoryDto The updated CategoryDto.
      * @return A ResponseEntity containing the updated CategoryDto and HTTP
      *         status OK (200).
@@ -76,10 +76,9 @@ public class CategoryController {
     @RequestMapping(value = "/categories/{id}", method = RequestMethod.PUT)
     public final ResponseEntity<CategoryDto> updateCategory(
             @PathVariable("id") final long catId,
-            @RequestBody CategoryDto categoryDto) {
+            @RequestBody final CategoryDto categoryDto) {
         return new ResponseEntity<CategoryDto>(
-                categoryService.updateCategory(categoryDto, catId),
-                HttpStatus.OK);
+        categoryService.updateCategory(categoryDto, catId), HttpStatus.OK);
     }
 
     /**

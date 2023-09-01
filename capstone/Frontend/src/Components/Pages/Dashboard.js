@@ -14,6 +14,7 @@ const Dashboard = () => {
   return (
     <div>
       <Navbar/>
+      <h1>Welcome to the admin dashboard!</h1>
     </div>
   )
 }

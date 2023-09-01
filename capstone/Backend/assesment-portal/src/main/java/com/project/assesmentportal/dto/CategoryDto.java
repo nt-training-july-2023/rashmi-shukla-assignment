@@ -26,5 +26,5 @@ public class CategoryDto {
     /**
      * The description of the category.
      */
-    private String CategoryDescription;
+    private String categoryDescription;
 }

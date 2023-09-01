@@ -199,6 +199,7 @@ body {
   .category-table{
     table-layout: fixed;
     width: 100%;
+    font-size: 12px;
   }
   .action-buttons.delete-button{
     width: 100%;

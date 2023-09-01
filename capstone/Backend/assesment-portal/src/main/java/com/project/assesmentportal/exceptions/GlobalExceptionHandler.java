@@ -24,8 +24,8 @@ public class GlobalExceptionHandler {
      * @return A ResponseEntity with the corresponding ApiResponse.
      */
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(
-            ResourceNotFoundException ex) {
+    public final ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(
+            final ResourceNotFoundException ex) {
         String message = ex.getMessage();
         ApiResponse apiResponse = new ApiResponse(message, false);
         return new ResponseEntity<ApiResponse>(apiResponse,
@@ -39,8 +39,8 @@ public class GlobalExceptionHandler {
      * @return A ResponseEntity with the corresponding ApiResponse.
      */
     @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<ApiResponse> duplicateResourceExceptionHandler(
-            DuplicateResourceException ex) {
+    public final ResponseEntity<ApiResponse> duplicateResourceExceptionHandler(
+            final DuplicateResourceException ex) {
         String message = ex.getMessage();
         ApiResponse apiResponse = new ApiResponse(message, false);
         return new ResponseEntity<ApiResponse>(apiResponse,
@@ -55,10 +55,11 @@ public class GlobalExceptionHandler {
      *         validation error messages.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleMethodArgsNotValidException(
-            MethodArgumentNotValidException ex) {
-        Map<String, String> resp = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
+    public final ResponseEntity<Map<String, String>>
+        handleMethodArgsNotValidException(
+            final MethodArgumentNotValidException ex) {
+            Map<String, String> resp = new HashMap<>();
+            ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String message = error.getDefaultMessage();
             resp.put(fieldName, message);

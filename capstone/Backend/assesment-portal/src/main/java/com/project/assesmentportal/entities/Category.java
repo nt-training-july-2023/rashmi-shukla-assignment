@@ -39,5 +39,5 @@ public class Category {
      * The description of the category.
      */
     @Column(name = "cat_desc")
-    private String CategoryDescription;
+    private String categoryDescription;
 }

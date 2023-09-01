@@ -5,6 +5,7 @@ target/
 .mvn/
 mvnw
 mvnw.cmd
+*.xml
 !**/src/main/**/target/
 !**/src/test/**/target/
 

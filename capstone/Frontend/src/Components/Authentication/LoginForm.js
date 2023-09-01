@@ -29,7 +29,8 @@ const LoginForm = () => {
           console.log(response.data);
           if (response.status === 200 && response.data==='user') {
             // Redirect upon successful login
-            navigate('/dashboard'); // Change '/dashboard' to the desired URL
+            navigate('/user-dashboard');
+            // navigate('/private')
           }
           else if (response.status === 200 && response.data==='admin') {
             navigate('/dashboard'); 

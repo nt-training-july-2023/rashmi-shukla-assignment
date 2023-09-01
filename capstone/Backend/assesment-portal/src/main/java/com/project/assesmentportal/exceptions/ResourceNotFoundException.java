@@ -10,11 +10,11 @@ public class ResourceNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Creates a new instance of ResourceNotFoundException 
+     * Creates a new instance of ResourceNotFoundException
      * with the specified detail message.
      * @param message The detail message explaining the cause of the exception.
      */
-    public ResourceNotFoundException(String message) {
+    public ResourceNotFoundException(final String message) {
         super(message);
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 /**
- * This is the main class
+ * This is the main class.
  */
 @SpringBootApplication
 public class AssesmentPortalApplication {
@@ -15,12 +15,12 @@ public class AssesmentPortalApplication {
      * This is the main function of the application.
      * @param args argument of main class.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SpringApplication.run(AssesmentPortalApplication.class, args);
     }
 
     /**
-     * This is the modelmapper bean
+     * This is the modelmapper bean.
      * @return ModelMapper bean.
      */
     @Bean
