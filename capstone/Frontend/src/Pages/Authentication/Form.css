@@ -1,5 +1,8 @@
-  
 .Auth-form-container {
+  /* background-image: url('./bg-1.jpeg');
+  background-size: cover;
+  background-position: center;
+  font-family: Arial, sans-serif;  */
   background-color:whitesmoke;
   display: flex;
   justify-content: center;

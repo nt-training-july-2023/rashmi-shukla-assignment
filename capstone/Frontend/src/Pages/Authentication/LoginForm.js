@@ -1,5 +1,7 @@
 import React,{useState} from 'react'
 import axios from 'axios'
+import Swal from 'sweetalert2';
+import loginImg from './bg.png';
 import { useNavigate } from 'react-router-dom'
 import './Form.css';
 
@@ -9,10 +11,12 @@ const LoginForm = () => {
   const [errors, setErrors] =useState({});
   const navigate = useNavigate();
 
+
   const handleLoginClick = async (event) => {
 
     event.preventDefault();
 
+    
     const validattionErrors ={}
       if(email === ""){
         validattionErrors.email = '*required'
@@ -27,6 +31,13 @@ const LoginForm = () => {
         try {
           const response = await axios.post('http://localhost:8080/users/login', {email, password});
           console.log(response.data);
+          Swal.fire({
+            title: "Success",
+            text: "Login Successful",
+            icon: "success",
+            timer:2000,
+            showConfirmButton:false
+          });
           if (response.status === 200 && response.data==='user') {
             // Redirect upon successful login
             navigate('/user-dashboard');
@@ -39,8 +50,15 @@ const LoginForm = () => {
           localStorage.setItem("role",response.data)
         }catch(error){
             const submitError = error.response.data.message;
-            validattionErrors.display= submitError;
-            setErrors(validattionErrors);
+            Swal.fire({
+              title: "Error",
+              text: `${submitError}`,
+              icon: "error",
+              confirmButtonText: "Retry",
+              confirmButtonColor:"red"
+            });
+            setEmail('');
+            setPassword('');
             console.error(error.response ? error.response.data.message : 'An error occured');
         }
       }
@@ -56,6 +74,9 @@ const LoginForm = () => {
 
   return (
     <div className="Auth-form-container">
+        {/* <div className="Auth-image">
+        <img src={loginImg} alt="Login" />
+        </div> */}
         <form className="Auth-form" onSubmit={handleLoginClick}>
           <div className="Auth-form-content">
             <h3 className="Auth-form-title">Login</h3>
@@ -86,10 +107,10 @@ const LoginForm = () => {
               />
               {errors.password && <span>{errors.password}</span>}
             </div>
-            {errors.display && <span>{errors.display}</span>}
+
             <div className="button-group">
               <button type="submit"  className="button">
-                Submit
+                Login
               </button>
 
             </div>

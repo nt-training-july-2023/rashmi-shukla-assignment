@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import axios from 'axios'
+import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom'
 import './Form.css';
 
@@ -38,13 +39,26 @@ const RegistrationForm = () => {
         try{
           const response = await axios.post('http://localhost:8080/users/register', { firstName, lastName, phoneNumber, email, password });
           console.log(response.data);
+          Swal.fire({
+            title: "Success",
+            text: "User registered successfully",
+            icon: "success",
+            timer:2000,
+            showConfirmButton:false
+          });
 
           if(response.status===200){
             navigate("/")
           }
         }catch(error){
-            validattionErrors.submit=error.response.data.message
-            setErrors(validattionErrors)
+            const submitError=error.response.data.message
+            Swal.fire({
+              title: "Error",
+              text: `${submitError}`,
+              icon: "error",
+              confirmButtonText: "Retry",
+              confirmButtonColor:"red"
+            });
             console.error(error.response ? error.response.data: 'An error occurred');
         } 
       }
@@ -125,7 +139,6 @@ const RegistrationForm = () => {
           />
           {errors.password && <span>{errors.password}</span>}
         </div>
-        {errors.submit && <span>{errors.submit}</span>}
         <div className="button-group">
           <button type="submit"  className="button">
             Submit

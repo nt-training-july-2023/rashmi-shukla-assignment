@@ -1,13 +1,12 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import LoginForm from './Components/Authentication/LoginForm';
-import RegistrationForm from './Components/Authentication/RegistrationForm';
-import Dashboard from './Components/Pages/Dashboard';
-import ListCategory from './Components/Pages/Category/ListCategory';
-import AddCategory from './Components/Pages/Category/AddCategory';
-import UserDashboard from './Components/UserDashboard';
-import Privateroute from './Components/Privateroute';
-import AdminDashboard from './Components/AdminDashboard';
+import LoginForm from './Pages/Authentication/LoginForm';
+import RegistrationForm from './Pages/Authentication/RegistrationForm';
+import Dashboard from './Pages/Dashboard/Dashboard';
+import ListCategory from './Pages/Category/ListCategory';
+import AddCategory from './Pages/Category/AddCategory';
+import UserDashboard from './Pages/Dashboard/UserDashboard';
+// import Privateroute from './Components/Privateroute';
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
           {/* <Route exact path='/private' Component={Privateroute}> */}
             <Route exact path='/user-dashboard' Component={UserDashboard}></Route>
           {/* </Route> */}
-          <Route exact path='admin-dashboard' Component={AdminDashboard}></Route>
         </Routes>
        </Router>
   );

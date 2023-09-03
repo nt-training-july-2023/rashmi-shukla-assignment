@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from './Pages/Navbar/Navbar'
+import Navbar from '../../Components/Navbar/Navbar'
 
 const UserDashboard = () => {
   return (

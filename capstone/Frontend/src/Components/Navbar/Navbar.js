@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Navbar.css";
+import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -10,10 +11,29 @@ const Navbar = () => {
     setMenuOpen(!menuOpen);
   };
 
+  const handleLogoutConfirmation =() =>{
+    Swal.fire({
+      text:"Confirm Logout?",
+      icon:"warning",
+      showCancelButton:true,
+      showConfirmButton:true,
+    }).then((result)=>{
+      if(result.isConfirmed){
+        handleLogout();
+      }
+      });
+  }
+
   const handleLogout = () =>{
+    navigate('/')
+    Swal.fire({
+      text: "You've successfully logged out!",
+      icon: "success",
+      timer: 2000,
+      showConfirmButton:false
+    });
     localStorage.removeItem("IsLoggedIn")
     localStorage.removeItem("role")
-    // navigate('/')
   }
 
   return (
@@ -35,8 +55,7 @@ const Navbar = () => {
           <Link to="#" className="navbar-item">
             Result
           </Link>
-          <Link to='/' className="navbar-item"><button onClick={handleLogout} className="nav-button"> Logout
-          </button></Link>
+          <Link to='#' className="navbar-item"><button onClick={handleLogoutConfirmation} className="nav-button"> Logout </button></Link>
         </div>
       </nav>
     </div>

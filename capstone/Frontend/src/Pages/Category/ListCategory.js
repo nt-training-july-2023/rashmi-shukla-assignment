@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import './Category.css';
-import CategoryService from '../../../Services/CategoryService';
-import Navbar from '../Navbar/Navbar';
+import CategoryService from '../../Services/CategoryService';
+import Navbar from '../../Components/Navbar/Navbar';
 
 const ListCategory = () => {
     const navigate = useNavigate();
@@ -24,6 +25,13 @@ const ListCategory = () => {
 
     const deleteCategory = (categoryId) =>{
         CategoryService.deleteCategory(categoryId).then((response) =>{
+            Swal.fire({
+                title: "Success",
+                text: "Category deleted successfully",
+                icon: "success",
+                timer:2000,
+                showConfirmButton:false
+              });
             getAllCategories();
         })
         .catch((error) => {
@@ -53,7 +61,17 @@ const ListCategory = () => {
                         <td>{category.categoryDescription}</td>
                         <td>
                             <button className='action-buttons update-button' onClick={()=> navigate(`/UpdateCategory/${category.categoryId}`)}>Update</button>
-                            <button className='action-buttons delete-button' onClick={()=>deleteCategory(category.categoryId)}>Delete</button>
+                            <button className='action-buttons delete-button' onClick={()=>
+                                Swal.fire({
+                                    title: "Warning",
+                                    text: "Delete Category",
+                                    icon: "warning",
+                                    confirmButtonText:"delete",
+                                    confirmButtonColor:"red",
+                                    showCancelButton:true
+                                  }).then((result)=>{ if(result.isConfirmed) {
+                                    deleteCategory(category.categoryId)}
+                                } ) }> Delete </button>
                         </td>
                     </tr>
                 ))}

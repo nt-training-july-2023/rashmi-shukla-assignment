@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react'
-import Navbar from './Navbar/Navbar'
+import Navbar from '../../Components/Navbar/Navbar'  //.. represents parent dir
 import './Dashboard.css'
 
 const Dashboard = () => {

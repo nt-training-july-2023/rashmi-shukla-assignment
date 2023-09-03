@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './Category.css'
-import CategoryService from '../../../Services/CategoryService';
+import Swal from 'sweetalert2';
+import CategoryService from '../../Services/CategoryService';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import Navbar from '../Navbar/Navbar';
+import Navbar from '../../Components/Navbar/Navbar';
 
 const AddCategory = () => {
   const [categoryTitle, setCategoryTitle] = useState('');
@@ -26,19 +27,47 @@ const AddCategory = () => {
       if(id){
         CategoryService.updateCategory(id, category).then((response)=>{
           console.log(response.data);
+          Swal.fire({
+            title: "Success",
+            text: "Category updated successfully",
+            icon: "success",
+            timer:2000,
+            showConfirmButton: false,
+          });
           navigate("/ListCategory")
         }).catch(error => {
             console.log(error);
-            setErrors(error.response.data.message)
+            const submitError =error.response.data.message
+            Swal.fire({
+              title: "Error",
+              text: `${submitError}`,
+              icon: "error",
+              confirmButtonText:"Retry",
+              confirmButtonColor:"red"
+            });
         });
       }
     else{
       CategoryService.addCategory(category).then((response)=>{
         console.log(response.data);
+        Swal.fire({
+          title: "Success",
+          text: "Category added successfully",
+          icon: "success",
+          timer:2000,
+          showConfirmButton: false,
+        });
         navigate("/ListCategory")
       }).catch(error =>{
+        const submitError =error.response.data.message
+        Swal.fire({
+          title: "Error",
+          text: `${submitError}`,
+          icon: "error",
+          confirmButtonText:"Retry",
+          confirmButtonColor:"red"
+        });
         console.log(error);
-        setErrors(error.response.data.message);
       })
     }
   }
