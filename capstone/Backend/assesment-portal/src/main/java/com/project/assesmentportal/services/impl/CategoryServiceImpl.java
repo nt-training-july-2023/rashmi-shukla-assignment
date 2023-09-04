@@ -105,6 +105,11 @@ public class CategoryServiceImpl implements CategoryService {
         existingCategory.setCategoryTitle(categoryDto.getCategoryTitle());
         existingCategory.setCategoryDescription(
                 categoryDto.getCategoryDescription());
+        
+        Optional<Category> checkExisitingCategory = categoryRepository.findByCategoryTitle(existingCategory.getCategoryTitle());
+        if(checkExisitingCategory.isPresent()) {
+            throw new DuplicateResourceException("Category already exists");
+        }
 
         Category updatedCategory = categoryRepository
                 .save(existingCategory);

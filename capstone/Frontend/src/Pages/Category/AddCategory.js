@@ -6,6 +6,18 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
 
 const AddCategory = () => {
+  const [valid, setValid] = useState("");
+    const result = localStorage.getItem("role");
+    const IsLoggedIn = localStorage.getItem("IsLoggedIn");
+
+    useEffect(() => {
+        if (result === "admin") {
+      setValid("true");
+        } else {
+      setValid("false");
+    }});
+
+
   const [categoryTitle, setCategoryTitle] = useState('');
   const [categoryDescription, setCategoryDescription] = useState('');
   const [errors, setErrors] = useState('')
@@ -54,7 +66,7 @@ const AddCategory = () => {
           title: "Success",
           text: "Category added successfully",
           icon: "success",
-          timer:2000,
+          // timer:2000,
           showConfirmButton: false,
         });
         navigate("/ListCategory")
@@ -93,6 +105,8 @@ const AddCategory = () => {
   }
 
   return (
+    <>
+    { (valid==="true") ? (
     <div className='page-container'>
       <Navbar/>
     <div className='cat-container'>
@@ -129,7 +143,8 @@ const AddCategory = () => {
       </form>
     </div>
     </div>
-  </div>
+  </div> ): (navigate('/error-page')) }
+  </>
   )
 }
 

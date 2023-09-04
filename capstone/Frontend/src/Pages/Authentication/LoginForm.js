@@ -11,6 +11,7 @@ const LoginForm = () => {
   const [errors, setErrors] =useState({});
   const navigate = useNavigate();
 
+  const IsLoggedIn = localStorage.getItem("IsLoggedIn");
 
   const handleLoginClick = async (event) => {
 
@@ -73,6 +74,7 @@ const LoginForm = () => {
   }
 
   return (
+    <>
     <div className="Auth-form-container">
         {/* <div className="Auth-image">
         <img src={loginImg} alt="Login" />
@@ -116,7 +118,7 @@ const LoginForm = () => {
             </div>
           </div>
         </form>
-      </div>  
+      </div>  </>
     );
 }
 

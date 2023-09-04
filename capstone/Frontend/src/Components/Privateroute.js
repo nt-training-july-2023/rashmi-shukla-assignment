@@ -5,12 +5,8 @@ const Privateroute = () => {
 
     let loggedIn = true;
 
-    if(loggedIn){
-        return <Outlet/>
-    }else{
-        return <Navigate to='/'/>
-    }
+    return loggedIn ? <Outlet/> : <Navigate to="/dashboard" />;
 
 }
 
-export default Privateroute
+export default Privateroute;

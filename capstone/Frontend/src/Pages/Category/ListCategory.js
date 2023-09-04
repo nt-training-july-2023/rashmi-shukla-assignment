@@ -6,8 +6,21 @@ import CategoryService from '../../Services/CategoryService';
 import Navbar from '../../Components/Navbar/Navbar';
 
 const ListCategory = () => {
+    const [valid, setValid] = useState("");
+    const result = localStorage.getItem("role");
+    const IsLoggedIn = localStorage.getItem("IsLoggedIn");
+
+    useEffect(() => {
+        if (result === "admin") {
+      setValid("true");
+        } else {
+      setValid("false");
+    }});
+
     const navigate = useNavigate();
     const[categories, setCategories] = useState([]);
+
+    
 
     useEffect(()=>{
         getAllCategories();
@@ -40,10 +53,13 @@ const ListCategory = () => {
     }
 
     return (
+    <>
+        {(IsLoggedIn !== null) ? (
         <div className='page-container'>
         <Navbar/>
       <div className='table-container'>
-      <Link to="/AddCategory" className='add-category-link'>Add Category</Link>
+      {(valid==="true" && IsLoggedIn === "200") && (
+      <Link to="/AddCategory" className='add-category-link'>Add Category</Link> )}
         <table className='category-table'>
             <thead>
                 <tr>
@@ -60,6 +76,8 @@ const ListCategory = () => {
                         <td>{category.categoryTitle}</td>
                         <td>{category.categoryDescription}</td>
                         <td>
+                            {(valid==="true" && IsLoggedIn === "200") ? (
+                            <>
                             <button className='action-buttons update-button' onClick={()=> navigate(`/UpdateCategory/${category.categoryId}`)}>Update</button>
                             <button className='action-buttons delete-button' onClick={()=>
                                 Swal.fire({
@@ -72,6 +90,10 @@ const ListCategory = () => {
                                   }).then((result)=>{ if(result.isConfirmed) {
                                     deleteCategory(category.categoryId)}
                                 } ) }> Delete </button>
+                            </>
+                            ): (
+                            <button className='action-buttons delete-button' >View</button>
+                            )}
                         </td>
                     </tr>
                 ))}
@@ -79,6 +101,8 @@ const ListCategory = () => {
         </table>
       </div>
       </div>
+    ):(navigate('/error-page'))}
+    </>
   )
 }
 
