@@ -6,16 +6,7 @@ import CategoryService from '../../Services/CategoryService';
 import Navbar from '../../Components/Navbar/Navbar';
 
 const ListCategory = () => {
-    const [valid, setValid] = useState("");
-    const result = localStorage.getItem("role");
-    const IsLoggedIn = localStorage.getItem("IsLoggedIn");
-
-    useEffect(() => {
-        if (result === "admin") {
-      setValid("true");
-        } else {
-      setValid("false");
-    }});
+    const userRole = localStorage.getItem("role");
 
     const navigate = useNavigate();
     const[categories, setCategories] = useState([]);
@@ -53,12 +44,10 @@ const ListCategory = () => {
     }
 
     return (
-    <>
-        {(IsLoggedIn !== null) ? (
         <div className='page-container'>
         <Navbar/>
       <div className='table-container'>
-      {(valid==="true" && IsLoggedIn === "200") && (
+      {(userRole==="admin") && (
       <Link to="/AddCategory" className='add-category-link'>Add Category</Link> )}
         <table className='category-table'>
             <thead>
@@ -76,7 +65,7 @@ const ListCategory = () => {
                         <td>{category.categoryTitle}</td>
                         <td>{category.categoryDescription}</td>
                         <td>
-                            {(valid==="true" && IsLoggedIn === "200") ? (
+                            {(userRole==="admin") ? (
                             <>
                             <button className='action-buttons update-button' onClick={()=> navigate(`/UpdateCategory/${category.categoryId}`)}>Update</button>
                             <button className='action-buttons delete-button' onClick={()=>
@@ -101,8 +90,6 @@ const ListCategory = () => {
         </table>
       </div>
       </div>
-    ):(navigate('/error-page'))}
-    </>
   )
 }
 

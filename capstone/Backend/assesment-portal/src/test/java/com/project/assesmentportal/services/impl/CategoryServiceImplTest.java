@@ -2,8 +2,12 @@ package com.project.assesmentportal.services.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.entities.Category;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
+import com.project.assesmentportal.exceptions.ResourceNotFoundException;
 import com.project.assesmentportal.repositories.CategoryRepository;
 
 class CategoryServiceImplTest {
@@ -102,5 +107,131 @@ class CategoryServiceImplTest {
         assertEquals(resultCategoryDto.getCategoryDescription(), resultCategoryDto.getCategoryDescription());
         
     }
+    
+    @Test
+    void testGetCategoryById_CategoryNotFound() {
+        Category category = new Category();
+        category.setCategoryId(1);
+        category.setCategoryTitle("React");
+        category.setCategoryDescription("Mcqs");
+        
+        when(categoryRepository.findById(category.getCategoryId())).thenReturn(Optional.empty());
+        
+        assertThrows(ResourceNotFoundException.class, () -> {
+            categoryServiceImpl.getCategoryById(1);
+        });
+        
+    }
+    
+    @Test
+    public void testGetAllCategories() {
+        List<Category> catList = new ArrayList<>();
+        catList.add(new Category(1,"React","Mcq"));
+        catList.add(new Category(2,"Java","Mcq"));
+
+        when(categoryRepository.findAll()).thenReturn(catList);
+        List<CategoryDto> categoryDtos = categoryServiceImpl.getAllCategories();
+
+        assertNotNull(categoryDtos);
+        assertEquals(2, categoryDtos.size()); // Assuming there are 2 users in the list
+    }
+    
+    @Test
+    void testUpdateCategory_Success() {
+        long categoryIdToUpdate = 1L;
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategoryTitle("React");
+        categoryDto.setCategoryDescription("Mcqs");
+        
+        Category existingCategory = new Category();
+        existingCategory.setCategoryId(categoryIdToUpdate);
+        existingCategory.setCategoryTitle("Java");
+        existingCategory.setCategoryDescription("mcqs");
+        
+        when(modelMapper.map(existingCategory, CategoryDto.class)).thenReturn(categoryDto);
+        when(categoryRepository.findById(categoryIdToUpdate)).thenReturn(Optional.of(existingCategory));
+        when(categoryRepository.findByCategoryTitle(categoryDto.getCategoryTitle())).thenReturn(Optional.empty());
+        when(categoryRepository.save(any(Category.class))).thenReturn(existingCategory);
+        
+        CategoryDto resultCategoryDto = categoryServiceImpl.updateCategory(categoryDto,categoryIdToUpdate);
+        assertNotNull(resultCategoryDto);
+        assertEquals(resultCategoryDto.getCategoryId(), categoryDto.getCategoryId());
+        assertEquals(resultCategoryDto.getCategoryTitle(), categoryDto.getCategoryTitle());
+        assertEquals(resultCategoryDto.getCategoryDescription(), categoryDto.getCategoryDescription());
+        
+    }
+    
+    @Test
+    void testUpdateCategory_ResourceNotFound() {
+        long categoryIdToUpdate = 1L;
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategoryTitle("React");
+        categoryDto.setCategoryDescription("Mcqs");
+        
+        Category existingCategory = new Category();
+        existingCategory.setCategoryId(categoryIdToUpdate);
+        existingCategory.setCategoryTitle("Java");
+        existingCategory.setCategoryDescription("mcqs");
+        
+        when(categoryRepository.findById(categoryIdToUpdate)).thenReturn(Optional.empty());
+        
+        assertThrows(ResourceNotFoundException.class, () -> {
+            categoryServiceImpl.updateCategory(categoryDto, 1);
+        });
+        
+    }
+    
+    @Test
+    void testUpdateCategory_DuplicateEmail() {
+        long categoryIdToUpdate = 1L;
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategoryTitle("React");
+        categoryDto.setCategoryDescription("Mcqs");
+        
+        Category existingCategory = new Category();
+        existingCategory.setCategoryId(2L);
+        existingCategory.setCategoryTitle("React");
+        existingCategory.setCategoryDescription("mcqs");
+        
+        when(modelMapper.map(existingCategory, CategoryDto.class)).thenReturn(categoryDto);
+        when(categoryRepository.findById(categoryIdToUpdate)).thenReturn(Optional.of(existingCategory));
+        when(categoryRepository.findByCategoryTitle(categoryDto.getCategoryTitle())).thenReturn(Optional.of(existingCategory));
+
+        
+        assertThrows(DuplicateResourceException.class, () -> {
+            categoryServiceImpl.updateCategory(categoryDto, 1);
+        });
+        
+    }
+    
+    @Test
+    public final void testDeleteCategory_Success() {
+        long categoryIdToDelete = 1L;
+        Category categoryToDelete = new Category();
+        categoryToDelete.setCategoryId(categoryIdToDelete);
+
+        // Mock the behavior of the repository
+        when(categoryRepository.findById(categoryIdToDelete)).thenReturn(Optional.of(categoryToDelete));
+
+        // Act
+        categoryServiceImpl.deleteCategory(categoryIdToDelete);
+
+        // Assert
+        verify(categoryRepository, times(1)).deleteById(categoryIdToDelete);
+    }
+    
+    @Test
+    public final void testDeleteCategory_NotFound() {
+        long categoryIdToDelete = 1L;
+
+        // Mock the behavior of the repository to return an empty Optional
+        when(categoryRepository.findById(categoryIdToDelete)).thenReturn(Optional.empty());
+
+        // Act and Assert
+        assertThrows(ResourceNotFoundException.class, () -> {
+            categoryServiceImpl.deleteCategory(categoryIdToDelete);
+        });
+    }
+    
 
 }

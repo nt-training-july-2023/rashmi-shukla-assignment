@@ -2,6 +2,9 @@ package com.project.assesmentportal.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,12 +22,21 @@ class CategoryTest {
         assertEquals(null, category.getCategoryTitle());
         assertEquals(null, category.getCategoryDescription());
         
+        Quiz quiz1 = new Quiz(1L, "Quiz 1", "Description 1", 30);
+        Quiz quiz2 = new Quiz(2L, "Quiz 2", "Description 2", 45);
+        List<Quiz> quizList = new ArrayList<>();
+        quizList.add(quiz1);
+        quizList.add(quiz2);
+        
         category.setCategoryId(1);
         category.setCategoryTitle("React");
         category.setCategoryDescription("React Description");
+        category.setQuizzes(quizList);
+        
         assertEquals(1, category.getCategoryId());
         assertEquals("React", category.getCategoryTitle());
         assertEquals("React Description", category.getCategoryDescription());
+        assertEquals(quizList, category.getQuizzes());
     }
     @Test
     void testDefaultConstructor() {

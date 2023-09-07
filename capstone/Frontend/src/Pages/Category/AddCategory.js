@@ -4,20 +4,9 @@ import Swal from 'sweetalert2';
 import CategoryService from '../../Services/CategoryService';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
+import ErrorPage from '../ErrorPage/ErrorPage'
 
 const AddCategory = () => {
-  const [valid, setValid] = useState("");
-    const result = localStorage.getItem("role");
-    const IsLoggedIn = localStorage.getItem("IsLoggedIn");
-
-    useEffect(() => {
-        if (result === "admin") {
-      setValid("true");
-        } else {
-      setValid("false");
-    }});
-
-
   const [categoryTitle, setCategoryTitle] = useState('');
   const [categoryDescription, setCategoryDescription] = useState('');
   const [errors, setErrors] = useState('')
@@ -104,9 +93,14 @@ const AddCategory = () => {
     }
   }
 
+  const userRole = localStorage.getItem('role');
+  if (userRole !== 'admin') {
+    return (
+        <ErrorPage/>
+      );
+    }
+
   return (
-    <>
-    { (valid==="true") ? (
     <div className='page-container'>
       <Navbar/>
     <div className='cat-container'>
@@ -143,8 +137,7 @@ const AddCategory = () => {
       </form>
     </div>
     </div>
-  </div> ): (navigate('/error-page')) }
-  </>
+  </div> 
   )
 }
 
