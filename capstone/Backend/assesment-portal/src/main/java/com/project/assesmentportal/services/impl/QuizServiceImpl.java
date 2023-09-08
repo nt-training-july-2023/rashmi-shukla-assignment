@@ -74,7 +74,7 @@ public class QuizServiceImpl implements QuizService {
      *                                   does not exist.
      */
     @Override
-    public QuizDto getQuizById(long quizId) {
+    public final QuizDto getQuizById(final long quizId) {
         Optional<Quiz> quiz = quizRepository.findById(quizId);
         if (quiz.isPresent()) {
             return this.modelMapper.map(quiz.get(), QuizDto.class);
@@ -92,20 +92,22 @@ public class QuizServiceImpl implements QuizService {
      *                                   does not exist.
      */
     @Override
-    public QuizDto updateQuiz(QuizDto quizDto, long quizId) {
+    public final QuizDto updateQuiz(final QuizDto quizDto, final long quizId) {
         Quiz exisitingQuiz = quizRepository.findById(quizId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Quiz doesnot exists"));
-        
-     // Check if the updated title is the same as the existing one
+
+        // Check if the updated title is the same as the existing one
         if (!quizDto.getQuizTitle().equals(exisitingQuiz.getQuizTitle())) {
             // Title has changed, check for duplicates
-            Optional<Quiz> checkExistingQuiz = quizRepository.findByQuizTitle(quizDto.getQuizTitle());
+            Optional<Quiz> checkExistingQuiz = quizRepository
+                    .findByQuizTitle(quizDto.getQuizTitle());
             if (checkExistingQuiz.isPresent()) {
-                throw new DuplicateResourceException("Quiz with the same title already exists");
+                throw new DuplicateResourceException(
+                        "Quiz with the same title already exists");
             }
         }
-        
+
         exisitingQuiz.setQuizTitle(quizDto.getQuizTitle());
         exisitingQuiz.setQuizDescription(quizDto.getQuizDescription());
         exisitingQuiz.setQuizTimer(quizDto.getQuizTimer());
@@ -127,7 +129,7 @@ public class QuizServiceImpl implements QuizService {
      *                                   doesnot exist.
      */
     @Override
-    public void deleteQuiz(long quizId) {
+    public final void deleteQuiz(final long quizId) {
         quizRepository.findById(quizId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Quiz doesnot exists"));

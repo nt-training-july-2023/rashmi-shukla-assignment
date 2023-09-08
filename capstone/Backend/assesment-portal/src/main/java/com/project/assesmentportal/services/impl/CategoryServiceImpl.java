@@ -71,7 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     /**
-     * Retrieves a category by its ID. 
+     * Retrieves a category by its ID.
      * @param categoryId The ID of the category to retrieve.
      * @return The CategoryDto of the retrieved category.
      * @throws ResourceNotFoundException If the category with the specified
@@ -102,28 +102,22 @@ public class CategoryServiceImpl implements CategoryService {
         Category existingCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Category doesnot exists"));
-        
+
         // Check if the updated title is the same as the existing one
-        if (!categoryDto.getCategoryTitle().equals(existingCategory.getCategoryTitle())) {
+        if (!categoryDto.getCategoryTitle()
+                .equals(existingCategory.getCategoryTitle())) {
             // Title has changed, check for duplicates
-            Optional<Category> checkExistingCatgeory = categoryRepository.findByCategoryTitle(categoryDto.getCategoryTitle());
+            Optional<Category> checkExistingCatgeory = categoryRepository
+                    .findByCategoryTitle(categoryDto.getCategoryTitle());
             if (checkExistingCatgeory.isPresent()) {
-                throw new DuplicateResourceException("Category with the same title already exists");
+                throw new DuplicateResourceException(
+                        "Category with the same title already exists");
             }
         }
-        
+
         existingCategory.setCategoryTitle(categoryDto.getCategoryTitle());
         existingCategory.setCategoryDescription(
                 categoryDto.getCategoryDescription());
-
-//        Category checkExisitingCategory = categoryRepository
-//                .findByCategoryTitle(existingCategory.getCategoryTitle())
-//                .get();
-//        if (checkExisitingCategory.getCategoryId() != existingCategory
-//                .getCategoryId()) {
-//            throw new DuplicateResourceException(
-//                    "Category already exists");
-//        }
 
         Category updatedCategory = categoryRepository
                 .save(existingCategory);

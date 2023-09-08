@@ -53,29 +53,29 @@ public class Category {
      * getter for list of quizzes belonging to this category.
      * @return list of quizzes.
      */
-    public List<Quiz> getQuizzes() {
+    public final List<Quiz> getQuizzes() {
         return new ArrayList<>(quizzes);
     }
 
     /**
      * setter for list of quizzes belonging to this category.
-     * @param quizzes list of quizzes.
+     * @param quizzesList list of quizzes.
      */
-    public void setQuizzes(final List<Quiz> quizzes) {
-        this.quizzes = new ArrayList<>(quizzes);
+    public final void setQuizzes(final List<Quiz> quizzesList) {
+        this.quizzes = new ArrayList<>(quizzesList);
     }
 
     /**
      * all args constructor of category.
-     * @param categoryId unique id of category.
-     * @param categoryTitle title of category.
-     * @param categoryDesc description of category.
+     * @param catId unique id of category.
+     * @param catTitle title of category.
+     * @param catDesc description of category.
      */
-    public Category(final long categoryId, final String categoryTitle,
-            final String categoryDesc) {
-        this.categoryId = categoryId;
-        this.categoryTitle = categoryTitle;
-        this.categoryDescription = categoryDesc;
+    public Category(final long catId, final String catTitle,
+            final String catDesc) {
+        this.categoryId = catId;
+        this.categoryTitle = catTitle;
+        this.categoryDescription = catDesc;
     }
 
 }

@@ -55,7 +55,7 @@ public class Quiz {
      * getter for category.
      * @return category the quiz belongs to.
      */
-    public Category getCategory() {
+    public final Category getCategory() {
         return new Category(category.getCategoryId(),
                 category.getCategoryTitle(),
                 category.getCategoryDescription());
@@ -63,26 +63,26 @@ public class Quiz {
 
     /**
      * setter for the quiz.
-     * @param category which the quiz belongs to.
+     * @param cat which the quiz belongs to.
      */
-    public void setCategory(final Category category) {
-        this.category = new Category(category.getCategoryId(),
-                category.getCategoryTitle(),
-                category.getCategoryDescription());
+    public final void setCategory(final Category cat) {
+        this.category = new Category(cat.getCategoryId(),
+                cat.getCategoryTitle(),
+                cat.getCategoryDescription());
     }
 
     /**
      * all args constructor for quiz.
-     * @param quizId unique id for quiz.
-     * @param quizTitle title of the quiz.
-     * @param quizDesc description of the quiz.
+     * @param qId unique id for quiz.
+     * @param qTitle title of the quiz.
+     * @param qDesc description of the quiz.
      * @param time timer for the quiz.
      */
-    public Quiz(final long quizId, final String quizTitle,
-            final String quizDesc, final int time) {
-        this.quizId = quizId;
-        this.quizTitle = quizTitle;
-        this.quizDescription = quizDesc;
+    public Quiz(final long qId, final String qTitle,
+            final String qDesc, final int time) {
+        this.quizId = qId;
+        this.quizTitle = qTitle;
+        this.quizDescription = qDesc;
         this.quizTimer = time;
     }
 }

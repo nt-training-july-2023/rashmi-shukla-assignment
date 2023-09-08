@@ -11,7 +11,6 @@ public interface CategoryService {
 
     /**
      * Adds a new category.
-     *
      * @param categoryDto The CategoryDto representing the category to be added.
      * @return The CategoryDto of the added category.
      */
@@ -19,7 +18,6 @@ public interface CategoryService {
 
     /**
      * Retrieves a list of all categories.
-     *
      * @return A list of CategoryDto objects representing all categories.
      */
     List<CategoryDto> getAllCategories();

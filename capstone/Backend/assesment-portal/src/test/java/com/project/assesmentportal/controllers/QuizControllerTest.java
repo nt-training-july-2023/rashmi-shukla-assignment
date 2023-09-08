@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.services.impl.QuizServiceImpl;
 
@@ -33,8 +35,9 @@ class QuizControllerTest {
     @Test
     public void testGetQuizzes() {
         List<QuizDto> quizzes = new ArrayList<>();
-        quizzes.add(new QuizDto(1L, "GK","GK Quiz", 20, null));
-        quizzes.add(new QuizDto(2L, "Maths","Maths Quiz",30, null));
+        CategoryDto categoryDto = new CategoryDto(1,"Gk","category");
+        quizzes.add(new QuizDto(1L, "GK","GK Quiz", 20, categoryDto));
+        quizzes.add(new QuizDto(2L, "Maths","Maths Quiz",30, categoryDto));
         when(quizService.getAllQuizzes()).thenReturn(quizzes);
         List<QuizDto> result = quizController.getAllQuizzes();
         assertEquals(2, result.size());
