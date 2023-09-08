@@ -183,6 +183,10 @@ class CategoryServiceImplTest {
     
     @Test
     void testUpdateCategory_DuplicateEmail() {
+        Category category = new Category();
+        category.setCategoryId(1L);
+        category.setCategoryTitle("Java");
+        
         long categoryIdToUpdate = 1L;
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setCategoryTitle("React");
@@ -193,8 +197,7 @@ class CategoryServiceImplTest {
         existingCategory.setCategoryTitle("React");
         existingCategory.setCategoryDescription("mcqs");
         
-        when(modelMapper.map(existingCategory, CategoryDto.class)).thenReturn(categoryDto);
-        when(categoryRepository.findById(categoryIdToUpdate)).thenReturn(Optional.of(existingCategory));
+        when(categoryRepository.findById(categoryIdToUpdate)).thenReturn(Optional.of(category));
         when(categoryRepository.findByCategoryTitle(categoryDto.getCategoryTitle())).thenReturn(Optional.of(existingCategory));
 
         
