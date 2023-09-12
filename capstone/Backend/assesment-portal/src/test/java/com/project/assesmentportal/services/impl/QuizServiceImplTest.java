@@ -20,6 +20,7 @@ import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
+import com.project.assesmentportal.repositories.CategoryRepository;
 import com.project.assesmentportal.repositories.QuizRepository;
 
 class QuizServiceImplTest {
@@ -32,6 +33,9 @@ class QuizServiceImplTest {
     @Mock
     private ModelMapper modelMapper;
     
+    @Mock
+    private CategoryRepository categoryRepository;
+    
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -41,14 +45,17 @@ class QuizServiceImplTest {
     @Test
     void testAddQuiz_Success() {
         QuizDto quizDto = new QuizDto();
-        quizDto.setQuizTitle("New Quiz");
+        quizDto.setQuizId(1L);
+        quizDto.setQuizTitle("Sample Quiz");
         
         Quiz quiz = new Quiz();
-        quiz.setQuizTitle(quizDto.getQuizTitle());
+        quiz.setQuizId(1L);
+        quiz.setQuizTitle("Sample Quiz");
         
         when(modelMapper.map(quizDto, Quiz.class)).thenReturn(quiz);
         when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
         when(quizRepository.findByQuizTitle(quiz.getQuizTitle())).thenReturn(Optional.empty());
+//        when(categoryRepository.findById(quiz.getCategory().getCategoryId())).thenReturn(Optional.of(new Category()));
         when(quizRepository.save(any(Quiz.class))).thenReturn(quiz);
         
         QuizDto resultQuizDto = quizServiceImpl.addQuiz(quizDto);

@@ -8,10 +8,14 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuizDto;
+import com.project.assesmentportal.entities.Category;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
+import com.project.assesmentportal.repositories.CategoryRepository;
 import com.project.assesmentportal.repositories.QuizRepository;
 import com.project.assesmentportal.services.QuizService;
 
@@ -29,10 +33,16 @@ public class QuizServiceImpl implements QuizService {
     private ModelMapper modelMapper;
 
     /**
-     * instance of CategoryRepository interface.
+     * instance of QuizRepository interface.
      */
     @Autowired
     private QuizRepository quizRepository;
+
+    /**
+     * instance of CategoryRepository interface.
+     */
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     /**
      * Adds a new quiz.
@@ -43,14 +53,18 @@ public class QuizServiceImpl implements QuizService {
      */
     @Override
     public final QuizDto addQuiz(final QuizDto quizDto) {
-        Quiz quiz = this.modelMapper.map(quizDto, Quiz.class);
+        Quiz quiz = this.DtoToEntity(quizDto);
         Optional<Quiz> checkExistingQuiz = quizRepository
                 .findByQuizTitle(quiz.getQuizTitle());
         if (checkExistingQuiz.isPresent()) {
             throw new DuplicateResourceException("Quiz already exists");
         }
+//        Optional<Category> existingCategory = categoryRepository.findById(quiz.getCategory().getCategoryId());
+//        if(existingCategory.isEmpty()) {
+//            throw new ResourceNotFoundException("Category doesn't exists");
+//        }
         Quiz savedQuiz = quizRepository.save(quiz);
-        return this.modelMapper.map(savedQuiz, QuizDto.class);
+        return this.EnitityToDto(savedQuiz);
     }
 
     /**
@@ -61,7 +75,7 @@ public class QuizServiceImpl implements QuizService {
     public final List<QuizDto> getAllQuizzes() {
         List<Quiz> quizzes = this.quizRepository.findAll();
         List<QuizDto> quizDtos = quizzes.stream()
-                .map((quiz) -> this.modelMapper.map(quiz, QuizDto.class))
+                .map((quiz) -> this.EnitityToDto(quiz))
                 .collect(Collectors.toList());
         return quizDtos;
     }
@@ -77,7 +91,7 @@ public class QuizServiceImpl implements QuizService {
     public final QuizDto getQuizById(final long quizId) {
         Optional<Quiz> quiz = quizRepository.findById(quizId);
         if (quiz.isPresent()) {
-            return this.modelMapper.map(quiz.get(), QuizDto.class);
+            return this.EnitityToDto(quiz.get());
         } else {
             throw new ResourceNotFoundException("Quiz doesnot exists");
         }
@@ -111,15 +125,17 @@ public class QuizServiceImpl implements QuizService {
         exisitingQuiz.setQuizTitle(quizDto.getQuizTitle());
         exisitingQuiz.setQuizDescription(quizDto.getQuizDescription());
         exisitingQuiz.setQuizTimer(quizDto.getQuizTimer());
-
-//        Quiz checkExisitingQuiz = quizRepository
-//                .findByQuizTitle(exisitingQuiz.getQuizTitle()).get();
-//        if (checkExisitingQuiz.getQuizId() != exisitingQuiz.getQuizId()) {
-//            throw new DuplicateResourceException("Quiz already exists");
+//        Optional<Category> existingCategory = categoryRepository.findById(quizDto.getCategory().getCategoryId());
+//        if(existingCategory.isPresent()) {
+//            Category updatedCategory = modelMapper.map(quizDto.getCategory(),Category.class);
+//            exisitingQuiz.setCategory(updatedCategory);
+//        } else {
+//            throw new ResourceNotFoundException("Category doesnot exists!");
 //        }
-
+        Category updatedCategory = modelMapper.map(quizDto.getCategory(),Category.class);
+        exisitingQuiz.setCategory(updatedCategory);
         Quiz updatedQuiz = quizRepository.save(exisitingQuiz);
-        return this.modelMapper.map(updatedQuiz, QuizDto.class);
+        return this.EnitityToDto(updatedQuiz);
     }
 
     /**
@@ -134,6 +150,37 @@ public class QuizServiceImpl implements QuizService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Quiz doesnot exists"));
         quizRepository.deleteById(quizId);
+    }
+
+    /**
+     * converts quiz to quizDto.
+     * @param quizDto QuizDto to be converted.
+     * @return quiz.
+     */
+    public Quiz DtoToEntity(QuizDto quizDto) {
+        // Map the QuizDto to a Quiz entity
+        Quiz quiz = modelMapper.map(quizDto, Quiz.class);
+        if (quizDto.getCategory() != null) {
+            Category category = modelMapper.map(quizDto.getCategory(), Category.class);
+            quiz.setCategory(category);
+        } 
+        return quiz;
+    }
+
+    /**
+     * converts quizDto to quiz.
+     * @param quiz Quiz to be converted.
+     * @return quizDto.
+     */
+    public QuizDto EnitityToDto(Quiz quiz) {
+        // Map the Quiz entity to a QuizDto
+        QuizDto quizDto = modelMapper.map(quiz, QuizDto.class);
+        // Map the Category entity to a CategoryDto
+        if (quiz.getCategory() != null) {
+            CategoryDto categoryDto = modelMapper.map(quiz.getCategory(), CategoryDto.class);
+            quizDto.setCategory(categoryDto);
+        }
+        return quizDto;
     }
 
 }

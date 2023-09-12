@@ -30,11 +30,13 @@ const ErrorPage = () => {
 
   return (
     <div className='pageContainer'>
-      <h1>404 - Page Not Found</h1>
-      <p>Oops! The page you are looking for might have been removed or doesn't exist.</p>
-      <button onClick = {handleNavigate}>
-        Go back to the homepage
-      </button>
+      <div className='contentContainer'>
+        <h1>Unauthorized Access</h1>
+        <p>Oops! The page you are looking for is unaccessible.</p>
+        <button onClick = {handleNavigate}>
+          Go back to the homepage
+        </button>
+      </div>
     </div>
   )
 }

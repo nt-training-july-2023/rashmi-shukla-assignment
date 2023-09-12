@@ -41,9 +41,12 @@ public class QuizDto {
      * @return category.
      */
     public final CategoryDto getCategory() {
-        return new CategoryDto(category.getCategoryId(),
-                category.getCategoryTitle(),
-                category.getCategoryDescription());
+        if(category!=null) {
+            return new CategoryDto(category.getCategoryId(),
+                    category.getCategoryTitle(),
+                    category.getCategoryDescription());
+        }
+        return null;
     }
 
     /**
@@ -51,9 +54,13 @@ public class QuizDto {
      * @param cat to be set.
      */
     public final void setCategory(final CategoryDto cat) {
-        this.category = new CategoryDto(cat.getCategoryId(),
-                cat.getCategoryTitle(),
-                cat.getCategoryDescription());
+        if(cat!=null) {
+            this.category = new CategoryDto(cat.getCategoryId(),
+                    cat.getCategoryTitle(),
+                    cat.getCategoryDescription());
+        } else {
+            this.category=null;
+        }
     }
 
     /**

@@ -3,6 +3,8 @@ import axios from 'axios'
 import Swal from 'sweetalert2';
 import loginImg from './bg.png';
 import { useNavigate } from 'react-router-dom'
+import Dashboard from '../Dashboard/Dashboard';
+import UserDashboard from '../Dashboard/UserDashboard';
 import './Form.css';
 
 const LoginForm = () => {

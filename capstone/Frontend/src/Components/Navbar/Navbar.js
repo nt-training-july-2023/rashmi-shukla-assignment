@@ -63,7 +63,7 @@ const Navbar = () => {
           <Link to="/ListCategory" className="navbar-item">
             Category
           </Link>
-          <Link to="#" className="navbar-item">
+          <Link to="/ListQuiz" className="navbar-item">
             Quizzes
           </Link> 
           <Link to="#" className="navbar-item">

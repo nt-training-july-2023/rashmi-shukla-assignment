@@ -6,6 +6,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -49,6 +50,7 @@ public class Quiz {
      * many to one relation between category and quiz.
      */
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
     private Category category;
 
     /**
@@ -56,9 +58,13 @@ public class Quiz {
      * @return category the quiz belongs to.
      */
     public final Category getCategory() {
-        return new Category(category.getCategoryId(),
-                category.getCategoryTitle(),
-                category.getCategoryDescription());
+        if(category!=null) {
+            return new Category(category.getCategoryId(),
+                    category.getCategoryTitle(),
+                    category.getCategoryDescription());            
+        }
+        return null;
+
     }
 
     /**
@@ -66,9 +72,13 @@ public class Quiz {
      * @param cat which the quiz belongs to.
      */
     public final void setCategory(final Category cat) {
-        this.category = new Category(cat.getCategoryId(),
-                cat.getCategoryTitle(),
-                cat.getCategoryDescription());
+        if(cat!=null) {
+            this.category = new Category(cat.getCategoryId(),
+                    cat.getCategoryTitle(),
+                    cat.getCategoryDescription());            
+        } else {
+            this.category=null;
+        }
     }
 
     /**
