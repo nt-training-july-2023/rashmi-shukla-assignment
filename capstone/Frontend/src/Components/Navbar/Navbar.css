@@ -42,7 +42,6 @@
   background-color: #555;
 } 
 
-/* Optional: Center-align the navbar items */
 .navbar-item {
   display: inline-block;
   margin-right: 15px;
@@ -58,7 +57,6 @@
   color: white;
 }
 
-/* Media query for smaller screens */
 @media (max-width: 768px) {
   .navbar-container {
     display: none;

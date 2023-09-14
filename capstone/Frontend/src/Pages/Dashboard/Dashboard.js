@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react'
-import Navbar from '../../Components/Navbar/Navbar'  //.. represents parent dir
+import Navbar from '../../Components/Navbar/Navbar'
 import './Dashboard.css'
 import ErrorPage from '../ErrorPage/ErrorPage'
 

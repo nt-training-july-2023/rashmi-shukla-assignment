@@ -67,9 +67,9 @@ public class Category {
 
     /**
      * all args constructor of category.
-     * @param catId unique id of category.
+     * @param catId    unique id of category.
      * @param catTitle title of category.
-     * @param catDesc description of category.
+     * @param catDesc  description of category.
      */
     public Category(final long catId, final String catTitle,
             final String catDesc) {
@@ -77,5 +77,4 @@ public class Category {
         this.categoryTitle = catTitle;
         this.categoryDescription = catDesc;
     }
-
 }

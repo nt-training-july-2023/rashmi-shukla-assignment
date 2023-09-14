@@ -5,7 +5,7 @@ import java.util.List;
 import com.project.assesmentportal.dto.QuizDto;
 
 /**
- * Service interface for managing category-related operations.
+ * Service interface for managing quiz-related operations.
  */
 public interface QuizService {
 

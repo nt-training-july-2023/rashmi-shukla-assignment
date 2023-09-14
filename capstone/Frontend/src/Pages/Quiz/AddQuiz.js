@@ -86,7 +86,7 @@ const AddQuiz = () => {
                 title: "Success",
                 text: "Quiz added successfully",
                 icon: "success",
-                // timer:2000,
+                timer:2000,
                 showConfirmButton: false,
               });
               navigate("/ListQuiz")
@@ -150,7 +150,6 @@ const AddQuiz = () => {
               setQuizTitle(e.target.value);
               setErrors('');
             }}
-            //required
           />
 
           <label>Quiz Description </label>

@@ -20,7 +20,7 @@ public class AssesmentPortalApplication {
     }
 
     /**
-     * This is the modelmapper bean.
+     * This is the modelMapper bean.
      * @return ModelMapper bean.
      */
     @Bean

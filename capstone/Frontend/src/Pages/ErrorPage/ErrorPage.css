@@ -1,8 +1,7 @@
 .pageContainer {
     height: 100vh;
     background-color: whitesmoke;
-    align-items: center;
-    
+    align-items: center;  
 }
 
 .contentContainer{
@@ -13,43 +12,3 @@
     padding-top: 150px;
 }
 
-/* body {
-    font-family: Arial, sans-serif;
-    background-color: #f1f1f1;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-h1 {
-    font-size: 48px;
-    color: #252B48;
-}
-
-p {
-    font-size: 18px;
-    color: #333;
-}
-
-a {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #252B48;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 3px;
-    transition: background-color 0.3s ease;
-}
-
-a:hover {
-    background-color: #d32f2f;
-}
-
-
-
-
- */

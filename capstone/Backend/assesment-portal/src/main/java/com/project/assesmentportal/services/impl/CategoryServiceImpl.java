@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.assesmentportal.dto.CategoryDto;
+import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.entities.Category;
+import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
 import com.project.assesmentportal.repositories.CategoryRepository;
@@ -139,4 +141,36 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+    /**
+     * gets quizzes of this category.
+     * @param categoryId id of the category.
+     * @return list of quizzes.
+     */
+    @Override
+    public final List<QuizDto> getQuizzesByCategory(
+            final long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Category doesn't exists"));
+        List<Quiz> quizzes = category.getQuizzes();
+        return quizzes.stream().map(this::entityToDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * converts quizDto to quiz.
+     * @param quiz Quiz to be converted.
+     * @return quizDto.
+     */
+    public final QuizDto entityToDto(final Quiz quiz) {
+        // Map the Quiz entity to a QuizDto
+        QuizDto quizDto = modelMapper.map(quiz, QuizDto.class);
+        // Map the Category entity to a CategoryDto
+        if (quiz.getCategory() != null) {
+            CategoryDto categoryDto = modelMapper.map(quiz.getCategory(),
+                    CategoryDto.class);
+            quizDto.setCategory(categoryDto);
+        }
+        return quizDto;
+    }
 }

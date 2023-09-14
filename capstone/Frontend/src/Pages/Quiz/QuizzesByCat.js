@@ -1,55 +1,54 @@
 import React, { useEffect, useState } from 'react'
-import QuizService from '../../Services/QuizService';
-import Swal from 'sweetalert2';
+import CategoryService from '../../Services/CategoryService';
+import { useParams } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
-import './Quiz.css';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import QuizService from '../../Services/QuizService';
 
-const ListQuiz = () => {
-
-    const[quiz, setQuiz] = useState([]);
+const Quizzes = () => {
+    const [quizzes, setQuizzes] = useState([]);
     const navigate = useNavigate();
+    const {id} = useParams();
 
     useEffect(()=>{
-        getAllQuizzes();
-    },[]);
+        getQuizzesByCategory();
+    },[])
 
-    const getAllQuizzes =() =>{
-        QuizService.getAllQuizzes().then((response)=>{
-            setQuiz(response.data)
-        })
-        .catch((error) => {
+    const getQuizzesByCategory= () =>{
+        CategoryService.getQuizzesByCategory(id).then(response => {
+            setQuizzes(response.data);
+            console.log(response.data);
+        }).catch((error) => {
             console.log(error);
         })
     }
 
     const deleteQuiz = (quizId) =>{
-        QuizService.deleteQuiz(quizId).then((response) =>{
-            Swal.fire({
-                title: "Success",
-                text: "Quiz deleted successfully",
-                icon: "success",
-                timer:2000,
-                showConfirmButton:false
-              });
-            getAllQuizzes();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
+      QuizService.deleteQuiz(quizId).then((response) =>{
+          Swal.fire({
+              title: "Success",
+              text: "Quiz deleted successfully",
+              icon: "success",
+              timer:2000,
+              showConfirmButton:false
+            });
+            getQuizzesByCategory();
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+  }
+
 
   return (
     <div>
       <Navbar/>
       <div className='quiz-header'>
-            <h1>ALL QUIZZES</h1>
-            <button onClick={()=> navigate(`/addQuiz`)}>
-                Add Quiz
-            </button>
+            <h1>CATEGORY:{id}</h1>
       </div>
       <div className='quiz-container'>
-      {quiz.map((quizItem) => (
+      {quizzes.map((quizItem) => (      
           <div key={quizItem.quizId} className="card">
             <div className="card-body">
               <h5 className="card-title">{quizItem.quizTitle}</h5>
@@ -76,11 +75,11 @@ const ListQuiz = () => {
                         deleteQuiz(quizItem.quizId)}
                     } ) }> Delete </button>
             </div>
-          </div>
+            </div>
         ))}
       </div>
     </div>
   )
 }
 
-export default ListQuiz
+export default Quizzes

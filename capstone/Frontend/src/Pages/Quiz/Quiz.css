@@ -1,61 +1,4 @@
-/* .quiz-container{
-    padding-left: 180px ;
-    padding-right: 100px;
-}
-.card {
-    background-color: whitesmoke;
-    width: 300px;
-    margin: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transition: 0.3s;
-    display: inline-block;
-    vertical-align: top;
-  }
-  
-  .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  }
-  
-  .card-body {
-    padding: 20px;
-  }
-  
-  .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .card-text {
-    font-size: 1rem;
-    margin-bottom: 10px;
-  }
-  .btn-danger {
-    background-color: #ff6b6b;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .btn-danger:hover {
-    background-color: #ff4f4f;
-  } */
-
-
-  /* .page-title{
-    background-color: wheat;
-    font-size: 30px;
-    margin-top: 15px;
-    color: black;
-    padding: 2%;
-    margin-left: 10.5%;
-    margin-right: 10.5%;
-    border: solid white;
-    border-radius: 5px;
-} */
- .page-title {
+ .quiz-header {
   margin-top: 15px;
   padding: 2%;
   margin-left: 10.5%;
@@ -68,23 +11,23 @@
   color: #fff; 
 }  
 
-.page-title h1 {
-  margin: 0; /* Remove default margin */
+.quiz-header h1 {
+  margin: 0;
   font-size: 1.5 rem;
 }
 
-.page-title button {
-  background-color: #fff; /* Set your preferred button background color */
-  color: #272829; /* Set your preferred button text color */
+.quiz-header button {
+  background-color: #fff; 
+  color: #272829; 
   border: none;
-  padding: 5px 10px; /* Adjust padding as needed */
+  padding: 5px 10px; 
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem; /* Adjust the font size as needed */
+  font-size: 1rem; 
 }
 
-.page-title button:hover {
-  background-color: #e0e0e0; /* Set your preferred button background color on hover */
+.quiz-header button:hover {
+  background-color: #e0e0e0; 
 }
   .quiz-container {
     display: flex;
@@ -104,13 +47,13 @@
   }
   
   .card-title {
-    font-size: 1.5rem; /* Adjust the font size as needed */
+    font-size: 1.5rem; 
     margin-bottom: 10px;
     text-transform: capitalize
   }
   
   .card-text {
-    font-size: 1rem; /* Adjust the font size as needed */
+    font-size: 1rem; 
     margin-bottom: 10px;
   }
   
@@ -146,5 +89,5 @@
   
   .update-btn:hover,
   .delete-btn:hover {
-    background-color: #0056b3; /* Set your preferred button color on hover */
+    background-color: #0056b3; 
   }

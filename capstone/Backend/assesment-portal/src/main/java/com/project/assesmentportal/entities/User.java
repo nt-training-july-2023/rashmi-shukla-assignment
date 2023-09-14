@@ -33,9 +33,7 @@ public class User {
     /**
      * The first name of the user.
      */
-    @Column(name = "first_name", nullable = false) // optional, default col
-                                                   // gets created as
-                                                   // firstName
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
     /**

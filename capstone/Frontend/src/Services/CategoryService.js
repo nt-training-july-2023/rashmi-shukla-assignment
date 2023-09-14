@@ -23,6 +23,10 @@ class CategoryService{
     deleteCategory(id){
         return axios.delete(CATEGORY_BASE_URL+'/'+id);
     } 
+
+    getQuizzesByCategory(id){
+        return axios.get(CATEGORY_BASE_URL+'/'+id+'/'+"quizzes");
+    }
 }
 
 export default new CategoryService();

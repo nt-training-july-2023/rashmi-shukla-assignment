@@ -9,6 +9,7 @@ import UserDashboard from './Pages/Dashboard/UserDashboard';
 import ErrorPage from './Pages/ErrorPage/ErrorPage';
 import ListQuiz from './Pages/Quiz/ListQuiz';
 import AddQuiz from './Pages/Quiz/AddQuiz';
+import QuizzesByCat from './Pages/Quiz/QuizzesByCat';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route exact path='/ListCategory' element={<PrivateRoute Component={ListCategory} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/AddCategory' element={<PrivateRoute Component={AddCategory} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/UpdateCategory/:id' element={<PrivateRoute Component={AddCategory} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
+          <Route exact path='/Category/:id/quizzes' element={<PrivateRoute Component={QuizzesByCat} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/user-dashboard' element={<PrivateRoute Component={UserDashboard} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/error-page' element={<PrivateRoute Component={ErrorPage} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/ListQuiz' element={<PrivateRoute Component={ListQuiz} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>

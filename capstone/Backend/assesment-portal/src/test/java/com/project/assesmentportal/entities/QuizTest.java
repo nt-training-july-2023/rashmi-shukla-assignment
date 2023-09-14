@@ -43,7 +43,7 @@ class QuizTest {
 
     @Test
     public void testConstructor() {
-        Quiz newQuiz = new Quiz(2L, "Quiz 2", "description 2", 45);
+        Quiz newQuiz = new Quiz(2L, "Quiz 2", "description 2", 45,null);
 
         assertEquals(2L, newQuiz.getQuizId());
         assertEquals("Quiz 2", newQuiz.getQuizTitle());

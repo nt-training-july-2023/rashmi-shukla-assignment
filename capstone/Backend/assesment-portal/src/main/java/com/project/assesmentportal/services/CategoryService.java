@@ -3,6 +3,7 @@ package com.project.assesmentportal.services;
 import java.util.List;
 
 import com.project.assesmentportal.dto.CategoryDto;
+import com.project.assesmentportal.dto.QuizDto;
 
 /**
  * Service interface for managing category-related operations.
@@ -24,7 +25,6 @@ public interface CategoryService {
 
     /**
      * Retrieves a category by its ID.
-     *
      * @param categoryId The ID of the category to retrieve.
      * @return The CategoryDto of the retrieved category.
      */
@@ -32,7 +32,6 @@ public interface CategoryService {
 
     /**
      * Updates a category.
-     *
      * @param categoryDto The updated CategoryDto.
      * @param categoryId  The ID of the category to update.
      * @return The CategoryDto of the updated category.
@@ -41,8 +40,14 @@ public interface CategoryService {
 
     /**
      * Deletes a category by its ID.
-     *
      * @param categoryId The ID of the category to delete.
      */
     void deleteCategory(long categoryId);
+
+    /**
+     * Gets list of quizzes for a category.
+     * @param categoryId if of the category.
+     * @return list of quizzes.
+     */
+    List<QuizDto> getQuizzesByCategory(long categoryId);
 }

@@ -55,7 +55,7 @@ const AddCategory = () => {
           title: "Success",
           text: "Category added successfully",
           icon: "success",
-          // timer:2000,
+          timer:2000,
           showConfirmButton: false,
         });
         navigate("/ListCategory")
@@ -114,7 +114,6 @@ const AddCategory = () => {
               setCategoryTitle(e.target.value);
               setErrors('');
             }}
-            //required
           />
           <label>Category Description </label>
           <input
@@ -124,7 +123,6 @@ const AddCategory = () => {
               setCategoryDescription(e.target.value);
               setErrors('');
             }}
-            //required
           />
           <span>{errors}</span>
           <button onClick={(e)=>saveCategory(e)}  className='cat-button'>

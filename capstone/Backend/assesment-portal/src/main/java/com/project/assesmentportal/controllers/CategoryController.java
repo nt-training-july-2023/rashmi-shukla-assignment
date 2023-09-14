@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.assesmentportal.dto.CategoryDto;
+import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.services.CategoryService;
 
 /**
@@ -68,7 +69,7 @@ public class CategoryController {
 
     /**
      * Updates a category.
-     * @param catId The ID of the category to update.
+     * @param catId       The ID of the category to update.
      * @param categoryDto The updated CategoryDto.
      * @return A ResponseEntity containing the updated CategoryDto and HTTP
      *         status OK (200).
@@ -78,7 +79,8 @@ public class CategoryController {
             @PathVariable("id") final long catId,
             @RequestBody final CategoryDto categoryDto) {
         return new ResponseEntity<CategoryDto>(
-        categoryService.updateCategory(categoryDto, catId), HttpStatus.OK);
+                categoryService.updateCategory(categoryDto, catId),
+                HttpStatus.OK);
     }
 
     /**
@@ -95,4 +97,16 @@ public class CategoryController {
                 HttpStatus.OK);
     }
 
+    /**
+     * returns quizzes of a category.
+     * @param id categoryId.
+     * @return list of quizzes ResponseEntity
+     */
+    @RequestMapping(value = "/categories/{id}/quizzes",
+            method = RequestMethod.GET)
+    public final ResponseEntity<List<QuizDto>> getQuizzesById(
+            @PathVariable("id") final long id) {
+        return new ResponseEntity<List<QuizDto>>(
+                categoryService.getQuizzesByCategory(id), HttpStatus.OK);
+    }
 }

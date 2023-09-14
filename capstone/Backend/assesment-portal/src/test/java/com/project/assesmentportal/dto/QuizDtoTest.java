@@ -69,7 +69,6 @@ class QuizDtoTest {
         assertEquals("Quiz", quizDto.getQuizTitle());
         assertEquals("Descr", quizDto.getQuizDescription());
         assertEquals(20,  quizDto.getQuizTimer());
-//        assertEquals(categoryDto, quizDto.getCategory());
         
         CategoryDto retrievedDto = quizDto.getCategory();
         assertEquals(1L, retrievedDto.getCategoryId());

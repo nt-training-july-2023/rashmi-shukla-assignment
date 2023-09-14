@@ -1,8 +1,4 @@
 .Auth-form-container {
-  /* background-image: url('./bg-1.jpeg');
-  background-size: cover;
-  background-position: center;
-  font-family: Arial, sans-serif;  */
   background-color:whitesmoke;
   display: flex;
   justify-content: center;
@@ -45,17 +41,14 @@ span{
   color: red;
 }
 
-/* Center align text */
 .text-center {
   text-align: center;
 }
 
-/* Style form group */
 .form-group {
   margin-top: 1rem;
 }
 
-/* Style form control */
 .form-input {
   margin-top: 0.25rem;
   display: block;
@@ -66,7 +59,6 @@ span{
   border-radius: 0.25rem;
 }
 
-/* Style link with primary color */
 .redirect-link {
   color: #007bff;
   cursor: pointer;
@@ -80,7 +72,6 @@ span{
   margin-left: 1.6rem;  
 }
 
-/* Style button */
 .button {
   display: inline-block;
   font-weight: 400;
@@ -100,7 +91,6 @@ span{
   border-color: #007bff;
 }
 
-/* Style button on hover */
 .button:hover {
   background-color: #0056b3;
 }

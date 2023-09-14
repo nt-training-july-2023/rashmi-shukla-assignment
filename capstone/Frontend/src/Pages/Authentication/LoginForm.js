@@ -1,10 +1,7 @@
 import React,{useState} from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2';
-import loginImg from './bg.png';
 import { useNavigate } from 'react-router-dom'
-import Dashboard from '../Dashboard/Dashboard';
-import UserDashboard from '../Dashboard/UserDashboard';
 import './Form.css';
 
 const LoginForm = () => {
@@ -12,8 +9,6 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] =useState({});
   const navigate = useNavigate();
-
-  const IsLoggedIn = localStorage.getItem("IsLoggedIn");
 
   const handleLoginClick = async (event) => {
 
@@ -44,7 +39,6 @@ const LoginForm = () => {
           if (response.status === 200 && response.data==='user') {
             // Redirect upon successful login
             navigate('/user-dashboard');
-            // navigate('/private')
           }
           else if (response.status === 200 && response.data==='admin') {
             navigate('/dashboard'); 
@@ -78,9 +72,6 @@ const LoginForm = () => {
   return (
     <>
     <div className="Auth-form-container">
-        {/* <div className="Auth-image">
-        <img src={loginImg} alt="Login" />
-        </div> */}
         <form className="Auth-form" onSubmit={handleLoginClick}>
           <div className="Auth-form-content">
             <h3 className="Auth-form-title">Login</h3>

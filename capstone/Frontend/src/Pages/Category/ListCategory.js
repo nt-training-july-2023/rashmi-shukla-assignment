@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './Category.css';
 import CategoryService from '../../Services/CategoryService';
@@ -10,8 +10,6 @@ const ListCategory = () => {
 
     const navigate = useNavigate();
     const[categories, setCategories] = useState([]);
-
-    
 
     useEffect(()=>{
         getAllCategories();
@@ -48,7 +46,13 @@ const ListCategory = () => {
         <Navbar/>
       <div className='table-container'>
       {(userRole==="admin") && (
-      <Link to="/AddCategory" className='add-category-link'>Add Category</Link> )}
+            <div className='cat-header'>
+                <h1>ALL CATEGORIES</h1>
+                <button onClick={()=> navigate(`/AddCategory`)}>
+                    Add Category
+                </button>
+            </div>
+       )}
         <table className='category-table'>
             <thead>
                 <tr>
@@ -67,6 +71,7 @@ const ListCategory = () => {
                         <td>
                             {(userRole==="admin") ? (
                             <>
+                            <button className='action-buttons' onClick={()=> navigate(`/Category/${category.categoryId}/quizzes`)}>View Quizzes</button>
                             <button className='action-buttons update-button' onClick={()=> navigate(`/UpdateCategory/${category.categoryId}`)}>Update</button>
                             <button className='action-buttons delete-button' onClick={()=>
                                 Swal.fire({

@@ -41,7 +41,7 @@ public class QuizDto {
      * @return category.
      */
     public final CategoryDto getCategory() {
-        if(category!=null) {
+        if (category != null) {
             return new CategoryDto(category.getCategoryId(),
                     category.getCategoryTitle(),
                     category.getCategoryDescription());
@@ -54,22 +54,22 @@ public class QuizDto {
      * @param cat to be set.
      */
     public final void setCategory(final CategoryDto cat) {
-        if(cat!=null) {
+        if (cat != null) {
             this.category = new CategoryDto(cat.getCategoryId(),
                     cat.getCategoryTitle(),
                     cat.getCategoryDescription());
         } else {
-            this.category=null;
+            this.category = null;
         }
     }
 
     /**
      * all args constructor.
-     * @param qId          id of the quiz.
-     * @param qTitle       title of the quiz.
+     * @param qId id of the quiz.
+     * @param qTitle title of the quiz.
      * @param qDescription description of the quiz.
-     * @param qTimer       timer for the quiz.
-     * @param cat        of the quiz.
+     * @param qTimer timer for the quiz.
+     * @param cat of the quiz.
      */
     public QuizDto(final long qId, final String qTitle,
             final String qDescription, final int qTimer,
@@ -78,8 +78,12 @@ public class QuizDto {
         this.quizTitle = qTitle;
         this.quizDescription = qDescription;
         this.quizTimer = qTimer;
-        this.category = new CategoryDto(cat.getCategoryId(),
+        if (cat != null) {
+            this.category = new CategoryDto(cat.getCategoryId(),
                 cat.getCategoryTitle(),
                 cat.getCategoryDescription());
+        } else {
+            this.category = null;
+        }
     }
 }

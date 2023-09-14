@@ -117,7 +117,7 @@ class QuizServiceImplTest {
     @Test
     public void testGetAllQuizzes() {
         List<Quiz> quizList = new ArrayList<>();
-        quizList.add(new Quiz(1, "React", "descr", 20));
+        quizList.add(new Quiz(1, "React", "descr", 20, null));
         
         when(quizRepository.findAll()).thenReturn(quizList);
         List<QuizDto> quizDtos = quizServiceImpl.getAllQuizzes();

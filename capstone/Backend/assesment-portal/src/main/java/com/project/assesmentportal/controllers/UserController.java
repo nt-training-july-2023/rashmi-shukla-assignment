@@ -73,8 +73,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("incorrect credentials");
         }
-//      return ResponseEntity.ok(userService.login(user).getFirstName()
-        //                        +" Successfully logged in");
         return ResponseEntity.ok(userService.login(userDto).getRole());
 
     }
