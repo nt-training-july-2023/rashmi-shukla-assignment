@@ -36,7 +36,7 @@ label {
   color: rgb(34, 34, 34);
 }
 
-span{
+.form-group span{
   font-size: 13px;
   color: red;
 }

@@ -1,5 +1,6 @@
 body {
-  background-image: linear-gradient(to right, #d3cce3, #e9e4f0); 
+  /* background-image: linear-gradient(to right, #d3cce3, #e9e4f0);  */
+  background-color: whitesmoke;
   background-size: cover;
   background-position: center;
   font-family: Arial, sans-serif; 
@@ -14,6 +15,7 @@ body {
   justify-content: space-between;
   align-items: center;
   background-color: #7895CB; 
+  background-size: cover;
   color: #fff; 
 }  
 
@@ -99,7 +101,7 @@ body {
 
   .category-table th {
     text-align: center;
-    background-color: #0C356A;
+    background-color: #3c413b;
     font-weight: bold;
   }
   
@@ -129,8 +131,9 @@ body {
     margin-top: 20px;
     text-align: center;
     text-decoration: none;
-    background-color: #4A55A2;
+    background-color: #5160d4;
     color: white;
+    border: wheat;
     padding: 10px 20px;
     border-radius: 5px;
     width: 100px;
@@ -142,11 +145,36 @@ body {
     margin-top: 20px;
     text-align: center;
     text-decoration: none;
-    background-color: #252B48;
+    background-color: darkgray;
+    border: wheat;
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
     width: 100px;
+  }
+
+  .action-buttons.view-button{
+    display: block;
+    font-size: 12px;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #123C89;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: wheat;
+    width: 100px;
+  }
+
+  .update-button:hover{
+    background-color: #4A55A2;
+  }
+  .delete-button:hover {
+    background-color: gray; 
+  }
+  .view-button:hover {
+    background-color: darkblue; 
   }
 
 
@@ -173,8 +201,8 @@ body {
   margin-bottom: 5px;
 }
 
-.cat-form input[type="text"] {
-  width: 100%;
+.cat-form input {
+  width: 90%;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;

@@ -9,10 +9,12 @@ import QuizService from '../../Services/QuizService';
 const Quizzes = () => {
     const [quizzes, setQuizzes] = useState([]);
     const navigate = useNavigate();
+    const [categoryName, setCategoryName]= useState("");
     const {id} = useParams();
 
     useEffect(()=>{
         getQuizzesByCategory();
+        getCategoryById();
     },[])
 
     const getQuizzesByCategory= () =>{
@@ -22,6 +24,15 @@ const Quizzes = () => {
         }).catch((error) => {
             console.log(error);
         })
+    }
+
+    const getCategoryById= () =>{
+      CategoryService.getCategoryById(id).then(response=>{
+        setCategoryName(response.data.categoryTitle);
+        console.log(response.data);
+      }).catch((error)=>{
+        console.log(error);
+      })
     }
 
     const deleteQuiz = (quizId) =>{
@@ -45,16 +56,16 @@ const Quizzes = () => {
     <div>
       <Navbar/>
       <div className='quiz-header'>
-            <h1>CATEGORY:{id}</h1>
+            <h1>CATEGORY:  {categoryName}</h1>
       </div>
       <div className='quiz-container'>
       {quizzes.map((quizItem) => (      
-          <div key={quizItem.quizId} className="card">
-            <div className="card-body">
-              <h5 className="card-title">{quizItem.quizTitle}</h5>
-              <p className="card-text">{quizItem.quizDescription}</p>
-              <p className="card-text">Quiz Timer: {quizItem.quizTimer}</p>
-              <div className="card-text">
+          <div key={quizItem.quizId} className="quiz-card">
+            <div className="quiz-card-body">
+              <h5 className="quiz-card-title">{quizItem.quizTitle}</h5>
+              <p className="quiz-card-text">{quizItem.quizDescription}</p>
+              <p className="quiz-card-text">Quiz Timer: {quizItem.quizTimer}</p>
+              <div className="quiz-card-text">
                   <div>
                     <h6>Category: {quizItem.category.categoryTitle}</h6>
                     <p>{quizItem.category.categoryDescription}</p>

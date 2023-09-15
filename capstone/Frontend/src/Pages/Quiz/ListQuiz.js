@@ -9,6 +9,7 @@ const ListQuiz = () => {
 
     const[quiz, setQuiz] = useState([]);
     const navigate = useNavigate();
+    const userRole = localStorage.getItem("role");
 
     useEffect(()=>{
         getAllQuizzes();
@@ -50,17 +51,19 @@ const ListQuiz = () => {
       </div>
       <div className='quiz-container'>
       {quiz.map((quizItem) => (
-          <div key={quizItem.quizId} className="card">
-            <div className="card-body">
-              <h5 className="card-title">{quizItem.quizTitle}</h5>
-              <p className="card-text">{quizItem.quizDescription}</p>
-              <p className="card-text">Quiz Timer: {quizItem.quizTimer}</p>
-              <div className="card-text">
+          <div key={quizItem.quizId} className="quiz-card">
+            <div className="quiz-card-body">
+              <h5 className="quiz-card-title">Quiz: {quizItem.quizTitle}</h5>
+              <p className="quiz-card-text">{quizItem.quizDescription}</p>
+              <p className="quiz-card-text">Time limit: {quizItem.quizTimer} minutes</p>
+              <div className="quiz-card-text">
                   <div>
                     <h6>Category: {quizItem.category.categoryTitle}</h6>
                     <p>{quizItem.category.categoryDescription}</p>
                   </div>
               </div>
+              {userRole==="admin" ? (
+              <>
               <button className='action-btn update-btn' onClick={()=> navigate(`/UpdateQuiz/${quizItem.quizId}`)}>Update</button>
               <button
                 className='action-btn delete-btn'
@@ -75,6 +78,9 @@ const ListQuiz = () => {
                       }).then((result)=>{ if(result.isConfirmed) {
                         deleteQuiz(quizItem.quizId)}
                     } ) }> Delete </button>
+              </>):(
+                <button className='action-btn view-btn'>Start Assesment</button>
+              )}
             </div>
           </div>
         ))}

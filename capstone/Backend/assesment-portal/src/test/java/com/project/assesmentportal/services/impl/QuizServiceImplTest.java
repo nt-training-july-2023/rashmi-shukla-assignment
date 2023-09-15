@@ -127,7 +127,7 @@ class QuizServiceImplTest {
     }
     
     @Test
-    void testUpdateCategory_Success() {
+    void testUpdateQuiz_Success() {
         long quizIdToUpdate = 1L;
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizId(1);
@@ -149,7 +149,7 @@ class QuizServiceImplTest {
     }
     
     @Test
-    void testUpdateCategory_ResourceNotFound() {
+    void testUpdateQuiz_ResourceNotFound() {
         long quizIdToUpdate = 1L;
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizTitle("React");
@@ -169,7 +169,7 @@ class QuizServiceImplTest {
     }
     
     @Test
-    void testUpdateCategory_DuplicateEmail() {
+    void testUpdateQuiz_DuplicateEmail() {
         //quiz to be updated
         long quizId = 1L;
         Quiz quiz = new Quiz();
@@ -211,7 +211,7 @@ class QuizServiceImplTest {
     }
     
     @Test
-    public final void testDeleteCategory_NotFound() {
+    public final void testDeleteQuiz_NotFound() {
         long quizIdToDelete = 1L;
 
         // Mock the behavior of the repository to return an empty Optional

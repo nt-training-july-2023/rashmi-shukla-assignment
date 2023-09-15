@@ -11,6 +11,7 @@ import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.entities.Category;
+import com.project.assesmentportal.entities.Options;
 import com.project.assesmentportal.entities.Question;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
@@ -42,12 +43,10 @@ public class QuestionServiceImpl implements QuestionService {
      * @return returns QuestionDto of added question.
      */
     @Override
-    public final QuestionDto addQuestion(final QuestionDto questionDto) {
-        System.out.println(questionDto);
+    public final String addQuestion(final QuestionDto questionDto) {
         Question question = this.dtoToEntity(questionDto);
-        System.out.println(question);
-        Question savedQuestion = questionRepository.save(question);
-        return this.entityToDto(savedQuestion);
+        questionRepository.save(question);
+        return "Question added successfully!";
     }
 
     /**
@@ -69,7 +68,7 @@ public class QuestionServiceImpl implements QuestionService {
      * @return updated quiz.
      */
     @Override
-    public final QuestionDto updateQuestion(final QuestionDto questionDto,
+    public final String updateQuestion(final QuestionDto questionDto,
             final long questionId) {
         Question exisitingQuestion = questionRepository
                 .findById(questionId)
@@ -86,9 +85,8 @@ public class QuestionServiceImpl implements QuestionService {
         exisitingQuestion.setAnswer(question.getAnswer());
         exisitingQuestion.setQuiz(question.getQuiz());
 
-        Question updatedQuestion = questionRepository
-                .save(exisitingQuestion);
-        return this.entityToDto(updatedQuestion);
+        questionRepository.save(exisitingQuestion);
+        return "Question with id: "+questionId+" updated successfully!";
     }
 
     /**
@@ -98,7 +96,9 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public final QuestionDto getQuestionById(final long questionId) {
-        Question question = questionRepository.findById(questionId).get();
+        Question question = questionRepository.findById(questionId).
+                orElseThrow(()-> new ResourceNotFoundException(
+                        "Question doesnot exists!"));
         return this.entityToDto(question);
     }
 
@@ -108,6 +108,9 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public final void deleteQuestion(final long questionId) {
+        questionRepository.findById(questionId).
+                orElseThrow(()-> new ResourceNotFoundException(
+                        "Question doesnot exists!"));
         questionRepository.deleteById(questionId);
     }
 
@@ -118,6 +121,10 @@ public class QuestionServiceImpl implements QuestionService {
      */
     public final Question dtoToEntity(final QuestionDto questionDto) {
         Question question = modelMapper.map(questionDto, Question.class);
+        question.setOptionOne(questionDto.getOptions().getOptionI());
+        question.setOptionTwo(questionDto.getOptions().getOptionII());
+        question.setOptionThree(questionDto.getOptions().getOptionIII());
+        question.setOptionFour(questionDto.getOptions().getOptionIV());
         if (questionDto.getQuiz() != null) {
             Quiz quiz = modelMapper.map(questionDto.getQuiz(), Quiz.class);
             if (questionDto.getQuiz().getCategory() != null) {
@@ -140,6 +147,10 @@ public class QuestionServiceImpl implements QuestionService {
         // Map the QuizDto to a Quiz entity
         QuestionDto questionDto = modelMapper.map(question,
                 QuestionDto.class);
+        Options options = new Options(question.getOptionOne(),
+                question.getOptionTwo(), question.getOptionThree(),
+                question.getOptionFour());
+        questionDto.setOptions(options);
         if (question.getQuiz() != null) {
             QuizDto quizDto = modelMapper.map(question.getQuiz(),
                     QuizDto.class);

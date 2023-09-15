@@ -13,7 +13,7 @@ public interface QuestionService {
      * @param questionDto of the question to be added.
      * @return QuestionDto
      */
-    QuestionDto addQuestion(QuestionDto questionDto);
+    String addQuestion(QuestionDto questionDto);
 
     /**
      * gets all questions.
@@ -27,7 +27,7 @@ public interface QuestionService {
      * @param questionId  of the question to be updated.
      * @return updated question.
      */
-    QuestionDto updateQuestion(QuestionDto questionDto, long questionId);
+    String updateQuestion(QuestionDto questionDto, long questionId);
 
     /**
      * get question by question-id.

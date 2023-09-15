@@ -81,9 +81,9 @@
 						</goals>
 					</execution>
 				</executions>
-				<!--<configuration>
+				<configuration>
                     <configLocation>C:\Users\Rashmi Shukla\eclipse-workspace\NT Training\capstone\Backend\assesment-portal\checkStyle.xml</configLocation>
-                </configuration>-->
+                </configuration>
 			</plugin>
 
 

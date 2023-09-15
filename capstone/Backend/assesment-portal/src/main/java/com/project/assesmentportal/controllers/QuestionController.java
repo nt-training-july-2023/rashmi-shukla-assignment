@@ -34,11 +34,11 @@ public class QuestionController {
      * @return added quiz.
      */
     @RequestMapping(value = "/question", method = RequestMethod.POST)
-    public final ResponseEntity<QuestionDto> addQuiz(
+    public final ResponseEntity<String> addQuestion(
             @RequestBody final QuestionDto questionDto) {
-        QuestionDto addQuestion = this.questionService
+        String addQuestion = this.questionService
                 .addQuestion(questionDto);
-        return new ResponseEntity<QuestionDto>(addQuestion,
+        return new ResponseEntity<String>(addQuestion,
                 HttpStatus.CREATED);
     }
 
@@ -47,7 +47,7 @@ public class QuestionController {
      * @return list of questions.
      */
     @RequestMapping(value = "/question", method = RequestMethod.GET)
-    public final List<QuestionDto> getAllQuizzes() {
+    public final List<QuestionDto> getAllQuestions() {
         return questionService.getAllQuestions();
     }
 
@@ -71,10 +71,10 @@ public class QuestionController {
      * @return QuestionDto.
      */
     @RequestMapping(value = "/question/{id}", method = RequestMethod.PUT)
-    public final ResponseEntity<QuestionDto> updateQuestion(
+    public final ResponseEntity<String> updateQuestion(
             @RequestBody final QuestionDto questionDto,
             @PathVariable("id") final long questionId) {
-        return new ResponseEntity<QuestionDto>(
+        return new ResponseEntity<String>(
                 questionService.updateQuestion(questionDto, questionId),
                 HttpStatus.OK);
     }

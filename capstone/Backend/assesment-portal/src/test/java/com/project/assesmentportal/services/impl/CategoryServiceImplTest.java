@@ -17,9 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
 import com.project.assesmentportal.dto.CategoryDto;
-import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.entities.Category;
-import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
 import com.project.assesmentportal.repositories.CategoryRepository;

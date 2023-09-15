@@ -83,7 +83,7 @@ class QuizControllerTest {
     }
     
     @Test
-    public void testDeleteCategory() {
+    public void testDeleteQuiz() {
         long quizId = 1L;
         ResponseEntity<?> result = quizController.deleteQuiz(quizId);
         assertEquals("Quiz deleted successfully!", result.getBody());
