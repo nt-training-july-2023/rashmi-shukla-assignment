@@ -18,10 +18,8 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
 import com.project.assesmentportal.dto.QuestionDto;
-import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.entities.Options;
 import com.project.assesmentportal.entities.Question;
-import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
 import com.project.assesmentportal.repositories.QuestionRepository;
 
@@ -69,14 +67,17 @@ class QuestionServiceImplTest {
     
     @Test
     void testgetAllQuestions_Success() {
-        
-        Question question = new Question(1, "2+2?","1","2","3","4","4");
+        Question question = new Question(1, "2+2?", "1", "2", "3", "4", "4");
         List<Question> questions = new ArrayList<>();
         questions.add(question);
         
+        QuestionDto questionDto = new QuestionDto(1, "2+2?", new Options("1", "2", "3", "4"), "4", null);
+
         when(questionRepository.findAll()).thenReturn(questions);
+        when(modelMapper.map(question, QuestionDto.class)).thenReturn(questionDto);
+
         List<QuestionDto> questionDtos = questionService.getAllQuestions();
-        
+
         assertNotNull(questionDtos);
         assertEquals(1, questionDtos.size());
     }

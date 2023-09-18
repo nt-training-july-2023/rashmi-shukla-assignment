@@ -17,7 +17,9 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
 import com.project.assesmentportal.dto.CategoryDto;
+import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.entities.Category;
+import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
 import com.project.assesmentportal.repositories.CategoryRepository;
@@ -236,24 +238,32 @@ class CategoryServiceImplTest {
         });
     }
 
-//    @Test
-//    public final void testGetQuizzesByCategory_Success() {
-//        long catId = 1L;
-//        Category category = new Category();
-//        category.setCategoryId(catId);
-//        category.setCategoryId(category.getCategoryId());
-//        category.setCategoryTitle(category.getCategoryTitle());
-//        category.setCategoryDescription(category.getCategoryDescription());
-//        
-//        List<Quiz> quizList = new ArrayList<>();
-//        quizList.add(new Quiz(1, "React", "descr", 20, null));
-//        
-//        when(categoryRepository.findById(catId)).thenReturn(Optional.of(category));
-//        
-//        List<QuizDto> quizDtos = categoryServiceImpl.getQuizzesByCategory(catId);
-//        
-//        assertNotNull(quizDtos);
-//        assertEquals(1, quizDtos.size());
-//    }
+    @Test
+    public final void testGetQuizzesByCategory_Success() {
+        long catId = 1L;
+        Category category = new Category();
+        category.setCategoryId(catId);
+        category.setCategoryTitle("React");
+        category.setCategoryDescription("Mcqs");
+        Quiz quiz = new Quiz(1, "React", "descr", 20, category);
+        List<Quiz> quizList = new ArrayList<>();
+        quizList.add(quiz);
+        category.setQuizzes(quizList);
+        
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategoryId(category.getCategoryId());
+        categoryDto.setCategoryTitle(category.getCategoryTitle());
+        categoryDto.setCategoryDescription(category.getCategoryDescription());
+        QuizDto quizDto = new QuizDto(1, "React", "descr", 20, null);
+        
+        when(categoryRepository.findById(catId)).thenReturn(Optional.of(category));
+        when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
+        when(modelMapper.map(quiz.getCategory(), CategoryDto.class)).thenReturn(categoryDto);
+        
+        List<QuizDto> quizDtos = categoryServiceImpl.getQuizzesByCategory(catId);
+        
+        assertNotNull(quizDtos);
+        assertEquals(1, quizDtos.size());
+    }
 
 }

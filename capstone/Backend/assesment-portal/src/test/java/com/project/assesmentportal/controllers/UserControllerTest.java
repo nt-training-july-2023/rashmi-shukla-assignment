@@ -56,10 +56,10 @@ class UserControllerTest {
         UserDto userDto = new UserDto(); 
         when(userService.login(userDto)).thenReturn(userDto);
 
-        ResponseEntity<String> response = userController.login(userDto);
+        ResponseEntity<UserDto> response = userController.login(userDto);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(userDto.getRole(), response.getBody());
+        assertEquals(userDto, response.getBody());
     }
     
     @Test
@@ -67,10 +67,10 @@ class UserControllerTest {
         UserDto userDto = new UserDto(); // Create an invalid UserDto object
         when(userService.login(userDto)).thenReturn(null);
 
-        ResponseEntity<String> response = userController.login(userDto);
+        ResponseEntity<UserDto> response = userController.login(userDto);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertEquals("incorrect credentials", response.getBody());
+        assertEquals(null, response.getBody());
     }
     
     @Test

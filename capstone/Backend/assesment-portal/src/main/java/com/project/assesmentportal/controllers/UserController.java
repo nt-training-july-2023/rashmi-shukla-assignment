@@ -67,13 +67,13 @@ public class UserController {
      *         response in case of failure.
      */
     @RequestMapping(value = "/users/login", method = RequestMethod.POST)
-    public final ResponseEntity<String> login(
+    public final ResponseEntity<UserDto> login(
             @RequestBody final UserDto userDto) {
         if (userService.login(userDto) == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("incorrect credentials");
+                    .body(userService.login(userDto));
         }
-        return ResponseEntity.ok(userService.login(userDto).getRole());
+        return ResponseEntity.ok(userService.login(userDto));
 
     }
 }

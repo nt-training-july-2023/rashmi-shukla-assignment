@@ -72,6 +72,7 @@ const RegistrationForm = () => {
       }
 
   return (
+    <div className='form-body'>
     <div className="Auth-form-container">
     <form className="Auth-form" onSubmit={handleSubmit}>
       <div className="Auth-form-content">
@@ -89,8 +90,10 @@ const RegistrationForm = () => {
             type="text"
             className="form-input"
             value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-        
+            onChange={(e) => {
+              setFirstName(e.target.value);
+              setErrors("");
+            }}
           />
           {errors.firstName && <span>{errors.firstName}</span>}
         </div>
@@ -101,8 +104,10 @@ const RegistrationForm = () => {
             type="text"
             className="form-input"
             value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            
+            onChange={(e) =>{
+              setLastName(e.target.value);
+              setErrors("");
+            }}
           />
         </div>
 
@@ -112,8 +117,10 @@ const RegistrationForm = () => {
             type="phone"
             className="form-input"
             value={phoneNumber || ''}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            
+            onChange={(e) => {
+              setPhoneNumber(e.target.value);
+              setErrors("");
+            }}
           />
           {errors.phoneNumber && <span>{errors.phoneNumber}</span>}
         </div>
@@ -124,7 +131,10 @@ const RegistrationForm = () => {
             type="email"
             className="form-input"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) =>{
+              setEmail(e.target.value);
+              setErrors("");
+            }}
           />
           {errors.email && <span>{errors.email}</span>}
         </div>
@@ -135,7 +145,10 @@ const RegistrationForm = () => {
             type="password"
             className="form-input"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrors("");
+            }}
           />
           {errors.password && <span>{errors.password}</span>}
         </div>
@@ -147,6 +160,7 @@ const RegistrationForm = () => {
         
       </div>
     </form>
+  </div>
   </div>
   )
 }

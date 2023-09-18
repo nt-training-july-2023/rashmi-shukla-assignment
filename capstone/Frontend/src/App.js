@@ -10,6 +10,7 @@ import ErrorPage from './Pages/ErrorPage/ErrorPage';
 import ListQuiz from './Pages/Quiz/ListQuiz';
 import AddQuiz from './Pages/Quiz/AddQuiz';
 import QuizzesByCat from './Pages/Quiz/QuizzesByCat';
+import ListQuestion from './Pages/Question/ListQuestion';
 
 function App() {
 
@@ -28,7 +29,7 @@ function App() {
           <Route exact path='/ListQuiz' element={<PrivateRoute Component={ListQuiz} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/addQuiz' element={<PrivateRoute Component={AddQuiz} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/UpdateQuiz/:id' element={<PrivateRoute Component={AddQuiz} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
-
+          <Route exact path='/ListQuestion' element={<PrivateRoute Component={ListQuestion} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
         </Routes>
        </Router>
   );

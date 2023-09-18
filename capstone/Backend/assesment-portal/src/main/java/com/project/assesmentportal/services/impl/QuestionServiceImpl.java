@@ -86,7 +86,7 @@ public class QuestionServiceImpl implements QuestionService {
         exisitingQuestion.setQuiz(question.getQuiz());
 
         questionRepository.save(exisitingQuestion);
-        return "Question with id: "+questionId+" updated successfully!";
+        return "Question with id: " + questionId + " updated successfully!";
     }
 
     /**
@@ -97,7 +97,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public final QuestionDto getQuestionById(final long questionId) {
         Question question = questionRepository.findById(questionId).
-                orElseThrow(()-> new ResourceNotFoundException(
+                orElseThrow(() -> new ResourceNotFoundException(
                         "Question doesnot exists!"));
         return this.entityToDto(question);
     }
@@ -109,7 +109,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public final void deleteQuestion(final long questionId) {
         questionRepository.findById(questionId).
-                orElseThrow(()-> new ResourceNotFoundException(
+                orElseThrow(() -> new ResourceNotFoundException(
                         "Question doesnot exists!"));
         questionRepository.deleteById(questionId);
     }

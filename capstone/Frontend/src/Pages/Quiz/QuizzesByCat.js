@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import QuizService from '../../Services/QuizService';
 
 const Quizzes = () => {
+  const userRole = localStorage.getItem("role");
     const [quizzes, setQuizzes] = useState([]);
     const navigate = useNavigate();
     const [categoryName, setCategoryName]= useState("");
@@ -71,6 +72,8 @@ const Quizzes = () => {
                     <p>{quizItem.category.categoryDescription}</p>
                   </div>
               </div>
+              {userRole==="admin" ? (
+              <>
               <button className='action-btn update-btn' onClick={()=> navigate(`/UpdateQuiz/${quizItem.quizId}`)}>Update</button>
               <button
                 className='action-btn delete-btn'
@@ -85,6 +88,9 @@ const Quizzes = () => {
                       }).then((result)=>{ if(result.isConfirmed) {
                         deleteQuiz(quizItem.quizId)}
                     } ) }> Delete </button>
+              </>):(
+                <button className='action-btn start-btn'>Start Assesment</button>
+              )}
             </div>
             </div>
         ))}

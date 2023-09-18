@@ -47,14 +47,13 @@ const ListCategory = () => {
     <div className="page-container">
       <Navbar />
       <div className="table-container">
-        {userRole === "admin" && (
           <div className="cat-header">
             <h1>ALL CATEGORIES</h1>
+            {userRole === "admin" && (
             <button onClick={() => navigate(`/AddCategory`)}>
               Add Category
-            </button>
+            </button>)}
           </div>
-        )}
         <table className="category-table">
           <thead>
             <tr>
@@ -111,7 +110,9 @@ const ListCategory = () => {
                       </button>
                     </>
                   ) : (
-                    <button className="action-buttons delete-button">
+                    <button className="action-buttons view-button" onClick={() =>
+                      navigate(`/Category/${category.categoryId}/quizzes`)
+                    }>
                       View
                     </button>
                   )}

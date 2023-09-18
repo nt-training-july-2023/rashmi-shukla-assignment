@@ -45,9 +45,11 @@ const ListQuiz = () => {
       <Navbar/>
       <div className='quiz-header'>
             <h1>ALL QUIZZES</h1>
+            {userRole === "admin" && (
             <button onClick={()=> navigate(`/addQuiz`)}>
                 Add Quiz
             </button>
+            )}
       </div>
       <div className='quiz-container'>
       {quiz.map((quizItem) => (
@@ -58,8 +60,8 @@ const ListQuiz = () => {
               <p className="quiz-card-text">Time limit: {quizItem.quizTimer} minutes</p>
               <div className="quiz-card-text">
                   <div>
-                    <h6>Category: {quizItem.category.categoryTitle}</h6>
-                    <p>{quizItem.category.categoryDescription}</p>
+                    <h5>Category: {quizItem.category.categoryTitle}</h5>
+                    <h6>{quizItem.category.categoryDescription}</h6>
                   </div>
               </div>
               {userRole==="admin" ? (
@@ -79,7 +81,7 @@ const ListQuiz = () => {
                         deleteQuiz(quizItem.quizId)}
                     } ) }> Delete </button>
               </>):(
-                <button className='action-btn view-btn'>Start Assesment</button>
+                <button className='action-btn start-btn'>Start Assesment</button>
               )}
             </div>
           </div>

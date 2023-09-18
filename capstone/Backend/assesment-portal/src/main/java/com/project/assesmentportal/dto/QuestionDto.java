@@ -103,8 +103,12 @@ public class QuestionDto {
         this.options = new Options(opts.getOptionI(), opts.getOptionII(),
                 opts.getOptionIII(), opts.getOptionIV());
         this.answer = ans;
-        this.quiz = new QuizDto(qz.getQuizId(), qz.getQuizTitle(),
+        if (qz != null) {
+            this.quiz = new QuizDto(qz.getQuizId(), qz.getQuizTitle(),
                 qz.getQuizDescription(), qz.getQuizTimer(),
                 qz.getCategory());
+        } else {
+            this.quiz = null;
+        }
     }
 }
