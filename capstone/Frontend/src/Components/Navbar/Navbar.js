@@ -45,6 +45,7 @@ const Navbar = () => {
     });
     localStorage.removeItem("IsLoggedIn")
     localStorage.removeItem("role")
+    localStorage.removeItem("userName");
   }
 
   return (

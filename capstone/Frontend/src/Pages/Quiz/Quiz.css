@@ -109,6 +109,25 @@
     border-radius: 5px;
     width: 50%;
   }
+
+  .action-btn.view-btn{
+    display: block;
+    font-size: 12px;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #007bff;
+    /* background-color: #123C89; */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: wheat;
+    width: 50%;
+  }
+
+  .view-btn:hover {
+    background-color: #123C89; 
+  }
   
   .update-btn:hover{
     background-color: #4A55A2;

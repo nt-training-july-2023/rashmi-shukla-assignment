@@ -47,13 +47,14 @@ const ListCategory = () => {
     <div className="page-container">
       <Navbar />
       <div className="table-container">
-          <div className="cat-header">
-            <h1>ALL CATEGORIES</h1>
-            {userRole === "admin" && (
+        <div className="cat-header">
+          <h1>ALL CATEGORIES</h1>
+          {userRole === "admin" && (
             <button onClick={() => navigate(`/AddCategory`)}>
               Add Category
-            </button>)}
-          </div>
+            </button>
+          )}
+        </div>
         <table className="category-table">
           <thead>
             <tr>
@@ -70,16 +71,16 @@ const ListCategory = () => {
                 <td>{category.categoryTitle}</td>
                 <td>{category.categoryDescription}</td>
                 <td>
-                  {userRole === "admin" ? (
+                  <button
+                    className="action-buttons view-button"
+                    onClick={() =>
+                      navigate(`/ListQuiz/${category.categoryId}/quizzes`)
+                    }
+                  >
+                    View Quizzes
+                  </button>
+                  {userRole === "admin" && (
                     <>
-                      <button
-                        className="action-buttons view-button"
-                        onClick={() =>
-                          navigate(`/Category/${category.categoryId}/quizzes`)
-                        }
-                      >
-                        View
-                      </button>
                       <button
                         className="action-buttons update-button"
                         onClick={() =>
@@ -109,12 +110,6 @@ const ListCategory = () => {
                         Delete{" "}
                       </button>
                     </>
-                  ) : (
-                    <button className="action-buttons view-button" onClick={() =>
-                      navigate(`/Category/${category.categoryId}/quizzes`)
-                    }>
-                      View
-                    </button>
                   )}
                 </td>
               </tr>

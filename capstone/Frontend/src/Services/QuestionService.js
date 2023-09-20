@@ -16,8 +16,8 @@ class QuestionService{
         return axios.get(QUESTION_BASE_URL+'/'+id);
     }
 
-    updateQuestion(id, Category){
-        return axios.put(QUESTION_BASE_URL+'/'+id,Category);
+    updateQuestion(id, Question){
+        return axios.put(QUESTION_BASE_URL+'/'+id,Question);
     }
 
     deleteQuestion(id){

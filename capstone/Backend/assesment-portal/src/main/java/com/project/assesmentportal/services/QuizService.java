@@ -2,6 +2,7 @@ package com.project.assesmentportal.services;
 
 import java.util.List;
 
+import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
 
 /**
@@ -42,4 +43,11 @@ public interface QuizService {
      * @param quizId of existing quiz.
      */
     void deleteQuiz(long quizId);
+
+    /**
+     * Gets list of questions for a quiz.
+     * @param quizId id of the quiz.
+     * @return list of questions.
+     */
+    List<QuestionDto> getQuestionsByQuiz(long quizId);
 }

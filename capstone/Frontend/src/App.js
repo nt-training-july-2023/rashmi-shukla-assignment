@@ -9,8 +9,8 @@ import UserDashboard from './Pages/Dashboard/UserDashboard';
 import ErrorPage from './Pages/ErrorPage/ErrorPage';
 import ListQuiz from './Pages/Quiz/ListQuiz';
 import AddQuiz from './Pages/Quiz/AddQuiz';
-import QuizzesByCat from './Pages/Quiz/QuizzesByCat';
 import ListQuestion from './Pages/Question/ListQuestion';
+import AddQuestion from './Pages/Question/AddQuestion';
 
 function App() {
 
@@ -23,13 +23,15 @@ function App() {
           <Route exact path='/ListCategory' element={<PrivateRoute Component={ListCategory} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/AddCategory' element={<PrivateRoute Component={AddCategory} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/UpdateCategory/:id' element={<PrivateRoute Component={AddCategory} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
-          <Route exact path='/Category/:id/quizzes' element={<PrivateRoute Component={QuizzesByCat} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/user-dashboard' element={<PrivateRoute Component={UserDashboard} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/error-page' element={<PrivateRoute Component={ErrorPage} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/ListQuiz' element={<PrivateRoute Component={ListQuiz} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
+          <Route exact path='/ListQuiz/:id/quizzes' element={<PrivateRoute Component={ListQuiz} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/addQuiz' element={<PrivateRoute Component={AddQuiz} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/UpdateQuiz/:id' element={<PrivateRoute Component={AddQuiz} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
-          <Route exact path='/ListQuestion' element={<PrivateRoute Component={ListQuestion} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
+          <Route exact path='/ListQuiz/:id/questions' element={<PrivateRoute Component={ListQuestion} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
+          <Route exact path='/quiz/:id/addQuestion' element={<PrivateRoute Component={AddQuestion} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
+          <Route exact path='/quiz/:quizId/updateQuestion/:questionId' element={<PrivateRoute Component={AddQuestion} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
         </Routes>
        </Router>
   );

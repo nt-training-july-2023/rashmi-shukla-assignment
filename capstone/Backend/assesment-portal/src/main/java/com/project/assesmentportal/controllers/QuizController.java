@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.services.QuizService;
 
@@ -88,4 +89,16 @@ public class QuizController {
                 HttpStatus.OK);
     }
 
+    /**
+     * returns questions of a quiz.
+     * @param id quizId.
+     * @return list of questions ResponseEntity
+     */
+    @RequestMapping(value = "/quiz/{id}/questions",
+            method = RequestMethod.GET)
+    public final ResponseEntity<List<QuestionDto>> getQuestionsByQuiz(
+            @PathVariable("id") final long id) {
+        return new ResponseEntity<List<QuestionDto>>(
+                quizService.getQuestionsByQuiz(id), HttpStatus.OK);
+    }
 }

@@ -3,17 +3,44 @@ import QuizService from '../../Services/QuizService';
 import Swal from 'sweetalert2';
 import Navbar from '../../Components/Navbar/Navbar';
 import './Quiz.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import CategoryService from '../../Services/CategoryService';
 
 const ListQuiz = () => {
 
     const[quiz, setQuiz] = useState([]);
+    const [categoryName, setCategoryName]= useState("");
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role");
+    const {id} = useParams();
 
     useEffect(()=>{
+      if(id){
+        getQuizzesByCategory();
+        getCategoryById();
+      } else{
         getAllQuizzes();
-    },[]);
+      }
+    },[id]);
+
+    const getQuizzesByCategory= () =>{
+      CategoryService.getQuizzesByCategory(id).then(response => {
+          setQuiz(response.data);
+          console.log(response.data);
+      }).catch((error) => {
+          console.log(error);
+      })
+  }
+
+    const getCategoryById= () =>{
+      CategoryService.getCategoryById(id).then(response=>{
+        setCategoryName(response.data.categoryTitle);
+        console.log(response.data);
+      }).catch((error)=>{
+        console.log(error);
+      })
+    }
+    
 
     const getAllQuizzes =() =>{
         QuizService.getAllQuizzes().then((response)=>{
@@ -40,12 +67,20 @@ const ListQuiz = () => {
         });
     }
 
+    const heading = () => {
+      if (id) {
+        return <h1 style={{ textAlign: "center" }}>CATEGORY: {categoryName}</h1>;
+      } else {
+        return <h1 style={{ textAlign: "center" }}>ALL QUIZZZES</h1>;
+      }
+    };
+
   return (
     <div>
       <Navbar/>
       <div className='quiz-header'>
-            <h1>ALL QUIZZES</h1>
-            {userRole === "admin" && (
+            {heading()}
+            {userRole === "admin" && !id && (
             <button onClick={()=> navigate(`/addQuiz`)}>
                 Add Quiz
             </button>
@@ -66,7 +101,8 @@ const ListQuiz = () => {
               </div>
               {userRole==="admin" ? (
               <>
-              <button className='action-btn update-btn' onClick={()=> navigate(`/UpdateQuiz/${quizItem.quizId}`)}>Update</button>
+              <button className='action-btn view-btn' onClick={() => navigate(`/ListQuiz/${quizItem.quizId}/questions`)}>View Questions</button>
+              <button className='action-btn update-btn' onClick={()=> navigate(`/UpdateQuiz/${quizItem.quizId}`)}>Update Quiz</button>
               <button
                 className='action-btn delete-btn'
                 onClick={() => 

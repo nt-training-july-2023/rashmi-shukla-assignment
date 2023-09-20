@@ -43,6 +43,7 @@ const LoginForm = () => {
         }
         localStorage.setItem("IsLoggedIn", response.status);
         localStorage.setItem("role", response.data.role);
+        localStorage.setItem("userName", response.data.firstName)
       } catch (error) {
         const submitError = error.response.data.message;
         Swal.fire({
@@ -78,16 +79,6 @@ const LoginForm = () => {
         <form className="Auth-form" onSubmit={handleLoginClick}>
           <div className="Auth-form-content">
             <h3 className="Auth-form-title">Login</h3>
-            <div className="text-center">
-              Not registered yet?{" "}
-              <span
-                className="redirect-link"
-                style={{ fontSize: 15 }}
-                onClick={redirectToRegister}
-              >
-                Sign Up
-              </span>
-            </div>
             <div className="form-group">
               <label>Email address</label>
               <input

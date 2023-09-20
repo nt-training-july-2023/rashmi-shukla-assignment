@@ -54,7 +54,7 @@ const AddQuiz = () => {
     setSelectedCategory(categoryId);
   };
 
-  const saveCategory = (e) => {
+  const saveQuiz = (e) => {
     e.preventDefault();
     if (!validateForm()) {
       const quiz = { quizTitle, quizDescription, category, quizTimer };
@@ -194,7 +194,7 @@ const AddQuiz = () => {
           <span>{errors}</span>
 
           <div>
-            <button onClick={(e) => saveCategory(e)} className="cat-button">
+            <button onClick={(e) => saveQuiz(e)} className="cat-button">
               Submit
             </button>
             <Link to="/ListQuiz">

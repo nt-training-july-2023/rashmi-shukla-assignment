@@ -5,6 +5,7 @@ import welcomeImg from  './welcome-img.png';
 import ErrorPage from '../ErrorPage/ErrorPage'
 
 const Dashboard = () => {
+  const userName = localStorage.getItem("userName");
 
   useEffect(() => {
     window.history.pushState(null, '', '/dashboard');
@@ -28,9 +29,9 @@ const Dashboard = () => {
       </div>
       <div className='dashboard-content'>
           <div className='welcome-box'>
-              <h1>Welcome, Dev</h1>
+              <h2>Welcome, {userName}</h2>
               <div>
-              <img src={welcomeImg} alt="img"/>
+                <img src={welcomeImg} alt="img"/>
               </div>
           </div>
           <div className='user-profile-box'>

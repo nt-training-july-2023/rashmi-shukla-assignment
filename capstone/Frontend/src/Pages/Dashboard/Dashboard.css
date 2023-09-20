@@ -22,12 +22,6 @@ body, html {
     margin-top: 20px;
   }
   
-  /* Style for the title */
-  h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
   /* Style for the dashboard info (welcome and user profile boxes) */
   .dashboard-info {
     display: flex;
@@ -47,20 +41,16 @@ body, html {
     box-sizing: border-box;
   }
   
-  /* Style for the welcome box */
   .welcome-box {
-    background-color: #e6f7ff; /* Light blue background */
+    background-color: #e6f7ff; 
     display: flex;
     justify-content: space-between;
   }
-  .welcome-box h1{
+  .welcome-box h2{
     font-size: 50px;
   }
   
-  /* Style for the user profile box */
   .user-profile-box {
-    background-color: #f5f5f5; /* Light gray background */
+    background-color: #f5f5f5; 
   }
-  
-  /* Add more CSS styles for other components and sections as needed */
   

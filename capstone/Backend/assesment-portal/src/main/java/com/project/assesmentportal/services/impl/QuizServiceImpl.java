@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.assesmentportal.dto.CategoryDto;
+import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.entities.Category;
+import com.project.assesmentportal.entities.Options;
+import com.project.assesmentportal.entities.Question;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
@@ -138,6 +141,20 @@ public class QuizServiceImpl implements QuizService {
     }
 
     /**
+     * gets questions of this quiz.
+     * @param quizId id of the quiz.
+     * @return list of questions.
+     */
+    @Override
+    public final List<QuestionDto> getQuestionsByQuiz(final long quizId) {
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new
+                ResourceNotFoundException("Quiz doesnot exists"));
+        List<Question> questions = quiz.getQuestions();
+        return questions.stream().map(this::questionEntityToDto).
+                collect(Collectors.toList());
+    }
+
+    /**
      * converts quiz to quizDto.
      * @param quizDto QuizDto to be converted.
      * @return quiz.
@@ -170,4 +187,30 @@ public class QuizServiceImpl implements QuizService {
         return quizDto;
     }
 
+    /**
+     * converts question to questionDto.
+     * @param question Question entity.
+     * @return questionDto.
+     */
+    public final QuestionDto questionEntityToDto(final Question question) {
+        // Map the QuizDto to a Quiz entity
+        QuestionDto questionDto = modelMapper.map(question,
+                QuestionDto.class);
+        Options options = new Options(question.getOptionOne(),
+                question.getOptionTwo(), question.getOptionThree(),
+                question.getOptionFour());
+        questionDto.setOptions(options);
+        if (question.getQuiz() != null) {
+            QuizDto quizDto = modelMapper.map(question.getQuiz(),
+                    QuizDto.class);
+            if (question.getQuiz().getCategory() != null) {
+                CategoryDto categoryDto = modelMapper.map(
+                        question.getQuiz().getCategory(),
+                        CategoryDto.class);
+                quizDto.setCategory(categoryDto);
+            }
+            questionDto.setQuiz(quizDto);
+        }
+        return questionDto;
+    }
 }
