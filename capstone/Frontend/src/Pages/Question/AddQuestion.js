@@ -1,146 +1,160 @@
-import React, { useEffect, useState } from 'react'
-import QuizService from '../../Services/QuizService';
-import QuestionService from '../../Services/QuestionService';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import Navbar from '../../Components/Navbar/Navbar';
-
+import React, { useEffect, useState } from "react";
+import QuizService from "../../Services/QuizService";
+import QuestionService from "../../Services/QuestionService";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import Navbar from "../../Components/Navbar/Navbar";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 const AddQuestion = () => {
-    const [questionTitle, setQuestionTitle] = useState("");
-    const [optionI, setOptionI] = useState("");
-    const [optionII, setOptionII] = useState("");
-    const [optionIII, setOptionIII] = useState("");
-    const [optionIV, setOptionIV] = useState("");
-    const [answer, setAnswer] = useState("");
-    const [quiz, setQuiz] = useState(null);
-    const [errors, setErrors] = useState("");
-    const navigate = useNavigate();
-    const {id}  = useParams(); //in case of add question 
-    const {quizId, questionId} = useParams(); //in case of update question
+  const [questionTitle, setQuestionTitle] = useState("");
+  const [optionI, setOptionI] = useState("");
+  const [optionII, setOptionII] = useState("");
+  const [optionIII, setOptionIII] = useState("");
+  const [optionIV, setOptionIV] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [quiz, setQuiz] = useState(null);
+  const [errors, setErrors] = useState("");
+  const navigate = useNavigate();
+  const { id } = useParams(); //in case of add question
+  const { quizId, questionId } = useParams(); //in case of update question
 
-    useEffect(() => {
-      if(id){
-        getQuizById();
-      }},[]);
-
-    const getQuizById = () =>{
-            QuizService.getQuizById(id).then((reponse) =>{
-                console.log("quizService working ?")
-                setQuiz(reponse.data);
-            }).catch((error)=>{
-                console.log(error);
-            })
-        
+  useEffect(() => {
+    if (id) {
+      getQuizById();
     }
+  }, [id]);
 
-    const validateForm = () => {
-        if (questionTitle === "" || optionI === "" || optionII === "" || optionIII === "" || optionIV === "" || answer === "") {
-          setErrors("*All the fields are mandatory");
-          return true;
-        }
-        if (!areOptionsUnique()) {
-          setErrors("*Options must be unique");
-          return true;
-        }
-        return false;
-      };
+  const getQuizById = () => {
+    QuizService.getQuizById(id)
+      .then((reponse) => {
+        setQuiz(reponse.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-    const areOptionsUnique = () => {
-        const optionsArray = [optionI, optionII, optionIII, optionIV];
-        const uniqueOptions = new Set(optionsArray.map(option => option.toLowerCase()));
-        return optionsArray.length === uniqueOptions.size;
-      };
-
-    const handleCorrectOptionChange =(e) =>{
-      setAnswer(e.target.value);
-      setErrors('');
-
+  const validateForm = () => {
+    if (
+      questionTitle === "" ||
+      optionI === "" ||
+      optionII === "" ||
+      optionIII === "" ||
+      optionIV === "" ||
+      answer === ""
+    ) {
+      setErrors("*All the fields are mandatory");
+      return true;
     }
+    if (!areOptionsUnique()) {
+      setErrors("*Options must be unique");
+      return true;
+    }
+    return false;
+  };
 
-    const saveQuestion = (e) => {
-        e.preventDefault();
-        if (!validateForm()) {
-          const options = {optionI, optionII, optionIII, optionIV};
-          const question = { questionTitle, options, answer, quiz };
-          if (questionId) {
-            QuestionService.updateQuestion(questionId, question)
-              .then((response) => {
-                console.log(response.data);
-                Swal.fire({
-                  title: "Success",
-                  text: "Question updated successfully",
-                  icon: "success",
-                  timer: 2000,
-                  showConfirmButton: false,
-                });
-                navigate(`/ListQuiz/${quizId}/questions`);
-              })
-              .catch((error) => {
-                console.log(error);
-                const submitError = error.response.data.message;
-                Swal.fire({
-                  title: "Error",
-                  text: `${submitError}`,
-                  icon: "error",
-                  confirmButtonText: "Retry",
-                  confirmButtonColor: "red",
-                });
-              });
-          } else {
-            QuestionService.addQuestion(question)
-              .then((response) => {
-                console.log(response.data);
-                Swal.fire({
-                  title: "Success",
-                  text: "Quiz added successfully",
-                  icon: "success",
-                  timer: 2000,
-                  showConfirmButton: false,
-                });
-                navigate(`/ListQuiz/${id}/questions`);
-              })
-              .catch((error) => {
-                const submitError = error.response.data.message;
-                Swal.fire({
-                  title: "Error",
-                  text: `${submitError}`,
-                  icon: "error",
-                  confirmButtonText: "Retry",
-                  confirmButtonColor: "red",
-                });
-                console.log(error);
-              });
-          }
-        }
-      };
+  const areOptionsUnique = () => {
+    const optionsArray = [optionI, optionII, optionIII, optionIV];
+    const uniqueOptions = new Set(
+      optionsArray.map((option) => option.toLowerCase())
+    );
+    return optionsArray.length === uniqueOptions.size;
+  };
 
-      const heading = () => {
-        if (questionId) {
-          return <h2 style={{ textAlign: "center" }}>UPDATE QUESTION</h2>;
-        } else {
-          return <h2 style={{ textAlign: "center" }}>ADD QUESTION</h2>;
-        }
-      };
+  const handleCorrectOptionChange = (e) => {
+    setAnswer(e.target.value);
+    setErrors("");
+  };
 
-      useEffect(() => {
-        if (questionId) {
-          QuestionService.getQuestionById(questionId)
-            .then((response) => {
-              console.log(response.data);
-              setQuestionTitle(response.data.questionTitle);
-              setOptionI(response.data.options.optionI);
-              setOptionII(response.data.options.optionII);
-              setOptionIII(response.data.options.optionIII);
-              setOptionIV(response.data.options.optionIV);
-              setAnswer(response.data.answer);
-              setQuiz(response.data.quiz);
-            })
-            .catch((error) => {
-              console.log(error);
+  const saveQuestion = (e) => {
+    e.preventDefault();
+    if (!validateForm()) {
+      const options = { optionI, optionII, optionIII, optionIV };
+      const question = { questionTitle, options, answer, quiz };
+      if (questionId) {
+        QuestionService.updateQuestion(questionId, question)
+          .then((response) => {
+            console.log(response.data);
+            Swal.fire({
+              title: "Success",
+              text: "Question updated successfully",
+              icon: "success",
+              timer: 2000,
+              showConfirmButton: false,
             });
-        }
-      }, [questionId]);
+            navigate(`/ListQuiz/${quizId}/questions`);
+          })
+          .catch((error) => {
+            console.log(error);
+            const submitError = error.response.data.message;
+            Swal.fire({
+              title: "Error",
+              text: `${submitError}`,
+              icon: "error",
+              confirmButtonText: "Retry",
+              confirmButtonColor: "red",
+            });
+          });
+      } else {
+        QuestionService.addQuestion(question)
+          .then((response) => {
+            console.log(response.data);
+            Swal.fire({
+              title: "Success",
+              text: "Quiz added successfully",
+              icon: "success",
+              timer: 2000,
+              showConfirmButton: false,
+            });
+            navigate(`/ListQuiz/${id}/questions`);
+          })
+          .catch((error) => {
+            const submitError = error.response.data.message;
+            Swal.fire({
+              title: "Error",
+              text: `${submitError}`,
+              icon: "error",
+              confirmButtonText: "Retry",
+              confirmButtonColor: "red",
+            });
+            console.log(error);
+          });
+      }
+    }
+  };
+
+  const heading = () => {
+    if (questionId) {
+      return <h2 style={{ textAlign: "center" }}>UPDATE QUESTION</h2>;
+    } else {
+      return <h2 style={{ textAlign: "center" }}>ADD QUESTION</h2>;
+    }
+  };
+
+  useEffect(() => {
+    if (questionId) {
+      QuestionService.getQuestionById(questionId)
+        .then((response) => {
+          console.log(response.data);
+          setQuestionTitle(response.data.questionTitle);
+          setOptionI(response.data.options.optionI);
+          setOptionII(response.data.options.optionII);
+          setOptionIII(response.data.options.optionIII);
+          setOptionIV(response.data.options.optionIV);
+          setAnswer(response.data.answer);
+          setQuiz(response.data.quiz);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [questionId]);
+
+  const userRole = localStorage.getItem("role");
+  if (userRole !== "admin") {
+    return <ErrorPage />;
+  }
 
   return (
     <div className="page-container">
@@ -169,7 +183,7 @@ const AddQuestion = () => {
             }}
           />
 
-        <label>Option 2</label>
+          <label>Option 2</label>
           <input
             type="text"
             value={optionII}
@@ -179,8 +193,8 @@ const AddQuestion = () => {
             }}
           />
 
-            <label>Option 3</label>
-            <input
+          <label>Option 3</label>
+          <input
             type="text"
             value={optionIII}
             onChange={(e) => {
@@ -189,8 +203,8 @@ const AddQuestion = () => {
             }}
           />
 
-            <label>Option 4</label>
-            <input
+          <label>Option 4</label>
+          <input
             type="text"
             value={optionIV}
             onChange={(e) => {
@@ -200,9 +214,12 @@ const AddQuestion = () => {
           />
 
           <label>Correct Answer</label>
-          <select name="" id="category-select"
-            value ={answer}
-            onChange={handleCorrectOptionChange}>
+          <select
+            name=""
+            id="category-select"
+            value={answer}
+            onChange={handleCorrectOptionChange}
+          >
             <option value="">Select a Correct Option</option>
             <option value={optionI}>{optionI}</option>
             <option value={optionII}>{optionII}</option>
@@ -213,7 +230,7 @@ const AddQuestion = () => {
           <label>Quiz</label>
           <input
             type="text"
-            value={quiz ? quiz.quizTitle : 'not available'}
+            value={quiz ? quiz.quizTitle : "not available"}
             readOnly
             disabled
           />
@@ -224,14 +241,14 @@ const AddQuestion = () => {
             <button onClick={(e) => saveQuestion(e)} className="cat-button">
               Submit
             </button>
-            <Link to={`/ListQuiz/${quizId ? quizId: id}/questions`}>
+            <Link to={`/ListQuiz/${quizId ? quizId : id}/questions`}>
               <button>Cancel</button>
             </Link>
           </div>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddQuestion
+export default AddQuestion;

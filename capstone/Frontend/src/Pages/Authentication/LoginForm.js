@@ -44,6 +44,7 @@ const LoginForm = () => {
         localStorage.setItem("IsLoggedIn", response.status);
         localStorage.setItem("role", response.data.role);
         localStorage.setItem("userName", response.data.firstName)
+        localStorage.setItem("userEmail", response.data.email)
       } catch (error) {
         const submitError = error.response.data.message;
         Swal.fire({

@@ -117,7 +117,7 @@ const ListQuiz = () => {
                         deleteQuiz(quizItem.quizId)}
                     } ) }> Delete </button>
               </>):(
-                <button className='action-btn start-btn'>Start Assesment</button>
+                <button className='action-btn start-btn' onClick={() => navigate(`/ListQuiz/${quizItem.quizId}/questions`)}>Start Assesment</button>
               )}
             </div>
           </div>
