@@ -11,11 +11,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ResultDto {
     private long resultId;
-    
+
     private int totalMarks;
-    
+
     private int obtainedMarks;
+
+    private int attemptedQuestions;
     
+    private int totalQuestions;
+
     private String dateTime;
     
     private String userEmail;

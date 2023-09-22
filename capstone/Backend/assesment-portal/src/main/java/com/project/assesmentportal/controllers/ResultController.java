@@ -35,7 +35,7 @@ public class ResultController {
     }
     
     @RequestMapping(value = "/result/{userEmail}", method = RequestMethod.GET)
-    public final List<ResultDto> getResultById(@PathVariable final String userEmail) {
+    public final List<ResultDto> getResultByUserEmail(@PathVariable final String userEmail) {
         return resultService.getResultByUserEmail(userEmail);
     }
     

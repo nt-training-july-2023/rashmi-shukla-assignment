@@ -46,6 +46,7 @@ const Navbar = () => {
     localStorage.removeItem("IsLoggedIn")
     localStorage.removeItem("role")
     localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
   }
 
   return (
@@ -68,7 +69,7 @@ const Navbar = () => {
           <Link to="/ListQuiz" className="navbar-item">
             Quizzes
           </Link> 
-          <Link to="#" className="navbar-item">
+          <Link to="/results" className="navbar-item">
             Result
           </Link>
           

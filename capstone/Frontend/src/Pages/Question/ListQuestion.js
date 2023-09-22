@@ -5,37 +5,66 @@ import Navbar from "../../Components/Navbar/Navbar";
 import "./Question.css";
 import QuizService from "../../Services/QuizService";
 import Swal from "sweetalert2";
+import ResultService from "../../Services/ResultService";
 
 const ListQuestion = () => {
+  const [questions, setQuestions] = useState([]);
+
   const currentDate = new Date();
   const dateTime = `${currentDate.getDate()}-${
     currentDate.getMonth() + 1
   }-${currentDate.getFullYear()} ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
-  const [questions, setQuestions] = useState([]);
-  const [totalMarks, setTotalMarks] = useState(0);
 
+  const [totalMarks, setTotalMarks] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const userName = localStorage.getItem("userName");
+  const userEmail = localStorage.getItem("userEmail");
+  const [quizTitle, setQuizTitle] = useState([]);
+  const [categoryTitle, setCategoryTitle] = useState("");
+
+  const [attemptedQuestions, setAttemptedQuestions] = useState(0);
   const [obtainedMarks, setObtainedMarks] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [selectedAnswers, setSelectedAnswers] = useState({});
-
-  const userName = localStorage.getItem("userName");
-  const userEmail = localStorage.getItem("userEmail");
-  const [quizName, setQuizName] = useState([]);
-  const [categoryName, setCategoryName] = useState("");
 
   const navigate = useNavigate();
   const userRole = localStorage.getItem("role");
   const { id } = useParams();
 
+  // const [timer, setTimer] = useState();
+  const [timeInSeconds, setTimeInSeconds] = useState(0);
+
+  useEffect(() => {
+    const handleCountdown = () => {
+      if (timeInSeconds > 0) {
+        setTimeInSeconds((prevTime) => prevTime - 1);
+      } else {
+        handleSubmit();
+      }
+    };
+
+    const countdownInterval = setInterval(handleCountdown, 1000);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(countdownInterval);
+  }, [timeInSeconds]);
+
+  // Format the remaining time as HH:MM:SS
+  const formattedTime = new Date(timeInSeconds * 1000).toISOString().substr(11, 8);
+
   useEffect(() => {
     getQuestionsByQuiz();
     getQuizById();
-  }, []);
+    console.log("om:"+obtainedMarks);
+    console.log("aq:"+attemptedQuestions);
+  }, [obtainedMarks,attemptedQuestions]);
 
   const getQuestionsByQuiz = () => {
     QuizService.getQuestionsByQuiz(id)
       .then((response) => {
         setQuestions(response.data);
+        setTotalQuestions(response.data.length);
+        setTotalMarks(response.data.length);  
       })
       .catch((error) => {
         console.log(error);
@@ -44,8 +73,12 @@ const ListQuestion = () => {
 
   const getQuizById = () => {
     QuizService.getQuizById(id)
-      .then((reponse) => {
-        setQuizName(reponse.data.quizTitle);
+      .then((response) => {
+        setQuizTitle(response.data.quizTitle);
+        setCategoryTitle(response.data.category.categoryTitle);
+        const timerInMinutes = response.data.quizTimer;
+        const timerInSeconds = timerInMinutes * 60; 
+        setTimeInSeconds(timerInSeconds);
       })
       .catch((error) => {
         console.log(error);
@@ -79,7 +112,9 @@ const ListQuestion = () => {
   };
 
   const handleSubmit = (e) => {
+    if(e){
     e.preventDefault();
+    }
     setSubmitted(true);
     let score = 0;
     for (const question of questions) {
@@ -89,19 +124,40 @@ const ListQuestion = () => {
       }
     }
     setObtainedMarks(score);
+    setAttemptedQuestions(Object.keys(selectedAnswers).length);
+
+    const result = {totalMarks,obtainedMarks: score, attemptedQuestions: Object.keys(selectedAnswers).length, totalQuestions, dateTime, userEmail, userName, quizTitle, categoryTitle }
+    ResultService.addResult(result)
+    .then((response) => {
+      console.log(response.data);
+      Swal.fire({
+        title: "Success",
+        text: "Quiz submitted successfully",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    })
+
+    navigate("/results")
   };
 
   return (
     <div>
       {userRole === "admin" && <Navbar />}
       <div className="question-header">
-        <h1>QUIZ: {quizName}</h1>
+        <h1>QUIZ: {quizTitle}</h1>
         {userRole === "admin" ? (
           <button onClick={() => navigate(`/quiz/${id}/addQuestion`)}>
             Add Question
           </button>
         ) : (
-          <p>Timer: 00:60:00</p>
+          <>
+          <p>Time Remaining: {formattedTime}</p>
+          <button onClick={handleSubmit} disabled={submitted}>
+                Submit Answers
+          </button>
+          </>
         )}
       </div>
       <div className="question-container">
@@ -139,7 +195,7 @@ const ListQuestion = () => {
                 )}
 
                 <br />
-                {userRole == "admin" && (
+                {userRole === "admin" && (
                   <p className="question-card-text">
                     Correct answer: {question.answer}
                   </p>
@@ -181,11 +237,6 @@ const ListQuestion = () => {
               )}
             </div>
           ))}
-          <div>
-            <button onClick={handleSubmit} style={{backgroundColor:"blue", color:"white"}} disabled={submitted}>
-                Submit Answers
-            </button>
-        </div>
         </form>
       </div>
     </div>

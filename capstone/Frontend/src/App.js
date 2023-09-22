@@ -11,6 +11,7 @@ import ListQuiz from './Pages/Quiz/ListQuiz';
 import AddQuiz from './Pages/Quiz/AddQuiz';
 import ListQuestion from './Pages/Question/ListQuestion';
 import AddQuestion from './Pages/Question/AddQuestion';
+import ListResult from './Pages/Result/ListResult';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
           <Route exact path='/ListQuiz/:id/questions' element={<PrivateRoute Component={ListQuestion} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/quiz/:id/addQuestion' element={<PrivateRoute Component={AddQuestion} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
           <Route exact path='/quiz/:quizId/updateQuestion/:questionId' element={<PrivateRoute Component={AddQuestion} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
+          <Route exact path='/results' element={<PrivateRoute Component={ListResult} isLoggedIn={localStorage.getItem("IsloggedIn")} />}/>
         </Routes>
        </Router>
   );

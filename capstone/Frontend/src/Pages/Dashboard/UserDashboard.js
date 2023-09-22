@@ -5,6 +5,8 @@ import ErrorPage from '../ErrorPage/ErrorPage'
 
 const UserDashboard = () => {
 
+  const userName = localStorage.getItem("userName");
+
   useEffect(() => {
     window.history.pushState(null, '', '/user-dashboard');
     window.addEventListener('popstate', () => {
@@ -27,7 +29,7 @@ const UserDashboard = () => {
       </div>
       <div className='dashboard-content'>
           <div className='welcome-box'>
-              <h1>Welcome, Rashmi</h1>
+              <h1>Welcome, {userName}</h1>
               <div>
               <img src={welcomeImg} alt="img"/>
               </div>

@@ -28,6 +28,10 @@ public class Result {
     
     private int obtainedMarks;
     
+    private int attemptedQuestions;
+    
+    private int totalQuestions;
+    
     private String dateTime;
     
     private String userEmail;
