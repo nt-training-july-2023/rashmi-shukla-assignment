@@ -71,7 +71,7 @@ const ListQuiz = () => {
       if (id) {
         return <h1 style={{ textAlign: "center" }}>CATEGORY: {categoryName}</h1>;
       } else {
-        return <h1 style={{ textAlign: "center" }}>ALL QUIZZZES</h1>;
+        return <h1 style={{ textAlign: "center" }}>ALL QUIZZES</h1>;
       }
     };
 

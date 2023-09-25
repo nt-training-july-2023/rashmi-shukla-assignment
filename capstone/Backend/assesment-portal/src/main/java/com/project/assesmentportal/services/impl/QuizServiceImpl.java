@@ -48,7 +48,7 @@ public class QuizServiceImpl implements QuizService {
      *                                    already exists.
      */
     @Override
-    public final QuizDto addQuiz(final QuizDto quizDto) {
+    public final String addQuiz(final QuizDto quizDto) {
         Quiz quiz = this.dtoToEntity(quizDto);
         Optional<Quiz> checkExistingQuiz = quizRepository
                 .findByQuizTitle(quiz.getQuizTitle());
@@ -56,7 +56,8 @@ public class QuizServiceImpl implements QuizService {
             throw new DuplicateResourceException("Quiz already exists");
         }
         Quiz savedQuiz = quizRepository.save(quiz);
-        return this.entityToDto(savedQuiz);
+        return "Quiz: " + savedQuiz.getQuizTitle()
+                + ", added successfully!";
     }
 
     /**
@@ -98,7 +99,7 @@ public class QuizServiceImpl implements QuizService {
      *                                   does not exist.
      */
     @Override
-    public final QuizDto updateQuiz(final QuizDto quizDto,
+    public final String updateQuiz(final QuizDto quizDto,
             final long quizId) {
         Quiz exisitingQuiz = quizRepository.findById(quizId)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -123,7 +124,8 @@ public class QuizServiceImpl implements QuizService {
                 Category.class);
         exisitingQuiz.setCategory(updatedCategory);
         Quiz updatedQuiz = quizRepository.save(exisitingQuiz);
-        return this.entityToDto(updatedQuiz);
+        return "Quiz: " + updatedQuiz.getQuizTitle()
+                + ", updated successfully!";
     }
 
     /**
@@ -147,11 +149,12 @@ public class QuizServiceImpl implements QuizService {
      */
     @Override
     public final List<QuestionDto> getQuestionsByQuiz(final long quizId) {
-        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new
-                ResourceNotFoundException("Quiz doesnot exists"));
+        Quiz quiz = quizRepository.findById(quizId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Quiz doesnot exists"));
         List<Question> questions = quiz.getQuestions();
-        return questions.stream().map(this::questionEntityToDto).
-                collect(Collectors.toList());
+        return questions.stream().map(this::questionEntityToDto)
+                .collect(Collectors.toList());
     }
 
     /**

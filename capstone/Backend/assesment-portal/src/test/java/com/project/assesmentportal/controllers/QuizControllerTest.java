@@ -51,10 +51,10 @@ class QuizControllerTest {
         quizDto.setQuizId(1);
         quizDto.setQuizTitle("Maths");
         quizDto.setQuizDescription("Maths Category");
-        when(quizService.addQuiz(quizDto)).thenReturn(quizDto);
-        ResponseEntity<QuizDto> response = quizController.addQuiz(quizDto);
+        when(quizService.addQuiz(quizDto)).thenReturn("Quiz: "+quizDto.getQuizTitle()+", added successfully!");
+        ResponseEntity<String> response = quizController.addQuiz(quizDto);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(quizDto, response.getBody());
+        assertEquals("Quiz: "+quizDto.getQuizTitle()+", added successfully!", response.getBody());
     }
     
     @Test
@@ -76,9 +76,9 @@ class QuizControllerTest {
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizId(quizId);
         quizDto.setQuizTitle("Aptitude Quiz");
-        when(quizService.updateQuiz(quizDto,quizId)).thenReturn(quizDto);
-        ResponseEntity<QuizDto> result = quizController.updateQuiz(quizId, quizDto);
-        assertEquals(quizDto, result.getBody());
+        when(quizService.updateQuiz(quizDto,quizId)).thenReturn("Quiz: "+quizDto.getQuizTitle()+", updated successfully!");
+        ResponseEntity<String> result = quizController.updateQuiz(quizId, quizDto);
+        assertEquals("Quiz: "+quizDto.getQuizTitle()+", updated successfully!", result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
     

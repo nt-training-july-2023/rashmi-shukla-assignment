@@ -31,7 +31,6 @@ const ListQuestion = () => {
   const userRole = localStorage.getItem("role");
   const { id } = useParams();
 
-  // const [timer, setTimer] = useState();
   const [timeInSeconds, setTimeInSeconds] = useState(0);
 
   useEffect(() => {
@@ -42,9 +41,7 @@ const ListQuestion = () => {
         handleSubmit();
       }
     };
-
     const countdownInterval = setInterval(handleCountdown, 1000);
-
     // Clean up the interval when the component unmounts
     return () => clearInterval(countdownInterval);
   }, [timeInSeconds]);
@@ -138,8 +135,7 @@ const ListQuestion = () => {
         showConfirmButton: false,
       });
     })
-
-    navigate("/results")
+    navigate("/user-dashboard")
   };
 
   return (

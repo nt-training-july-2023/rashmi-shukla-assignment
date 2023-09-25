@@ -35,10 +35,10 @@ public class QuizController {
      * @return added quiz.
      */
     @RequestMapping(value = "/quiz", method = RequestMethod.POST)
-    public final ResponseEntity<QuizDto> addQuiz(
+    public final ResponseEntity<String> addQuiz(
             @RequestBody final QuizDto quizDto) {
-        QuizDto addQuizDto = this.quizService.addQuiz(quizDto);
-        return new ResponseEntity<QuizDto>(addQuizDto, HttpStatus.CREATED);
+        return new ResponseEntity<String>(quizService.addQuiz(quizDto),
+                HttpStatus.CREATED);
     }
 
     /**
@@ -69,10 +69,10 @@ public class QuizController {
      * @return updated QuizDto.
      */
     @RequestMapping(value = "/quiz/{id}", method = RequestMethod.PUT)
-    public final ResponseEntity<QuizDto> updateQuiz(
+    public final ResponseEntity<String> updateQuiz(
             @PathVariable("id") final long quizId,
             @RequestBody final QuizDto quizDto) {
-        return new ResponseEntity<QuizDto>(
+        return new ResponseEntity<String>(
                 quizService.updateQuiz(quizDto, quizId), HttpStatus.OK);
     }
 

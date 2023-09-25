@@ -37,20 +37,12 @@ class UserControllerTest {
     void testRegister_Sucess() {
         UserDto userDto = new UserDto();
         userDto.setFirstName("Rashmi");
-        when(userService.register(userDto)).thenReturn(userDto);
+        when(userService.register(userDto)).thenReturn(userDto.getFirstName()+" registered successfully!");
         ResponseEntity<String> response = userController.register(userDto);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Rashmi Registered Successfully", response.getBody());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(userDto.getFirstName()+" registered successfully!", response.getBody());
     }
     
-    @Test
-    public void testRegister_Invalid() {
-        UserDto userDto = new UserDto();
-        when(userService.register(userDto)).thenReturn(null);
-        ResponseEntity<String> response = userController.register(new UserDto());
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Invalid", response.getBody());
-    }
     @Test
     public void testLogin_Success() {
         UserDto userDto = new UserDto(); 

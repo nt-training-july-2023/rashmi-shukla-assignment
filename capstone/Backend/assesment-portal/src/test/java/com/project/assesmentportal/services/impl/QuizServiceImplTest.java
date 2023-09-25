@@ -16,7 +16,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+
+import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
+import com.project.assesmentportal.entities.Question;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
@@ -55,12 +58,11 @@ class QuizServiceImplTest {
         when(modelMapper.map(quizDto, Quiz.class)).thenReturn(quiz);
         when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
         when(quizRepository.findByQuizTitle(quiz.getQuizTitle())).thenReturn(Optional.empty());
-//        when(categoryRepository.findById(quiz.getCategory().getCategoryId())).thenReturn(Optional.of(new Category()));
         when(quizRepository.save(any(Quiz.class))).thenReturn(quiz);
         
-        QuizDto resultQuizDto = quizServiceImpl.addQuiz(quizDto);
-        assertNotNull(resultQuizDto);
-        assertEquals(resultQuizDto.getQuizTitle(), quizDto.getQuizTitle());
+        String result = quizServiceImpl.addQuiz(quizDto);
+        assertNotNull(result);
+        assertEquals(result, "Quiz: "+quiz.getQuizTitle()+", added successfully!");
         
     }
     
@@ -142,10 +144,9 @@ class QuizServiceImplTest {
         when(quizRepository.findByQuizTitle(quizDto.getQuizTitle())).thenReturn(Optional.empty());
         when(quizRepository.save(any(Quiz.class))).thenReturn(existingQuiz);
         
-        QuizDto resultQuizDto = quizServiceImpl.updateQuiz(quizDto,quizIdToUpdate);
-        assertNotNull(resultQuizDto);
-        assertEquals(resultQuizDto.getQuizId(), quizDto.getQuizId());
-        assertEquals(resultQuizDto.getQuizTitle(), quizDto.getQuizTitle());
+        String result = quizServiceImpl.updateQuiz(quizDto,quizIdToUpdate);
+        assertNotNull(result);
+        assertEquals(result,"Quiz: "+existingQuiz.getQuizTitle()+", updated successfully!");
     }
     
     @Test
@@ -211,7 +212,7 @@ class QuizServiceImplTest {
     }
     
     @Test
-    public final void testDeleteQuiz_NotFound() {
+    void testDeleteQuiz_NotFound() {
         long quizIdToDelete = 1L;
 
         // Mock the behavior of the repository to return an empty Optional
@@ -221,6 +222,39 @@ class QuizServiceImplTest {
         assertThrows(ResourceNotFoundException.class, () -> {
             quizServiceImpl.deleteQuiz(quizIdToDelete);
         });
+    }
+    
+    @Test
+    void testGetQuestionByQuiz_Success(){
+        long quizId = 1L;
+        Quiz quiz = new Quiz();
+        quiz.setQuizId(quizId);
+
+        List<Question> questions = new ArrayList<>();
+        Question question = new Question();
+        questions.add(question);
+        quiz.setQuestions(questions);
+
+        when(quizRepository.findById(quizId)).thenReturn(Optional.of(quiz));
+
+        when(modelMapper.map(question, QuestionDto.class)).thenReturn(new QuestionDto());
+
+        List<QuestionDto> questionDtos = quizServiceImpl.getQuestionsByQuiz(quizId);
+
+        assertNotNull(questionDtos);
+        assertEquals(1, questionDtos.size());
+    }
+    
+    @Test
+    public void testGetQuestionsByQuizQuizNotFound() {
+        long quizId = 1L;
+        when(quizRepository.findById(quizId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            quizServiceImpl.getQuestionsByQuiz(quizId);
+        });
+
+        verify(quizRepository, times(1)).findById(quizId);
     }
 
 }

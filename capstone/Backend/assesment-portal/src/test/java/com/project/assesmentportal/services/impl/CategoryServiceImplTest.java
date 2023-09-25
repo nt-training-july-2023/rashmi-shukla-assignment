@@ -56,11 +56,9 @@ class CategoryServiceImplTest {
         when(categoryRepository.findByCategoryTitle(category.getCategoryTitle())).thenReturn(Optional.empty());
         when(categoryRepository.save(any(Category.class))).thenReturn(category);
         
-        CategoryDto resultCategoryDto = categoryServiceImpl.addCategory(categoryDto);
-        assertNotNull(resultCategoryDto);
-        assertEquals(resultCategoryDto.getCategoryId(), category.getCategoryId());
-        assertEquals(resultCategoryDto.getCategoryTitle(), resultCategoryDto.getCategoryTitle());
-        assertEquals(resultCategoryDto.getCategoryDescription(), resultCategoryDto.getCategoryDescription());
+        String result = categoryServiceImpl.addCategory(categoryDto);
+        assertNotNull(result);
+        assertEquals("Category: "+category.getCategoryTitle()+", added successfully!", result);
         
     }
     
@@ -155,11 +153,9 @@ class CategoryServiceImplTest {
         when(categoryRepository.findByCategoryTitle(categoryDto.getCategoryTitle())).thenReturn(Optional.empty());
         when(categoryRepository.save(any(Category.class))).thenReturn(existingCategory);
         
-        CategoryDto resultCategoryDto = categoryServiceImpl.updateCategory(categoryDto,categoryIdToUpdate);
-        assertNotNull(resultCategoryDto);
-        assertEquals(resultCategoryDto.getCategoryId(), categoryDto.getCategoryId());
-        assertEquals(resultCategoryDto.getCategoryTitle(), categoryDto.getCategoryTitle());
-        assertEquals(resultCategoryDto.getCategoryDescription(), categoryDto.getCategoryDescription());
+        String result = categoryServiceImpl.updateCategory(categoryDto,categoryIdToUpdate);
+        assertNotNull(result);
+        assertEquals("Category: "+existingCategory.getCategoryTitle()+", updated successfully!", result);
         
     }
     

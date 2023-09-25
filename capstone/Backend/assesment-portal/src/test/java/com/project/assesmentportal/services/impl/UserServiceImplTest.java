@@ -65,14 +65,9 @@ class UserServiceImplTest {
         when(modelMapper.map(user, UserDto.class)).thenReturn(userDto);
         when(userRepository.save(any(User.class))).thenReturn(user);
         
-        UserDto savedUserDto = userService.register(userDto);
-        assertNotNull(savedUserDto);
-        assertEquals(user.getFirstName(), savedUserDto.getFirstName());
-        assertEquals(user.getLastName(), savedUserDto.getLastName());
-        assertEquals(user.getEmail(), savedUserDto.getEmail());
-//        assertEquals(user.getPassword(), savedUserDto.getPassword());
-        assertEquals(user.getPhoneNumber(), savedUserDto.getPhoneNumber());
-        assertEquals(user.getRole(), savedUserDto.getRole());
+        String response = userService.register(userDto);
+        assertNotNull(response);
+        assertEquals(user.getFirstName()+" registered successfully!",response);
     }
     
     @Test

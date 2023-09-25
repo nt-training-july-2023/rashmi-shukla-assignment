@@ -47,7 +47,7 @@ const RegistrationForm = () => {
             showConfirmButton:false
           });
 
-          if(response.status===200){
+          if(response.status===201){
             navigate("/")
           }
         }catch(error){

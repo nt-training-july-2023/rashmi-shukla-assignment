@@ -13,9 +13,9 @@ public interface CategoryService {
     /**
      * Adds a new category.
      * @param categoryDto The CategoryDto representing the category to be added.
-     * @return The CategoryDto of the added category.
+     * @return The String message for the added category.
      */
-    CategoryDto addCategory(CategoryDto categoryDto);
+    String addCategory(CategoryDto categoryDto);
 
     /**
      * Retrieves a list of all categories.
@@ -34,9 +34,9 @@ public interface CategoryService {
      * Updates a category.
      * @param categoryDto The updated CategoryDto.
      * @param categoryId  The ID of the category to update.
-     * @return The CategoryDto of the updated category.
+     * @return String message for the updated category.
      */
-    CategoryDto updateCategory(CategoryDto categoryDto, long categoryId);
+    String updateCategory(CategoryDto categoryDto, long categoryId);
 
     /**
      * Deletes a category by its ID.

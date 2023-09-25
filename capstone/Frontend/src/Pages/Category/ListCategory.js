@@ -77,7 +77,7 @@ const ListCategory = () => {
                       navigate(`/ListQuiz/${category.categoryId}/quizzes`)
                     }
                   >
-                    View Quizzes
+                    View Quiz
                   </button>
                   {userRole === "admin" && (
                     <>

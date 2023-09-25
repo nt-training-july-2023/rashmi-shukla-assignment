@@ -5,12 +5,6 @@ body {
   
 }
 
-@media (max-width: 768px) {
-  .category-table{
-    width: 200px;
-  }
-}
-
 .cat-header {
   margin-top: 15px;
   padding: 2%;
@@ -46,7 +40,7 @@ body {
     text-align: center;
     margin: auto;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1000px; 
   }
   .table-title{
     color: black;
@@ -56,7 +50,6 @@ body {
   .category-table {
     width: 100%;
     border-collapse: collapse;
-    /* border: 1px solid #ccc; */
     border-radius: 20px;
     margin: 25px 0 20px 0;
     font-size: 1em;
@@ -241,6 +234,10 @@ body {
 @media (max-width:600px){
   .cat-form{
     width: 300px;
+  }
+
+  .cat-header{
+    margin: 1.4%;
   }
 
   .category-table{

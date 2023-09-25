@@ -49,10 +49,10 @@ class CategoryControllerTest {
         categoryDto.setCategoryId(1);
         categoryDto.setCategoryTitle("Maths");
         categoryDto.setCategoryDescription("Maths Category");
-        when(categoryService.addCategory(categoryDto)).thenReturn(categoryDto);
-        ResponseEntity<CategoryDto> response = categoryController.addCategory(categoryDto);
+        when(categoryService.addCategory(categoryDto)).thenReturn("Category: "+categoryDto.getCategoryTitle()+", added successfully!");
+        ResponseEntity<String> response = categoryController.addCategory(categoryDto);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(categoryDto, response.getBody());
+        assertEquals("Category: "+categoryDto.getCategoryTitle()+", added successfully!", response.getBody());
     }
     
     @Test
@@ -74,9 +74,9 @@ class CategoryControllerTest {
         CategoryDto categoryDTO = new CategoryDto();
         categoryDTO.setCategoryId(categoryId);
         categoryDTO.setCategoryTitle("Maths Category");
-        when(categoryService.updateCategory(categoryDTO,categoryId)).thenReturn(categoryDTO);
-        ResponseEntity<CategoryDto> result = categoryController.updateCategory(categoryId, categoryDTO);
-        assertEquals(categoryDTO, result.getBody());
+        when(categoryService.updateCategory(categoryDTO,categoryId)).thenReturn("Category: "+categoryDTO.getCategoryTitle()+", updated successfully!");
+        ResponseEntity<String> result = categoryController.updateCategory(categoryId, categoryDTO);
+        assertEquals("Category: "+categoryDTO.getCategoryTitle()+", updated successfully!", result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
     

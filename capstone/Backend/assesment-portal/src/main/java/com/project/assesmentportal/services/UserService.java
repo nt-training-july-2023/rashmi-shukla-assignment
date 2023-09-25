@@ -14,7 +14,7 @@ public interface UserService {
      * @param user The UserDto representing the user to be registered.
      * @return The UserDto of the registered user.
      */
-    UserDto register(UserDto user);
+    String register(UserDto user);
 
     /**
      * Performs user login.

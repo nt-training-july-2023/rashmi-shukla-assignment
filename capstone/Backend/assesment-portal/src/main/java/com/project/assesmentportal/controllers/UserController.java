@@ -41,12 +41,8 @@ public class UserController {
     @RequestMapping(value = "/users/register", method = RequestMethod.POST)
     public final ResponseEntity<String> register(
             @RequestBody final UserDto userDto) {
-        UserDto registerdUser = userService.register(userDto);
-        if (registerdUser == null) {
-            return ResponseEntity.badRequest().body("Invalid");
-        }
-        return ResponseEntity.ok(
-                registerdUser.getFirstName() + " Registered Successfully");
+        return new ResponseEntity<String>(
+                userService.register(userDto), HttpStatus.CREATED);
     }
 
     /**

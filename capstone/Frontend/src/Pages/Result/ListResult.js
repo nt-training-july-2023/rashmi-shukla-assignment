@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../Components/Navbar/Navbar';
 import ResultService from '../../Services/ResultService';
+import './Result.css'
 
 const ListResult = () => {
     const [results, setResults] = useState([]);
@@ -36,13 +37,13 @@ const ListResult = () => {
     }
 
   return (
-    <div className="page-container">
+    <div className="res-page-container">
       <Navbar />
-      <div className="table-container">
-        <div className="cat-header">
+      <div className="res-table-container">
+        <div className="res-header">
           <h1>ALL RESULTS</h1>
         </div>
-        <table className="category-table">
+        <table className="res-table">
           <thead>
             <tr>
               <th>SNo.</th>

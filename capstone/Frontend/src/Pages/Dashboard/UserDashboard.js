@@ -31,11 +31,12 @@ const UserDashboard = () => {
           <div className='welcome-box'>
               <h1>Welcome, {userName}</h1>
               <div>
-              <img src={welcomeImg} alt="img"/>
+              <img className='welcome-img' src={welcomeImg} alt="img"/>
               </div>
           </div>
           <div className='user-profile-box'>
-            User Profiles: NA
+            <h2>Check Your Progress:</h2>
+            {/* <button></button> */}
           </div>
       </div>
       

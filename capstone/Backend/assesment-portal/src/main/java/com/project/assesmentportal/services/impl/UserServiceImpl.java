@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
      * already registered.
      */
     @Override
-    public final UserDto register(final UserDto userDto) {
+    public final String register(final UserDto userDto) {
         User user = this.dtoToUser(userDto);
         if (!user.getEmail().endsWith("@nucleusteq.com")) {
             throw new ResourceNotFoundException(
@@ -63,8 +63,8 @@ public class UserServiceImpl implements UserService {
                     "The email-id already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User savedUser = userRepository.save(user);
-        return this.userToDto(savedUser);
+        userRepository.save(user);
+        return userDto.getFirstName() + " registered successfully!";
 
     }
 

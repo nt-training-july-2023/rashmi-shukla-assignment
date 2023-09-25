@@ -15,7 +15,7 @@ public interface QuizService {
      * @param quizDto The QuizDto representing the quiz to be added.
      * @return The QuizDto of the added quiz.
      */
-    QuizDto addQuiz(QuizDto quizDto);
+    String addQuiz(QuizDto quizDto);
 
     /**
      * Retrieves a list of all quizzes.
@@ -36,7 +36,7 @@ public interface QuizService {
      * @param quizId of existing quiz.
      * @return QuizDto of updated quiz.
      */
-    QuizDto updateQuiz(QuizDto quizDto, long quizId);
+    String updateQuiz(QuizDto quizDto, long quizId);
 
     /**
      * delete quiz.

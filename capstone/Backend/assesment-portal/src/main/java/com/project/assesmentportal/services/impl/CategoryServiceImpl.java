@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
      *                                    already exists.
      */
     @Override
-    public final CategoryDto addCategory(final CategoryDto categoryDto) {
+    public final String addCategory(final CategoryDto categoryDto) {
         Category category = this.modelMapper.map(categoryDto,
                 Category.class);
         Optional<Category> checkExistingCategory = categoryRepository
@@ -55,7 +55,8 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         Category savedCategory = this.categoryRepository.save(category);
-        return this.modelMapper.map(savedCategory, CategoryDto.class);
+        return "Category: " + savedCategory.getCategoryTitle()
+                + ", added successfully!";
     }
 
     /**
@@ -99,7 +100,7 @@ public class CategoryServiceImpl implements CategoryService {
      *                                   ID does not exist.
      */
     @Override
-    public final CategoryDto updateCategory(final CategoryDto categoryDto,
+    public final String updateCategory(final CategoryDto categoryDto,
             final long categoryId) {
         Category existingCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -123,7 +124,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category updatedCategory = categoryRepository
                 .save(existingCategory);
-        return this.modelMapper.map(updatedCategory, CategoryDto.class);
+        return "Category: " + updatedCategory.getCategoryTitle()
+                + ", updated successfully!";
     }
 
     /**

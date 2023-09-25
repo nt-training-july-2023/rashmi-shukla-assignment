@@ -37,11 +37,10 @@ public class CategoryController {
      *         status CREATED (201).
      */
     @RequestMapping(value = "/categories", method = RequestMethod.POST)
-    public final ResponseEntity<CategoryDto> addCategory(
+    public final ResponseEntity<String> addCategory(
             @RequestBody final CategoryDto categoryDto) {
-        CategoryDto addCategoryDto = this.categoryService
-                .addCategory(categoryDto);
-        return new ResponseEntity<CategoryDto>(addCategoryDto,
+        return new ResponseEntity<String>(categoryService
+                .addCategory(categoryDto),
                 HttpStatus.CREATED);
     }
 
@@ -75,10 +74,10 @@ public class CategoryController {
      *         status OK (200).
      */
     @RequestMapping(value = "/categories/{id}", method = RequestMethod.PUT)
-    public final ResponseEntity<CategoryDto> updateCategory(
+    public final ResponseEntity<String> updateCategory(
             @PathVariable("id") final long catId,
             @RequestBody final CategoryDto categoryDto) {
-        return new ResponseEntity<CategoryDto>(
+        return new ResponseEntity<String>(
                 categoryService.updateCategory(categoryDto, catId),
                 HttpStatus.OK);
     }
