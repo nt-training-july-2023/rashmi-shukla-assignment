@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.project.assesmentportal.dto.LoginRequestDto;
+import com.project.assesmentportal.dto.LoginResponseDto;
 import com.project.assesmentportal.dto.UserDto;
 import com.project.assesmentportal.entities.User;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
+import com.project.assesmentportal.exceptions.InvalidDataException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
 import com.project.assesmentportal.repositories.UserRepository;
 import com.project.assesmentportal.services.UserService;
@@ -45,17 +48,11 @@ public class UserServiceImpl implements UserService {
      * Registers a new user.
      * @param userDto The UserDto representing the user to be registered.
      * @return The UserDto of the registered user.
-     * @throws ResourceNotFoundException If the email does not end with the
-     * domain @nucleusteq.com or if the email is
-     * already registered.
+     * @throws ResourceNotFoundException if the email is already registered.
      */
     @Override
     public final String register(final UserDto userDto) {
         User user = this.dtoToUser(userDto);
-        if (!user.getEmail().endsWith("@nucleusteq.com")) {
-            throw new ResourceNotFoundException(
-                    "Email should end with domain @nucleusteq.com");
-        }
         Optional<User> checkExistingUser = userRepository
                 .findByEmail(user.getEmail());
         if (checkExistingUser.isPresent()) {
@@ -72,26 +69,29 @@ public class UserServiceImpl implements UserService {
      * Performs user login.
      * @param inputUserDto The UserDto representing the user's login.
      * @return The UserDto of the logged-in user if successful.
-     * @throws ResourceNotFoundException If the provided username or password
-     * is invalid.
+     * @throws ResourceNotFoundException If the provided username or
+     *                                   password is invalid.
      */
     @Override
-    public final UserDto login(final UserDto inputUserDto) {
-        User inputUser = this.dtoToUser(inputUserDto);
-        User registeredUser = userRepository.findByEmail(inputUser.getEmail())
+    public final LoginResponseDto login(
+            final LoginRequestDto inputUserDto) {
+        User registeredUser = userRepository
+                .findByEmail(inputUserDto.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Invalid username or password"));
+                        "Invalid email or password"));
 
-        if (passwordEncoder.matches(
-                inputUser.getPassword(), registeredUser.getPassword())) {
-
-            return this.userToDto(registeredUser);
-        } else if (!passwordEncoder.matches(inputUser.getPassword(),
+        if (!passwordEncoder.matches(inputUserDto.getPassword(),
                 registeredUser.getPassword())) {
-            throw new ResourceNotFoundException("Invalid credentials");
+            throw new InvalidDataException("Invalid credentials");
         }
-        return null;
-
+        LoginResponseDto loginResponseDto = new LoginResponseDto();
+        loginResponseDto.setFullName(registeredUser.getFirstName() + " "
+                + registeredUser.getLastName());
+        loginResponseDto.setRole(registeredUser.getRole());
+        loginResponseDto.setEmail(registeredUser.getEmail());
+        loginResponseDto.setMessage(
+                registeredUser.getFirstName() + "logged-in successfully");
+        return loginResponseDto;
     }
 
     /**

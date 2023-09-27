@@ -26,7 +26,6 @@ const ListQuiz = () => {
     const getQuizzesByCategory= () =>{
       CategoryService.getQuizzesByCategory(id).then(response => {
           setQuiz(response.data);
-          console.log(response.data);
       }).catch((error) => {
           console.log(error);
       })
@@ -35,7 +34,6 @@ const ListQuiz = () => {
     const getCategoryById= () =>{
       CategoryService.getCategoryById(id).then(response=>{
         setCategoryName(response.data.categoryTitle);
-        console.log(response.data);
       }).catch((error)=>{
         console.log(error);
       })

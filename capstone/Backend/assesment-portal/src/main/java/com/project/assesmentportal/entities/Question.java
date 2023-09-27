@@ -38,26 +38,31 @@ public class Question {
     /**
      * The first option as answer.
      */
+    @Column(nullable = false)
     private String optionOne;
 
     /**
      * The second option as answer.
      */
+    @Column(nullable = false)
     private String optionTwo;
 
     /**
      * The third option as answer.
      */
+    @Column(nullable = false)
     private String optionThree;
 
     /**
      * The fourth option as answer.
      */
+    @Column(nullable = false)
     private String optionFour;
 
     /**
      * The correct answer.
      */
+    @Column(nullable = false)
     private String answer;
 
     /**

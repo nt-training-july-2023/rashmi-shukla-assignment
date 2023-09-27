@@ -18,6 +18,7 @@ import com.project.assesmentportal.entities.Question;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
+import com.project.assesmentportal.repositories.CategoryRepository;
 import com.project.assesmentportal.repositories.QuizRepository;
 import com.project.assesmentportal.services.QuizService;
 
@@ -35,6 +36,12 @@ public class QuizServiceImpl implements QuizService {
     private ModelMapper modelMapper;
 
     /**
+     * instance of CategoryRepository.
+     */
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    /**
      * instance of QuizRepository interface.
      */
     @Autowired
@@ -50,6 +57,13 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public final String addQuiz(final QuizDto quizDto) {
         Quiz quiz = this.dtoToEntity(quizDto);
+        Optional<Category> checkExistingCategory = categoryRepository
+                .findById(quiz.getCategory().getCategoryId());
+        if (checkExistingCategory.isEmpty()) {
+            throw new ResourceNotFoundException("Category with id:"
+                    + quiz.getCategory().getCategoryId()
+                    + " doesnot exists");
+        }
         Optional<Quiz> checkExistingQuiz = quizRepository
                 .findByQuizTitle(quiz.getQuizTitle());
         if (checkExistingQuiz.isPresent()) {
@@ -104,6 +118,14 @@ public class QuizServiceImpl implements QuizService {
         Quiz exisitingQuiz = quizRepository.findById(quizId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Quiz doesnot exists"));
+
+        Optional<Category> checkExistingCategory = categoryRepository
+                .findById(quizDto.getCategory().getCategoryId());
+        if (checkExistingCategory.isEmpty()) {
+            throw new ResourceNotFoundException("Category with id:"
+                    + quizDto.getCategory().getCategoryId()
+                    + " doesnot exists");
+        }
 
         // Check if the updated title is the same as the existing one
         if (!quizDto.getQuizTitle().equals(exisitingQuiz.getQuizTitle())) {

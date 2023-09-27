@@ -38,6 +38,21 @@ public class GlobalExceptionHandler {
      * @param ex The DuplicateResourceException that was thrown.
      * @return A ResponseEntity with the corresponding ApiResponse.
      */
+    @ExceptionHandler(InvalidDataException.class)
+    public final ResponseEntity<ApiResponse> invalidDataExceptionHandler(
+            final InvalidDataException ex) {
+        String message = ex.getMessage();
+        ApiResponse apiResponse = new ApiResponse(message, false);
+        return new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.UNAUTHORIZED);
+    }
+
+    /**
+     * Handles the DuplicateResourceException and creates an appropriate
+     * API response.
+     * @param ex The DuplicateResourceException that was thrown.
+     * @return A ResponseEntity with the corresponding ApiResponse.
+     */
     @ExceptionHandler(DuplicateResourceException.class)
     public final ResponseEntity<ApiResponse> duplicateResourceExceptionHandler(
             final DuplicateResourceException ex) {

@@ -52,9 +52,7 @@ const ListQuestion = () => {
   useEffect(() => {
     getQuestionsByQuiz();
     getQuizById();
-    console.log("om:"+obtainedMarks);
-    console.log("aq:"+attemptedQuestions);
-  }, [obtainedMarks,attemptedQuestions]);
+  }, []);
 
   const getQuestionsByQuiz = () => {
     QuizService.getQuestionsByQuiz(id)
@@ -84,14 +82,15 @@ const ListQuestion = () => {
 
   const deleteQuestion = (questionId) => {
     QuestionService.deleteQuestion(questionId)
-      .then((response) => {
+      .then(() => {
         Swal.fire({
           title: "Success",
-          text: "Quiz deleted successfully",
+          text: "Question deleted successfully",
           icon: "success",
           timer: 2000,
           showConfirmButton: false,
         });
+        
         getQuestionsByQuiz();
       })
       .catch((error) => {
@@ -109,6 +108,7 @@ const ListQuestion = () => {
   };
 
   const handleSubmit = (e) => {
+    console.log("handleSubmit called");
     if(e){
     e.preventDefault();
     }
@@ -126,7 +126,6 @@ const ListQuestion = () => {
     const result = {totalMarks,obtainedMarks: score, attemptedQuestions: Object.keys(selectedAnswers).length, totalQuestions, dateTime, userEmail, userName, quizTitle, categoryTitle }
     ResultService.addResult(result)
     .then((response) => {
-      console.log(response.data);
       Swal.fire({
         title: "Success",
         text: "Quiz submitted successfully",
@@ -151,13 +150,12 @@ const ListQuestion = () => {
           <>
           <p>Time Remaining: {formattedTime}</p>
           <button onClick={handleSubmit} disabled={submitted}>
-                Submit Answers
+                Submit Quiz
           </button>
           </>
         )}
       </div>
       <div className="question-container">
-        <form onSubmit={handleSubmit}>
           {questions.map((question, index) => (
             <div key={index} class="question-card">
               <div className="question-form">
@@ -226,14 +224,12 @@ const ListQuestion = () => {
                       })
                     }
                   >
-                    {" "}
-                    Delete{" "}
+                    Delete
                   </button>
                 </div>
               )}
             </div>
           ))}
-        </form>
       </div>
     </div>
   );

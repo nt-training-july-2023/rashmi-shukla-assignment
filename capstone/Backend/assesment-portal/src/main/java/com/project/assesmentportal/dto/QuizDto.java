@@ -1,5 +1,11 @@
 package com.project.assesmentportal.dto;
 
+import org.springframework.validation.annotation.Validated;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@Validated
 public class QuizDto {
     /**
      * The unique identifier of the quiz.
@@ -19,21 +26,26 @@ public class QuizDto {
     /**
      * The title of the quiz.
      */
+    @NotBlank(message = "Quiz title is required")
     private String quizTitle;
 
     /**
      * The description of the quiz.
      */
+    @NotBlank(message = "Quiz Description is required")
     private String quizDescription;
 
     /**
      * timer for the quiz.
      */
+    @Min(value = 1, message = "Quiz timer cannot be zero")
     private int quizTimer;
 
     /**
      * The category of the quiz.
      */
+    @NotNull(message = "Category is required")
+    @Valid
     private CategoryDto category;
 
     /**

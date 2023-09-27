@@ -1,5 +1,6 @@
 package com.project.assesmentportal.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,10 +22,12 @@ public class CategoryDto {
     /**
      * The title of the category.
      */
+    @NotBlank(message = "Category title is required")
     private String categoryTitle;
 
     /**
      * The description of the category.
      */
+    @NotBlank(message = "Category description is required")
     private String categoryDescription;
 }

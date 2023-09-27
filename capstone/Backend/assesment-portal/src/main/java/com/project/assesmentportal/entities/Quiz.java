@@ -49,6 +49,7 @@ public class Quiz {
     /**
      * The timer for quiz.
      */
+    @Column(nullable = false)
     private int quizTimer;
 
     /**

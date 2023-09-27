@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.assesmentportal.dto.ResultDto;
 import com.project.assesmentportal.services.ResultService;
 
+import jakarta.validation.Valid;
+
 /**
  * Controller class responsible for handling CRUD operations.
  */
@@ -35,7 +37,7 @@ public class ResultController {
      */
     @RequestMapping(value = "/result", method = RequestMethod.POST)
     public final ResponseEntity<String> addResult(
-            @RequestBody final ResultDto resultDto) {
+            @RequestBody @Valid final ResultDto resultDto) {
         String addResult = this.resultService.addResult(resultDto);
         return new ResponseEntity<String>(addResult, HttpStatus.CREATED);
     }

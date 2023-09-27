@@ -2,10 +2,12 @@ import React, { useEffect } from 'react'
 import Navbar from '../../Components/Navbar/Navbar'
 import welcomeImg from  './welcome-img.png';
 import ErrorPage from '../ErrorPage/ErrorPage'
+import { useNavigate } from 'react-router-dom';
 
 const UserDashboard = () => {
 
   const userName = localStorage.getItem("userName");
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.history.pushState(null, '', '/user-dashboard');
@@ -36,7 +38,7 @@ const UserDashboard = () => {
           </div>
           <div className='user-profile-box'>
             <h2>Check Your Progress:</h2>
-            {/* <button></button> */}
+            <button class="custom-button" onClick={() => navigate('/results')}>Results</button>
           </div>
       </div>
       

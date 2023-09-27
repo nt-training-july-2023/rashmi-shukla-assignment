@@ -20,7 +20,7 @@ const AddQuiz = () => {
 
   useEffect(() => {
     getAllCategories();
-  });
+  },[]);
 
   const getAllCategories = () => {
     CategoryService.getAllCategories()
@@ -33,8 +33,13 @@ const AddQuiz = () => {
   };
 
   const validateForm = () => {
-    if (quizTitle === "" || quizDescription === "") {
+    if (quizTitle === "" || quizDescription === "" ||category===null) {
       setErrors("*all the fields are mandatory");
+      return true;
+    }
+
+    if(quizTimer<=0) {
+      setErrors("*timer should be greater than zero")
       return true;
     }
     return false;
@@ -44,7 +49,6 @@ const AddQuiz = () => {
     const categoryId = event.target.value;
     CategoryService.getCategoryById(categoryId)
       .then((response) => {
-        console.log(response.data);
         const catObject = response.data;
         setCategory(catObject);
       })
@@ -61,7 +65,6 @@ const AddQuiz = () => {
       if (id) {
         QuizService.updateQuiz(id, quiz)
           .then((response) => {
-            console.log(response.data);
             Swal.fire({
               title: "Success",
               text: "qUIZ updated successfully",
@@ -72,7 +75,6 @@ const AddQuiz = () => {
             navigate("/ListQuiz");
           })
           .catch((error) => {
-            console.log(error);
             const submitError = error.response.data.message;
             Swal.fire({
               title: "Error",
@@ -85,7 +87,6 @@ const AddQuiz = () => {
       } else {
         QuizService.addQuiz(quiz)
           .then((response) => {
-            console.log(response.data);
             Swal.fire({
               title: "Success",
               text: "Quiz added successfully",
@@ -104,7 +105,6 @@ const AddQuiz = () => {
               confirmButtonText: "Retry",
               confirmButtonColor: "red",
             });
-            console.log(error);
           });
       }
     }
@@ -114,7 +114,6 @@ const AddQuiz = () => {
     if (id) {
       QuizService.getQuizById(id)
         .then((response) => {
-          console.log(response.data);
           setQuizTitle(response.data.quizTitle);
           setQuizDescription(response.data.quizDescription);
           setQuizTimer(response.data.quizTimer);

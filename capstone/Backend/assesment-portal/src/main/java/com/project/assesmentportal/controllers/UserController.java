@@ -1,22 +1,22 @@
 package com.project.assesmentportal.controllers;
 
 import java.util.List;
-
-/**
- * Controller class for user login and register.
- */
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.assesmentportal.dto.LoginRequestDto;
+import com.project.assesmentportal.dto.LoginResponseDto;
 import com.project.assesmentportal.dto.UserDto;
 import com.project.assesmentportal.services.UserService;
+
+import jakarta.validation.Valid;
 
 /**
  * Controller class responsible for user registration, login, and retrieval
@@ -24,6 +24,7 @@ import com.project.assesmentportal.services.UserService;
  */
 @CrossOrigin("*")
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     /**
@@ -38,9 +39,9 @@ public class UserController {
      * @return A ResponseEntity with a success message upon successful
      *         registration or a bad request response in case of failure.
      */
-    @RequestMapping(value = "/users/register", method = RequestMethod.POST)
+    @PostMapping("/register")
     public final ResponseEntity<String> register(
-            @RequestBody final UserDto userDto) {
+            @RequestBody @Valid final UserDto userDto) {
         return new ResponseEntity<String>(
                 userService.register(userDto), HttpStatus.CREATED);
     }
@@ -49,27 +50,23 @@ public class UserController {
      * Retrieves a list of all users.
      * @return A list of UserDto objects representing all registered users.
      */
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @GetMapping()
     public final List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 
     /**
      * Handles user login.
-     * @param userDto The UserDto representing the user's login
+     * @param loginRequestDto representing the user's login
      *                credentials.
      * @return A ResponseEntity with a success message containing the
      *         user's role upon successful login, or an unauthorized
      *         response in case of failure.
      */
-    @RequestMapping(value = "/users/login", method = RequestMethod.POST)
-    public final ResponseEntity<UserDto> login(
-            @RequestBody final UserDto userDto) {
-        if (userService.login(userDto) == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(userService.login(userDto));
-        }
-        return ResponseEntity.ok(userService.login(userDto));
+    @PostMapping("/login")
+    public final ResponseEntity<LoginResponseDto> login(
+            @RequestBody @Valid final LoginRequestDto loginRequestDto) {
+        return ResponseEntity.ok(userService.login(loginRequestDto));
 
     }
 }

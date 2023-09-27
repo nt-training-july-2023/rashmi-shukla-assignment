@@ -27,14 +27,6 @@ const LoginForm = () => {
           email,
           password,
         });
-        console.log(response.data);
-        Swal.fire({
-          title: "Success",
-          text: "Login Successful",
-          icon: "success",
-          timer: 2000,
-          showConfirmButton: false,
-        });
         if (response.status === 200 && response.data.role === "user") {
           // Redirect upon successful login
           navigate("/user-dashboard");
@@ -43,7 +35,7 @@ const LoginForm = () => {
         }
         localStorage.setItem("IsLoggedIn", response.status);
         localStorage.setItem("role", response.data.role);
-        localStorage.setItem("userName", response.data.firstName)
+        localStorage.setItem("userName", response.data.fullName)
         localStorage.setItem("userEmail", response.data.email)
       } catch (error) {
         const submitError = error.response.data.message;
@@ -56,9 +48,6 @@ const LoginForm = () => {
         });
         setEmail("");
         setPassword("");
-        console.error(
-          error.response ? error.response.data.message : "An error occured"
-        );
       }
     } else {
       setErrors(validattionErrors);

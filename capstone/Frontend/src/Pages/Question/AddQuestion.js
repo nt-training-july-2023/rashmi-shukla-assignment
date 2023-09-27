@@ -75,7 +75,6 @@ const AddQuestion = () => {
       if (questionId) {
         QuestionService.updateQuestion(questionId, question)
           .then((response) => {
-            console.log(response.data);
             Swal.fire({
               title: "Success",
               text: "Question updated successfully",
@@ -86,7 +85,6 @@ const AddQuestion = () => {
             navigate(`/ListQuiz/${quizId}/questions`);
           })
           .catch((error) => {
-            console.log(error);
             const submitError = error.response.data.message;
             Swal.fire({
               title: "Error",
@@ -99,7 +97,6 @@ const AddQuestion = () => {
       } else {
         QuestionService.addQuestion(question)
           .then((response) => {
-            console.log(response.data);
             Swal.fire({
               title: "Success",
               text: "Quiz added successfully",
@@ -118,7 +115,6 @@ const AddQuestion = () => {
               confirmButtonText: "Retry",
               confirmButtonColor: "red",
             });
-            console.log(error);
           });
       }
     }
@@ -136,7 +132,6 @@ const AddQuestion = () => {
     if (questionId) {
       QuestionService.getQuestionById(questionId)
         .then((response) => {
-          console.log(response.data);
           setQuestionTitle(response.data.questionTitle);
           setOptionI(response.data.options.optionI);
           setOptionII(response.data.options.optionII);

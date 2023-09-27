@@ -28,7 +28,6 @@ const AddCategory = () => {
       if (id) {
         CategoryService.updateCategory(id, category)
           .then((response) => {
-            console.log(response.data);
             Swal.fire({
               title: "Success",
               text: "Category updated successfully",
@@ -39,7 +38,6 @@ const AddCategory = () => {
             navigate("/ListCategory");
           })
           .catch((error) => {
-            console.log(error);
             const submitError = error.response.data.message;
             Swal.fire({
               title: "Error",
@@ -52,7 +50,6 @@ const AddCategory = () => {
       } else {
         CategoryService.addCategory(category)
           .then((response) => {
-            console.log(response.data);
             Swal.fire({
               title: "Success",
               text: "Category added successfully",
@@ -71,7 +68,6 @@ const AddCategory = () => {
               confirmButtonText: "Retry",
               confirmButtonColor: "red",
             });
-            console.log(error);
           });
       }
     }

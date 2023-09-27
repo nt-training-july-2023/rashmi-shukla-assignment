@@ -6,21 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.services.CategoryService;
 
+import jakarta.validation.Valid;
+
 /**
  * Controller class responsible for handling CRUD operations.
  */
 @CrossOrigin("*")
 @RestController
+@RequestMapping("/categories")
 public class CategoryController {
 
     /**
@@ -36,9 +42,9 @@ public class CategoryController {
      * @return A ResponseEntity containing the added CategoryDto and HTTP
      *         status CREATED (201).
      */
-    @RequestMapping(value = "/categories", method = RequestMethod.POST)
+    @PostMapping()
     public final ResponseEntity<String> addCategory(
-            @RequestBody final CategoryDto categoryDto) {
+            @RequestBody @Valid final CategoryDto categoryDto) {
         return new ResponseEntity<String>(categoryService
                 .addCategory(categoryDto),
                 HttpStatus.CREATED);
@@ -48,7 +54,7 @@ public class CategoryController {
      * Retrieves a list of all categories.
      * @return A list of CategoryDto objects representing all categories.
      */
-    @RequestMapping(value = "/categories", method = RequestMethod.GET)
+    @GetMapping()
     public final List<CategoryDto> getAllCategories() {
         return categoryService.getAllCategories();
     }
@@ -59,7 +65,7 @@ public class CategoryController {
      * @return A ResponseEntity containing the retrieved CategoryDto and
      *         HTTP status OK (200).
      */
-    @RequestMapping(value = "/categories/{id}", method = RequestMethod.GET)
+    @GetMapping("/{id}")
     public final ResponseEntity<CategoryDto> getCategoryById(
             @PathVariable("id") final long catId) {
         return new ResponseEntity<CategoryDto>(
@@ -73,10 +79,10 @@ public class CategoryController {
      * @return A ResponseEntity containing the updated CategoryDto and HTTP
      *         status OK (200).
      */
-    @RequestMapping(value = "/categories/{id}", method = RequestMethod.PUT)
+    @PutMapping("/{id}")
     public final ResponseEntity<String> updateCategory(
             @PathVariable("id") final long catId,
-            @RequestBody final CategoryDto categoryDto) {
+            @RequestBody @Valid final CategoryDto categoryDto) {
         return new ResponseEntity<String>(
                 categoryService.updateCategory(categoryDto, catId),
                 HttpStatus.OK);
@@ -88,7 +94,7 @@ public class CategoryController {
      * @return A ResponseEntity with a success message and HTTP status OK
      *         (200) after deletion.
      */
-    @RequestMapping(value = "/categories/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{id}")
     public final ResponseEntity<String> deleteCategory(
             @PathVariable("id") final long catId) {
         categoryService.deleteCategory(catId);
@@ -101,8 +107,7 @@ public class CategoryController {
      * @param id categoryId.
      * @return list of quizzes ResponseEntity
      */
-    @RequestMapping(value = "/categories/{id}/quizzes",
-            method = RequestMethod.GET)
+    @GetMapping("/{id}/quizzes")
     public final ResponseEntity<List<QuizDto>> getQuizzesById(
             @PathVariable("id") final long id) {
         return new ResponseEntity<List<QuizDto>>(

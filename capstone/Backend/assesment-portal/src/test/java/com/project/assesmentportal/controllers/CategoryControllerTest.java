@@ -16,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.project.assesmentportal.dto.CategoryDto;
+import com.project.assesmentportal.dto.QuizDto;
+import com.project.assesmentportal.entities.Category;
+import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.services.impl.CategoryServiceImpl;
 
 class CategoryControllerTest {
@@ -87,6 +90,19 @@ class CategoryControllerTest {
         assertEquals("Category deleted successfully!", result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
         verify(categoryService).deleteCategory(categoryId);
+    }
+    
+    @Test
+    public void testGetQuizzesById(){
+        long categoryId = 1L;
+        List<QuizDto> quizList = new ArrayList<>();
+
+        when(categoryService.getQuizzesByCategory(categoryId)).thenReturn(quizList);
+
+        ResponseEntity<List<QuizDto>> response = categoryController.getQuizzesById(categoryId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(quizList, response.getBody());
     }
 
 }

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.services.QuestionService;
 
+import jakarta.validation.Valid;
+
 /**
  * Controller class responsible for handling CRUD operations.
  */
@@ -35,7 +37,7 @@ public class QuestionController {
      */
     @RequestMapping(value = "/question", method = RequestMethod.POST)
     public final ResponseEntity<String> addQuestion(
-            @RequestBody final QuestionDto questionDto) {
+            @RequestBody @Valid final QuestionDto questionDto) {
         String addQuestion = this.questionService
                 .addQuestion(questionDto);
         return new ResponseEntity<String>(addQuestion,
@@ -72,7 +74,7 @@ public class QuestionController {
      */
     @RequestMapping(value = "/question/{id}", method = RequestMethod.PUT)
     public final ResponseEntity<String> updateQuestion(
-            @RequestBody final QuestionDto questionDto,
+            @RequestBody @Valid final QuestionDto questionDto,
             @PathVariable("id") final long questionId) {
         return new ResponseEntity<String>(
                 questionService.updateQuestion(questionDto, questionId),

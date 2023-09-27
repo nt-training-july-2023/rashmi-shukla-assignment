@@ -13,6 +13,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.project.assesmentportal.dto.LoginRequestDto;
+import com.project.assesmentportal.dto.LoginResponseDto;
 import com.project.assesmentportal.dto.UserDto;
 import com.project.assesmentportal.repositories.UserRepository;
 import com.project.assesmentportal.services.impl.UserServiceImpl;
@@ -45,23 +47,24 @@ class UserControllerTest {
     
     @Test
     public void testLogin_Success() {
-        UserDto userDto = new UserDto(); 
-        when(userService.login(userDto)).thenReturn(userDto);
+        LoginRequestDto userDto = new LoginRequestDto(); 
+        LoginResponseDto loginResponseDto = new LoginResponseDto();
+        when(userService.login(userDto)).thenReturn(loginResponseDto);
 
-        ResponseEntity<UserDto> response = userController.login(userDto);
+        ResponseEntity<LoginResponseDto> response = userController.login(userDto);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(userDto, response.getBody());
+        assertEquals(loginResponseDto, response.getBody());
     }
     
     @Test
     public void testLoginWithInvalidUser() {
-        UserDto userDto = new UserDto(); // Create an invalid UserDto object
+        LoginRequestDto userDto = new LoginRequestDto(); // Create an invalid UserDto object
         when(userService.login(userDto)).thenReturn(null);
 
-        ResponseEntity<UserDto> response = userController.login(userDto);
+        ResponseEntity<LoginResponseDto> response = userController.login(userDto);
 
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(null, response.getBody());
     }
     

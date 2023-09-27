@@ -17,8 +17,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
+import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
+import com.project.assesmentportal.entities.Category;
 import com.project.assesmentportal.entities.Question;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
@@ -55,8 +57,12 @@ class QuizServiceImplTest {
         quiz.setQuizId(1L);
         quiz.setQuizTitle("Sample Quiz");
         
+        Category category = new Category();
+        quiz.setCategory(category);
+        
         when(modelMapper.map(quizDto, Quiz.class)).thenReturn(quiz);
         when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
+        when(categoryRepository.findById(quiz.getCategory().getCategoryId())).thenReturn(Optional.of(category));
         when(quizRepository.findByQuizTitle(quiz.getQuizTitle())).thenReturn(Optional.empty());
         when(quizRepository.save(any(Quiz.class))).thenReturn(quiz);
         
@@ -73,12 +79,34 @@ class QuizServiceImplTest {
         
         Quiz quiz = new Quiz();
         quiz.setQuizTitle("React");
+        Category category = new Category();
+        quiz.setCategory(category);
         
         when(modelMapper.map(quizDto, Quiz.class)).thenReturn(quiz);
         when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
+        when(categoryRepository.findById(quiz.getCategory().getCategoryId())).thenReturn(Optional.of(category));
         when(quizRepository.findByQuizTitle(quiz.getQuizTitle())).thenReturn(Optional.of(quiz));
         
         assertThrows(DuplicateResourceException.class, ()-> {
+            quizServiceImpl.addQuiz(quizDto);
+        });
+    }
+
+    @Test
+    void testAddQuiz_CategoryNotFound() {
+        QuizDto quizDto = new QuizDto();
+        quizDto.setQuizTitle("React");
+        
+        Quiz quiz = new Quiz();
+        quiz.setQuizTitle("React");
+        Category category = new Category();
+        quiz.setCategory(category);
+        
+        when(modelMapper.map(quizDto, Quiz.class)).thenReturn(quiz);
+        when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
+        when(categoryRepository.findById(quiz.getCategory().getCategoryId())).thenReturn(Optional.empty());
+        
+        assertThrows(ResourceNotFoundException.class, ()-> {
             quizServiceImpl.addQuiz(quizDto);
         });
     }
@@ -134,6 +162,10 @@ class QuizServiceImplTest {
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizId(1);
         quizDto.setQuizTitle("React");
+        CategoryDto categoryDto = new CategoryDto();
+        quizDto.setCategory(categoryDto);
+        
+        Category category = new Category();
         
         Quiz existingQuiz = new Quiz();
         existingQuiz.setQuizId(quizIdToUpdate);
@@ -141,6 +173,7 @@ class QuizServiceImplTest {
         
         when(modelMapper.map(existingQuiz, QuizDto.class)).thenReturn(quizDto);
         when(quizRepository.findById(quizIdToUpdate)).thenReturn(Optional.of(existingQuiz));
+        when(categoryRepository.findById(quizDto.getCategory().getCategoryId())).thenReturn(Optional.of(category));
         when(quizRepository.findByQuizTitle(quizDto.getQuizTitle())).thenReturn(Optional.empty());
         when(quizRepository.save(any(Quiz.class))).thenReturn(existingQuiz);
         
@@ -186,11 +219,43 @@ class QuizServiceImplTest {
         QuizDto updatedQuizDto = new QuizDto();
         updatedQuizDto.setQuizId(1L);
         updatedQuizDto.setQuizTitle("Existing Quiz"); // Duplicate title
+        CategoryDto categoryDto = new CategoryDto();
+        updatedQuizDto.setCategory(categoryDto);
 
         when(quizRepository.findById(quizId)).thenReturn(Optional.of(quiz));
+        when(categoryRepository.findById(updatedQuizDto.getCategory().getCategoryId())).thenReturn(Optional.of(new Category()));
         when(quizRepository.findByQuizTitle(updatedQuizDto.getQuizTitle())).thenReturn(Optional.of(existingQuiz));
 
         assertThrows(DuplicateResourceException.class, () -> 
+            quizServiceImpl.updateQuiz(updatedQuizDto, quizId));
+        
+    }
+    
+    @Test
+    void testUpdateQuiz_CategoryNotFound() {
+        //quiz to be updated
+        long quizId = 1L;
+        Quiz quiz = new Quiz();
+        quiz.setQuizId(quizId);
+        quiz.setQuizTitle("React");
+
+        // Existing quiz in the database
+        Quiz existingQuiz = new Quiz();
+        existingQuiz.setQuizId(2L);
+        existingQuiz.setQuizTitle("Existing Quiz");
+
+        // Updated QuizDto with a title that already exists
+        QuizDto updatedQuizDto = new QuizDto();
+        updatedQuizDto.setQuizId(1L);
+        updatedQuizDto.setQuizTitle("Existing Quiz"); // Duplicate title
+        CategoryDto categoryDto = new CategoryDto();
+        updatedQuizDto.setCategory(categoryDto);
+
+        when(quizRepository.findById(quizId)).thenReturn(Optional.of(quiz));
+        when(categoryRepository.findById(updatedQuizDto.getCategory().getCategoryId())).thenReturn(Optional.empty());
+        when(quizRepository.findByQuizTitle(updatedQuizDto.getQuizTitle())).thenReturn(Optional.of(existingQuiz));
+
+        assertThrows(ResourceNotFoundException.class, () -> 
             quizServiceImpl.updateQuiz(updatedQuizDto, quizId));
         
     }

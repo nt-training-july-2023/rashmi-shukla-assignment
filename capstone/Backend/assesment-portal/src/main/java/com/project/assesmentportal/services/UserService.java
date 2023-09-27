@@ -2,6 +2,8 @@ package com.project.assesmentportal.services;
 
 import java.util.List;
 
+import com.project.assesmentportal.dto.LoginRequestDto;
+import com.project.assesmentportal.dto.LoginResponseDto;
 import com.project.assesmentportal.dto.UserDto;
 
 /**
@@ -21,7 +23,7 @@ public interface UserService {
      * @param user The UserDto representing the user's login credentials.
      * @return The UserDto of the logged-in user if successful, otherwise null.
      */
-    UserDto login(UserDto user);
+    LoginResponseDto login(LoginRequestDto user);
 
     /**
      * Retrieves a list of all users.

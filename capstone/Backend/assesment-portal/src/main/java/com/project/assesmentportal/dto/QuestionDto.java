@@ -1,7 +1,12 @@
 package com.project.assesmentportal.dto;
 
+import org.springframework.validation.annotation.Validated;
+
 import com.project.assesmentportal.entities.Options;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Validated
 public class QuestionDto {
     /**
      * The unique identifier of the question.
@@ -19,11 +25,14 @@ public class QuestionDto {
     /**
      * The title of the question.
      */
+    @NotBlank(message = "Question title is required.")
     private String questionTitle;
 
     /**
      * The options of answer.
      */
+    @NotNull(message = "Options are required.")
+    @Valid
     private Options options;
 
     /**
@@ -47,11 +56,14 @@ public class QuestionDto {
     /**
      * The correct answer.
      */
+    @NotBlank(message = "answer is required.")
     private String answer;
 
     /**
      * instance of quiz.
      */
+    @NotNull(message = "Quiz is required.")
+    @Valid
     private QuizDto quiz;
 
     /**

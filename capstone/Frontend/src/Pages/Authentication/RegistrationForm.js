@@ -38,7 +38,6 @@ const RegistrationForm = () => {
       if(Object.keys(validattionErrors).length === 0){
         try{
           const response = await axios.post('http://localhost:8080/users/register', { firstName, lastName, phoneNumber, email, password });
-          console.log(response.data);
           Swal.fire({
             title: "Success",
             text: "User registered successfully",
@@ -59,7 +58,6 @@ const RegistrationForm = () => {
               confirmButtonText: "Retry",
               confirmButtonColor:"red"
             });
-            console.error(error.response ? error.response.data: 'An error occurred');
         } 
       }
       else{

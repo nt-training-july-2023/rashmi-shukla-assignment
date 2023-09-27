@@ -1,6 +1,7 @@
 package com.project.assesmentportal.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,7 @@ import com.project.assesmentportal.entities.Question;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
 import com.project.assesmentportal.repositories.QuestionRepository;
+import com.project.assesmentportal.repositories.QuizRepository;
 import com.project.assesmentportal.services.QuestionService;
 
 /**
@@ -32,6 +34,12 @@ public class QuestionServiceImpl implements QuestionService {
     private ModelMapper modelMapper;
 
     /**
+     * instance of quizRepo.
+     */
+    @Autowired
+    private QuizRepository quizRepository;
+
+    /**
      * instance of QuestionRepositoy.
      */
     @Autowired
@@ -45,6 +53,12 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public final String addQuestion(final QuestionDto questionDto) {
         Question question = this.dtoToEntity(questionDto);
+        Optional<Quiz> existingQuiz = quizRepository
+                .findById(question.getQuiz().getQuizId());
+        if (existingQuiz.isEmpty()) {
+            throw new ResourceNotFoundException("Quiz with id:"
+                    + question.getQuiz().getQuizId() + " doesnot exists");
+        }
         questionRepository.save(question);
         return "Question added successfully!";
     }
@@ -63,8 +77,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     /**
      * updates existing question.
-     * @param  questionDto QuestionDto of quiz
-     * @param questionId Question id of existing quiz.
+     * @param questionDto QuestionDto of quiz
+     * @param questionId  Question id of existing quiz.
      * @return updated quiz.
      */
     @Override
@@ -77,6 +91,13 @@ public class QuestionServiceImpl implements QuestionService {
 
         Question question = dtoToEntity(questionDto);
 
+        Optional<Quiz> existingQuiz = quizRepository
+                .findById(question.getQuiz().getQuizId());
+        if (existingQuiz.isEmpty()) {
+            throw new ResourceNotFoundException("Quiz with id:"
+                    + question.getQuiz().getQuizId() + " doesnot exists");
+        }
+
         exisitingQuestion.setQuestionTitle(question.getQuestionTitle());
         exisitingQuestion.setOptionOne(question.getOptionOne());
         exisitingQuestion.setOptionTwo(question.getOptionTwo());
@@ -86,18 +107,18 @@ public class QuestionServiceImpl implements QuestionService {
         exisitingQuestion.setQuiz(question.getQuiz());
 
         questionRepository.save(exisitingQuestion);
-        return "Question with id: " + questionId + " updated successfully!";
+        return "Question with id: " + questionId
+                + " updated successfully!";
     }
 
     /**
      * get question by its id.
-     * @param questionId id of the question
-     * return question dto.
+     * @param questionId id of the question return question dto.
      */
     @Override
     public final QuestionDto getQuestionById(final long questionId) {
-        Question question = questionRepository.findById(questionId).
-                orElseThrow(() -> new ResourceNotFoundException(
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Question doesnot exists!"));
         return this.entityToDto(question);
     }
@@ -108,8 +129,8 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public final void deleteQuestion(final long questionId) {
-        questionRepository.findById(questionId).
-                orElseThrow(() -> new ResourceNotFoundException(
+        questionRepository.findById(questionId)
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Question doesnot exists!"));
         questionRepository.deleteById(questionId);
     }
@@ -125,6 +146,23 @@ public class QuestionServiceImpl implements QuestionService {
         question.setOptionTwo(questionDto.getOptions().getOptionII());
         question.setOptionThree(questionDto.getOptions().getOptionIII());
         question.setOptionFour(questionDto.getOptions().getOptionIV());
+        //check if answer belongs to options
+        boolean found = false;
+        String correctAnswerMatch = questionDto.getAnswer();
+        if (correctAnswerMatch.equalsIgnoreCase(questionDto.getOptions().getOptionI())
+                || correctAnswerMatch.equalsIgnoreCase(questionDto.getOptions().getOptionII())
+                || correctAnswerMatch
+                        .equalsIgnoreCase(questionDto.getOptions().getOptionIII())
+                || correctAnswerMatch
+                        .equalsIgnoreCase(questionDto.getOptions().getOptionIV())) {
+            found = true;
+        }
+        if (!found) {
+            throw new ResourceNotFoundException(
+                    "Correct Answer doesn't match with the options");
+        }
+        question.setAnswer(correctAnswerMatch);
+
         if (questionDto.getQuiz() != null) {
             Quiz quiz = modelMapper.map(questionDto.getQuiz(), Quiz.class);
             if (questionDto.getQuiz().getCategory() != null) {
