@@ -21,7 +21,6 @@ import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.entities.Options;
 import com.project.assesmentportal.entities.Question;
 import com.project.assesmentportal.entities.Quiz;
-import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
 import com.project.assesmentportal.repositories.QuestionRepository;
 import com.project.assesmentportal.repositories.QuizRepository;
@@ -102,7 +101,7 @@ class QuestionServiceImplTest {
     }
     
     @Test
-    void testgetAllQuestions_Success() {
+    void testgetQuestions_Success() {
         Question question = new Question(1, "2+2?", "1", "2", "3", "4", "4");
         List<Question> questions = new ArrayList<>();
         questions.add(question);
@@ -112,7 +111,7 @@ class QuestionServiceImplTest {
         when(questionRepository.findAll()).thenReturn(questions);
         when(modelMapper.map(question, QuestionDto.class)).thenReturn(questionDto);
 
-        List<QuestionDto> questionDtos = questionService.getAllQuestions();
+        List<QuestionDto> questionDtos = questionService.getQuestions();
 
         assertNotNull(questionDtos);
         assertEquals(1, questionDtos.size());

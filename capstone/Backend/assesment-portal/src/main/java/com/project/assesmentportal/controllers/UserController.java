@@ -1,6 +1,9 @@
 package com.project.assesmentportal.controllers;
 
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,12 @@ public class UserController {
     private UserService userService;
 
     /**
+     * This creates Logger Instance.
+     */
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(UserController.class);
+
+    /**
      * Registers a new user.
      * @param userDto The UserDto representing the user to be registered.
      * @return A ResponseEntity with a success message upon successful
@@ -42,8 +51,10 @@ public class UserController {
     @PostMapping("/register")
     public final ResponseEntity<String> register(
             @RequestBody @Valid final UserDto userDto) {
-        return new ResponseEntity<String>(
-                userService.register(userDto), HttpStatus.CREATED);
+        LOGGER.info("User registration method invoked.");
+        String response = userService.register(userDto);
+        LOGGER.info("User Registered Successfully.");
+        return new ResponseEntity<String>(response, HttpStatus.CREATED);
     }
 
     /**
@@ -51,8 +62,11 @@ public class UserController {
      * @return A list of UserDto objects representing all registered users.
      */
     @GetMapping()
-    public final List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+    public final List<UserDto> getUsers() {
+        LOGGER.info("Retrieving list of users.");
+        List<UserDto> usersDtos =  userService.getUsers();
+        LOGGER.info("Retrieved list of users successfully.");
+        return usersDtos;
     }
 
     /**
@@ -66,7 +80,10 @@ public class UserController {
     @PostMapping("/login")
     public final ResponseEntity<LoginResponseDto> login(
             @RequestBody @Valid final LoginRequestDto loginRequestDto) {
-        return ResponseEntity.ok(userService.login(loginRequestDto));
+        LOGGER.info("Login method invoked.");
+        LoginResponseDto loginResponseDto = userService.login(loginRequestDto);
+        LOGGER.info("User logged-in successfully");
+        return ResponseEntity.ok(loginResponseDto);
 
     }
 }

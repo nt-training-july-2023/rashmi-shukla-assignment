@@ -33,13 +33,12 @@ const AddQuiz = () => {
   };
 
   const validateForm = () => {
-    if (quizTitle === "" || quizDescription === "" ||category===null) {
+    if (quizTitle === "" || quizDescription === "" ||isNaN(quizTimer)||category===null) {
       setErrors("*all the fields are mandatory");
       return true;
     }
-
-    if(quizTimer<=0) {
-      setErrors("*timer should be greater than zero")
+    if (quizTimer % 1 !== 0 || quizTimer <= 0) {
+      setErrors("*timer should be a positive integer");
       return true;
     }
     return false;
@@ -60,6 +59,9 @@ const AddQuiz = () => {
 
   const saveQuiz = (e) => {
     e.preventDefault();
+
+    const parsedQuizTimer = parseInt(quizTimer);
+
     if (!validateForm()) {
       const quiz = { quizTitle, quizDescription, category, quizTimer };
       if (id) {

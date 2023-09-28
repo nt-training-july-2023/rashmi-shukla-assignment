@@ -157,13 +157,13 @@ class UserServiceImplTest {
     }
     
     @Test
-    public void testGetAllUsers() {
+    public void testGetUsers() {
         List<User> userList = new ArrayList<>();
         userList.add(new User(1,"Rashmi","Shukla","rs@gmail.com","12345","9234567890","user"));
         userList.add(new User(2,"Pranjal","Yadav","py@gmail.com","135689","9298567890","admin"));
 
         when(userRepository.findAll()).thenReturn(userList);
-        List<UserDto> userDtos = userService.getAllUsers();
+        List<UserDto> userDtos = userService.getUsers();
 
         // Assert
         assertNotNull(userDtos);

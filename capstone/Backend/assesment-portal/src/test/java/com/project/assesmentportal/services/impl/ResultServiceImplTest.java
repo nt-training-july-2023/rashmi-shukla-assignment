@@ -46,7 +46,7 @@ class ResultServiceImplTest {
     }
     
     @Test
-    void testGetAllResults_Success() {
+    void testGetResults_Success() {
         List<Result> resultList = new ArrayList<>();
         resultList.add(new Result());
         when(resultRepository.findAll()).thenReturn(resultList);
@@ -56,7 +56,7 @@ class ResultServiceImplTest {
         
         when(modelMapper.map(any(Result.class), ResultDto.class)).thenReturn(new ResultDto());
 
-        List<ResultDto> actualResult = resultService.getAllResults();
+        List<ResultDto> actualResult = resultService.getResults();
 
         assertEquals(resultDtoList.size(), actualResult.size());
     }

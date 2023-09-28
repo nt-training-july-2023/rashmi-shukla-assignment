@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +48,12 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionRepository questionRepository;
 
     /**
+     * Creating a instance of Logger Class.
+     */
+    private static final Logger LOGGER
+            = LoggerFactory.getLogger(QuestionServiceImpl.class);
+
+    /**
      * add new question.
      * @param questionDto QuestionDto of question.
      * @return returns QuestionDto of added question.
@@ -56,10 +64,13 @@ public class QuestionServiceImpl implements QuestionService {
         Optional<Quiz> existingQuiz = quizRepository
                 .findById(question.getQuiz().getQuizId());
         if (existingQuiz.isEmpty()) {
+            LOGGER.error("Add Question: quiz not found"
+                    + question.getQuiz().getQuizId());
             throw new ResourceNotFoundException("Quiz with id:"
                     + question.getQuiz().getQuizId() + " doesnot exists");
         }
         questionRepository.save(question);
+        LOGGER.info("Question added successfully.");
         return "Question added successfully!";
     }
 
@@ -68,10 +79,11 @@ public class QuestionServiceImpl implements QuestionService {
      * @return list of questions
      */
     @Override
-    public final List<QuestionDto> getAllQuestions() {
+    public final List<QuestionDto> getQuestions() {
         List<Question> questions = questionRepository.findAll();
         List<QuestionDto> questionDtos = questions.stream()
                 .map(this::entityToDto).collect(Collectors.toList());
+        LOGGER.info("Retrieved a list of question successfully.");
         return questionDtos;
     }
 
@@ -86,14 +98,17 @@ public class QuestionServiceImpl implements QuestionService {
             final long questionId) {
         Question exisitingQuestion = questionRepository
                 .findById(questionId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Question doesnot exists"));
+                .orElseGet(() -> {
+                   LOGGER.error(" Update Question: question not found" + questionId);
+                   throw new ResourceNotFoundException("Question doesnot exists");
+                });
 
         Question question = dtoToEntity(questionDto);
 
         Optional<Quiz> existingQuiz = quizRepository
                 .findById(question.getQuiz().getQuizId());
         if (existingQuiz.isEmpty()) {
+            LOGGER.error(" Update Question: quiz not found");
             throw new ResourceNotFoundException("Quiz with id:"
                     + question.getQuiz().getQuizId() + " doesnot exists");
         }
@@ -107,6 +122,7 @@ public class QuestionServiceImpl implements QuestionService {
         exisitingQuestion.setQuiz(question.getQuiz());
 
         questionRepository.save(exisitingQuestion);
+        LOGGER.info("Question with ID: " + questionId + " Updated successfully.");
         return "Question with id: " + questionId
                 + " updated successfully!";
     }
@@ -118,8 +134,11 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public final QuestionDto getQuestionById(final long questionId) {
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Question doesnot exists!"));
+                .orElseGet(() -> { 
+                    LOGGER.error("Get Question: question not found" + questionId);
+                   throw new ResourceNotFoundException("Question doesnot exists!");
+                    });
+        LOGGER.info("Retrieved a question with ID: " + questionId + " successfully.");
         return this.entityToDto(question);
     }
 
@@ -130,8 +149,10 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public final void deleteQuestion(final long questionId) {
         questionRepository.findById(questionId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Question doesnot exists!"));
+                .orElseGet(() ->{ 
+                    LOGGER.error("Delete Question: question not found" + questionId);
+                   throw new ResourceNotFoundException("Question doesnot exists!");});
+        LOGGER.info("Question with ID: " + questionId + " deleted successfully.");
         questionRepository.deleteById(questionId);
     }
 

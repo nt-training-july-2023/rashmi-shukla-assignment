@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,12 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     /**
+     * Creating a instance of Logger Class.
+     */
+    private static final Logger LOGGER
+            = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    /**
      * Registers a new user.
      * @param userDto The UserDto representing the user to be registered.
      * @return The UserDto of the registered user.
@@ -52,15 +60,18 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public final String register(final UserDto userDto) {
+        LOGGER.info("Service: User Registration invoked.");
         User user = this.dtoToUser(userDto);
         Optional<User> checkExistingUser = userRepository
                 .findByEmail(user.getEmail());
         if (checkExistingUser.isPresent()) {
+            LOGGER.error("Registration error: email id already exists");
             throw new DuplicateResourceException(
                     "The email-id already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        LOGGER.info("Service: User registered successfully.");
         return userDto.getFirstName() + " registered successfully!";
 
     }
@@ -75,13 +86,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public final LoginResponseDto login(
             final LoginRequestDto inputUserDto) {
+        LOGGER.info("Service: Login method invoked.");
         User registeredUser = userRepository
                 .findByEmail(inputUserDto.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Invalid email or password"));
+                .orElseGet(() -> {
+                    LOGGER.error("Login error: user not found");
+                    throw new ResourceNotFoundException(
+                        "Invalid email or password");
+                });
 
         if (!passwordEncoder.matches(inputUserDto.getPassword(),
                 registeredUser.getPassword())) {
+            LOGGER.error("Login error: invalid credentials");
             throw new InvalidDataException("Invalid credentials");
         }
         LoginResponseDto loginResponseDto = new LoginResponseDto();
@@ -91,6 +107,7 @@ public class UserServiceImpl implements UserService {
         loginResponseDto.setEmail(registeredUser.getEmail());
         loginResponseDto.setMessage(
                 registeredUser.getFirstName() + "logged-in successfully");
+        LOGGER.info("Service: User logged-in successfully.");
         return loginResponseDto;
     }
 
@@ -99,11 +116,13 @@ public class UserServiceImpl implements UserService {
      * @return A list of UserDto objects representing all registered users.
      */
     @Override
-    public final List<UserDto> getAllUsers() {
+    public final List<UserDto> getUsers() {
+        LOGGER.info("Service: getUsers methods invoked.");
         List<User> users = this.userRepository.findAll();
         List<UserDto> userDtos = users.stream()
                 .map(user -> this.userToDto(user))
                 .collect(Collectors.toList());
+        LOGGER.info("Service: Retrieved list of users successfully.");
         return userDtos;
     }
 

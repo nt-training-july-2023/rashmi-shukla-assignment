@@ -28,6 +28,7 @@ const Navbar = () => {
       icon:"warning",
       showCancelButton:true,
       showConfirmButton:true,
+      confirmButtonText:"Confirm"
     }).then((result)=>{
       if(result.isConfirmed){
         handleLogout();

@@ -19,7 +19,7 @@ public interface ResultService {
      * gets all results.
      * @return list of ResultDto
      */
-    List<ResultDto> getAllResults();
+    List<ResultDto> getResults();
 
     /**
      * gets result of a user by their email.

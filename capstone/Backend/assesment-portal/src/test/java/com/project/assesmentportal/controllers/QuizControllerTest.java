@@ -39,8 +39,8 @@ class QuizControllerTest {
         CategoryDto categoryDto = new CategoryDto(1,"Gk","category");
         quizzes.add(new QuizDto(1L, "GK","GK Quiz", 20, categoryDto));
         quizzes.add(new QuizDto(2L, "Maths","Maths Quiz",30, categoryDto));
-        when(quizService.getAllQuizzes()).thenReturn(quizzes);
-        List<QuizDto> result = quizController.getAllQuizzes();
+        when(quizService.getQuizzes()).thenReturn(quizzes);
+        List<QuizDto> result = quizController.getQuizzes();
         assertEquals(2, result.size());
         assertEquals("GK", result.get(0).getQuizTitle());
         assertEquals("Maths Quiz", result.get(1).getQuizDescription());

@@ -40,11 +40,22 @@ class ResultControllerTest {
     }
     
     @Test
-    void testGetAllResults() {
+    void testGetResults() {
+        ResultDto resultDto = new ResultDto();
+        resultDto.setResultId(2L);
+        resultDto.setTotalMarks(90);
+        resultDto.setObtainedMarks(75);
+        resultDto.setAttemptedQuestions(20);
+        resultDto.setTotalQuestions(25);
+        resultDto.setDateTime("2023-09-24 15:45:00");
+        resultDto.setUserEmail("user2@example.com");
+        resultDto.setUserName("Jane Doe");
+        resultDto.setQuizTitle("Another Quiz");
+        resultDto.setCategoryTitle("Another Category");
         List<ResultDto> resultDtoList = new ArrayList<>();
-        resultDtoList.add(new ResultDto());
-        when(resultService.getAllResults()).thenReturn(resultDtoList);
-        List<ResultDto> response = resultService.getAllResults();
+        resultDtoList.add(resultDto);
+        when(resultService.getResults()).thenReturn(resultDtoList);
+        List<ResultDto> response = resultController.getResults();
         assertEquals(resultDtoList.size(), response.size());
     }
     
@@ -54,7 +65,7 @@ class ResultControllerTest {
         List<ResultDto> resultDtoList = new ArrayList<>();
         resultDtoList.add(new ResultDto());
         when(resultService.getResultByUserEmail(userEmail)).thenReturn(resultDtoList);
-        List<ResultDto> response = resultService.getResultByUserEmail(userEmail);
+        List<ResultDto> response = resultController.getResultByUserEmail(userEmail);
         assertEquals(resultDtoList.size(), response.size());
     }
 

@@ -124,13 +124,13 @@ class CategoryServiceImplTest {
     }
     
     @Test
-    public void testGetAllCategories() {
+    public void testGetCategories() {
         List<Category> catList = new ArrayList<>();
         catList.add(new Category(1,"React","Mcq"));
         catList.add(new Category(2,"Java","Mcq"));
 
         when(categoryRepository.findAll()).thenReturn(catList);
-        List<CategoryDto> categoryDtos = categoryServiceImpl.getAllCategories();
+        List<CategoryDto> categoryDtos = categoryServiceImpl.getCategories();
 
         assertNotNull(categoryDtos);
         assertEquals(2, categoryDtos.size()); // Assuming there are 2 users in the list

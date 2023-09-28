@@ -23,7 +23,7 @@ const RegistrationForm = () => {
       }
       if(email === ""){
         validattionErrors.email = '*required'
-      }else if(!/^[a-zA-Z0-9]+@nucleusteq\.com$/.test(email)){
+      }else if(!/^[a-zA-Z0-9.]+@nucleusteq\.com$/.test(email)){
         validattionErrors.email = "*email should end with @nucleusteq.com"
       }
       if(phoneNumber === ''){

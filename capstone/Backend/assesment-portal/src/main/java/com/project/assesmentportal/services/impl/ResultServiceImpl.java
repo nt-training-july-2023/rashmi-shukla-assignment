@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,12 @@ public class ResultServiceImpl implements ResultService {
     private ResultRepository resultRepository;
 
     /**
+     * Creating a instance of Logger Class.
+     */
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(ResultServiceImpl.class);
+
+    /**
      * Adds a new result.
      * @param resultDto The ResultDTO representing the Result to be added.
      * @return String for successful operation.
@@ -40,6 +48,7 @@ public class ResultServiceImpl implements ResultService {
     public final String addResult(final ResultDto resultDto) {
         Result result = this.modelMapper.map(resultDto, Result.class);
         resultRepository.save(result);
+        LOGGER.info("Service:Results added successfully");
         return "Result added successfully!";
     }
 
@@ -48,11 +57,12 @@ public class ResultServiceImpl implements ResultService {
      * @return A list of ResultDto objects representing all results.
      */
     @Override
-    public final List<ResultDto> getAllResults() {
+    public final List<ResultDto> getResults() {
         List<Result> results = this.resultRepository.findAll();
         List<ResultDto> resultDtos = results.stream().map(
                 (result) -> this.modelMapper.map(result, ResultDto.class))
                 .collect(Collectors.toList());
+        LOGGER.info("Retrieved list of results at admin side successfully.");
         return resultDtos;
     }
 
@@ -68,6 +78,7 @@ public class ResultServiceImpl implements ResultService {
         List<ResultDto> resultDtos = results.stream().map(
                 (result) -> this.modelMapper.map(result, ResultDto.class))
                 .collect(Collectors.toList());
+        LOGGER.info("Retrieved list of user at user side successfully.");
         return resultDtos;
     }
 

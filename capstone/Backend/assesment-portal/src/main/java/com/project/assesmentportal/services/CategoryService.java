@@ -21,7 +21,7 @@ public interface CategoryService {
      * Retrieves a list of all categories.
      * @return A list of CategoryDto objects representing all categories.
      */
-    List<CategoryDto> getAllCategories();
+    List<CategoryDto> getCategories();
 
     /**
      * Retrieves a category by its ID.

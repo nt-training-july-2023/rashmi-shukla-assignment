@@ -9,7 +9,7 @@ class ResultService {
     }
 
     getAllResults(){
-        return axios.get("http://localhost:8080/results");
+        return axios.get(RESULT_BASE_URL);
     }
 
     getResultByUserEmail(userEmail){

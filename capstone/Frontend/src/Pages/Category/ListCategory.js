@@ -95,7 +95,7 @@ const ListCategory = () => {
                             title: "Warning",
                             text: "Delete Category?",
                             icon: "warning",
-                            confirmButtonText: "delete",
+                            confirmButtonText: "Delete",
                             confirmButtonColor: "red",
                             showCancelButton: true,
                           }).then((result) => {

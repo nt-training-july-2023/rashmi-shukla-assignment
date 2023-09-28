@@ -52,8 +52,8 @@ class QuestionControllerTest {
         List<QuestionDto> questions = new ArrayList<>();
         QuizDto quizDto = new QuizDto(1,"Gk","quiz",20,null);
         questions.add(new QuestionDto(1L, "question",new Options("1","2","3","4"),"4", quizDto) );
-        when(questionService.getAllQuestions()).thenReturn(questions);
-        List<QuestionDto> result = questionController.getAllQuestions();
+        when(questionService.getQuestions()).thenReturn(questions);
+        List<QuestionDto> result = questionController.getQuestions();
         assertEquals(1, result.size());
         assertEquals("question", result.get(0).getQuestionTitle());
     }

@@ -69,10 +69,10 @@ class UserControllerTest {
     }
     
     @Test
-    public void testGetAllUser() {
+    public void testGetUsers() {
         List<UserDto> users = new ArrayList<>();
-        when(userService.getAllUsers()).thenReturn(users);
-        List<UserDto> response = userController.getAllUsers();
+        when(userService.getUsers()).thenReturn(users);
+        List<UserDto> response = userController.getUsers();
         assertEquals(users, response);
     }
 

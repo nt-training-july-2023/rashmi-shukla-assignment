@@ -2,6 +2,8 @@ package com.project.assesmentportal.controllers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,13 @@ public class CategoryController {
     private CategoryService categoryService;
 
     /**
+     * Creating a instance of Logger Class.
+     */
+    private static final Logger LOGGER
+            = LoggerFactory
+                    .getLogger(CategoryController.class);
+
+    /**
      * Adds a new category.
      * @param categoryDto The CategoryDto representing the category to be
      *                    added.
@@ -45,8 +54,10 @@ public class CategoryController {
     @PostMapping()
     public final ResponseEntity<String> addCategory(
             @RequestBody @Valid final CategoryDto categoryDto) {
-        return new ResponseEntity<String>(categoryService
-                .addCategory(categoryDto),
+        LOGGER.info("Adding a category method invoked.");
+        String response = categoryService.addCategory(categoryDto);
+        LOGGER.info("Added a category successfully.");
+        return new ResponseEntity<String>(response,
                 HttpStatus.CREATED);
     }
 
@@ -55,8 +66,11 @@ public class CategoryController {
      * @return A list of CategoryDto objects representing all categories.
      */
     @GetMapping()
-    public final List<CategoryDto> getAllCategories() {
-        return categoryService.getAllCategories();
+    public final List<CategoryDto> getCategories() {
+        LOGGER.info("Retrieving all categories");
+        List<CategoryDto> categories = categoryService.getCategories();
+        LOGGER.info("Retrieved list of category successfully.");
+        return categories;
     }
 
     /**
@@ -68,8 +82,10 @@ public class CategoryController {
     @GetMapping("/{id}")
     public final ResponseEntity<CategoryDto> getCategoryById(
             @PathVariable("id") final long catId) {
-        return new ResponseEntity<CategoryDto>(
-                categoryService.getCategoryById(catId), HttpStatus.OK);
+        LOGGER.info("Getting a category with ID: " + catId);
+        CategoryDto categoryDto = categoryService.getCategoryById(catId);
+        LOGGER.info("Retrieved a category successfully with ID: " + catId);
+        return new ResponseEntity<CategoryDto>(categoryDto, HttpStatus.OK);
     }
 
     /**
@@ -83,9 +99,10 @@ public class CategoryController {
     public final ResponseEntity<String> updateCategory(
             @PathVariable("id") final long catId,
             @RequestBody @Valid final CategoryDto categoryDto) {
-        return new ResponseEntity<String>(
-                categoryService.updateCategory(categoryDto, catId),
-                HttpStatus.OK);
+        LOGGER.info("Updating a category with ID: " + catId + " invoked.");
+        String response = categoryService.updateCategory(categoryDto, catId);
+        LOGGER.info("Updated a category with ID: " + catId + " successfully.");
+        return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 
     /**
@@ -97,7 +114,9 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public final ResponseEntity<String> deleteCategory(
             @PathVariable("id") final long catId) {
-        categoryService.deleteCategory(catId);
+        LOGGER.info("Deleting a category with ID: " + catId + " invoked.");
+        categoryService.deleteCategory(catId);;
+        LOGGER.info("Deleted a category with ID: " + catId + " successfully.");
         return new ResponseEntity<String>("Category deleted successfully!",
                 HttpStatus.OK);
     }
@@ -110,7 +129,9 @@ public class CategoryController {
     @GetMapping("/{id}/quizzes")
     public final ResponseEntity<List<QuizDto>> getQuizzesById(
             @PathVariable("id") final long id) {
-        return new ResponseEntity<List<QuizDto>>(
-                categoryService.getQuizzesByCategory(id), HttpStatus.OK);
+        LOGGER.info("Retrieving list of quizzes by category method invoked.");
+        List<QuizDto> quizzes = categoryService.getQuizzesByCategory(id);
+        LOGGER.info("Retrieved list of quizzes by category successfully.");
+        return new ResponseEntity<List<QuizDto>>(quizzes, HttpStatus.OK);
     }
 }

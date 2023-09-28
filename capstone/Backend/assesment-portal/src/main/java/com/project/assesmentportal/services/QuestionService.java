@@ -19,7 +19,7 @@ public interface QuestionService {
      * gets all questions.
      * @return all the questions.
      */
-    List<QuestionDto> getAllQuestions();
+    List<QuestionDto> getQuestions();
 
     /**
      * updates an existing question.

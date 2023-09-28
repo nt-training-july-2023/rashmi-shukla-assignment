@@ -21,7 +21,7 @@ public interface QuizService {
      * Retrieves a list of all quizzes.
      * @return A list of QuizDto objects representing all quizzes.
      */
-    List<QuizDto> getAllQuizzes();
+    List<QuizDto> getQuizzes();
 
     /**
      * Retrieves quiz by id.

@@ -29,6 +29,6 @@ public interface UserService {
      * Retrieves a list of all users.
      * @return A list of UserDto objects representing all registered users.
      */
-    List<UserDto> getAllUsers();
+    List<UserDto> getUsers();
 
 }

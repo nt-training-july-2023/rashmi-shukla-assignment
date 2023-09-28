@@ -214,7 +214,7 @@ const ListQuestion = () => {
                         title: "Warning",
                         text: "Delete Question?",
                         icon: "warning",
-                        confirmButtonText: "delete",
+                        confirmButtonText: "Delete",
                         confirmButtonColor: "red",
                         showCancelButton: true,
                       }).then((result) => {

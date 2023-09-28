@@ -145,12 +145,12 @@ class QuizServiceImplTest {
     }
     
     @Test
-    public void testGetAllQuizzes() {
+    public void testGetQuizzes() {
         List<Quiz> quizList = new ArrayList<>();
         quizList.add(new Quiz(1, "React", "descr", 20, null));
         
         when(quizRepository.findAll()).thenReturn(quizList);
-        List<QuizDto> quizDtos = quizServiceImpl.getAllQuizzes();
+        List<QuizDto> quizDtos = quizServiceImpl.getQuizzes();
         
         assertNotNull(quizDtos);
         assertEquals(1, quizDtos.size());

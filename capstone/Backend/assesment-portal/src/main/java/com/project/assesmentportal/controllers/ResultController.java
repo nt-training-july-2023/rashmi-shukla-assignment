@@ -2,14 +2,17 @@ package com.project.assesmentportal.controllers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.assesmentportal.dto.ResultDto;
@@ -22,6 +25,7 @@ import jakarta.validation.Valid;
  */
 @CrossOrigin("*")
 @RestController
+@RequestMapping("/result")
 public class ResultController {
 
     /**
@@ -31,14 +35,22 @@ public class ResultController {
     private ResultService resultService;
 
     /**
+    * Creating a instance of Logger Class.
+    */
+   private static final Logger LOGGER = LoggerFactory
+           .getLogger(ResultController.class);
+
+    /**
      * handles add result.
      * @param resultDto ResultDto to be added.
      * @return ResponseEntity<String>
      */
-    @RequestMapping(value = "/result", method = RequestMethod.POST)
+    @PostMapping()
     public final ResponseEntity<String> addResult(
             @RequestBody @Valid final ResultDto resultDto) {
+        LOGGER.info("Adding Result");
         String addResult = this.resultService.addResult(resultDto);
+        LOGGER.info("Added a result successfully.");
         return new ResponseEntity<String>(addResult, HttpStatus.CREATED);
     }
 
@@ -46,9 +58,12 @@ public class ResultController {
      * handles get all results.
      * @return List of all ResultDto.
      */
-    @RequestMapping(value = "/results", method = RequestMethod.GET)
-    public final List<ResultDto> getAllResults() {
-        return resultService.getAllResults();
+    @GetMapping()
+    public final List<ResultDto> getResults() {
+        LOGGER.info("Retrieving list of results at admin side.");
+        List<ResultDto> resultDtos = resultService.getResults();
+        LOGGER.info("Retrieved list of results at admin side successfully.");
+        return resultDtos;
     }
 
     /**
@@ -56,10 +71,13 @@ public class ResultController {
      * @param userEmail email of a user.
      * @return list of results for user with that email.
      */
-    @RequestMapping(value = "/result/{userEmail}", method = RequestMethod.GET)
+    @GetMapping("/{userEmail}")
     public final List<ResultDto> getResultByUserEmail(
             @PathVariable final String userEmail) {
-        return resultService.getResultByUserEmail(userEmail);
+        LOGGER.info("Retrieving list of user at user side.");
+        List<ResultDto> resultDtos = resultService.getResultByUserEmail(userEmail);
+        LOGGER.info("Retrieved list of user at user side successfully.");
+        return resultDtos;
     }
 
 }

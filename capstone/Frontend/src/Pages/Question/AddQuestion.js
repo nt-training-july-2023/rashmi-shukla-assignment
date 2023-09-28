@@ -99,7 +99,7 @@ const AddQuestion = () => {
           .then((response) => {
             Swal.fire({
               title: "Success",
-              text: "Quiz added successfully",
+              text: "Question added successfully",
               icon: "success",
               timer: 2000,
               showConfirmButton: false,

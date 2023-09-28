@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,13 @@ public class QuizServiceImpl implements QuizService {
     private QuizRepository quizRepository;
 
     /**
+     * Creating a instance of Logger Class.
+     */
+    private static final Logger LOGGER
+            = LoggerFactory
+                    .getLogger(QuizServiceImpl.class);
+
+    /**
      * Adds a new quiz.
      * @param quizDto The QuizDto representing the quiz to be added.
      * @return The QuizDto of the added category.
@@ -60,6 +69,8 @@ public class QuizServiceImpl implements QuizService {
         Optional<Category> checkExistingCategory = categoryRepository
                 .findById(quiz.getCategory().getCategoryId());
         if (checkExistingCategory.isEmpty()) {
+            LOGGER.error("Add Quiz: Category not found "
+                    + quiz.getCategory().getCategoryId());
             throw new ResourceNotFoundException("Category with id:"
                     + quiz.getCategory().getCategoryId()
                     + " doesnot exists");
@@ -67,9 +78,11 @@ public class QuizServiceImpl implements QuizService {
         Optional<Quiz> checkExistingQuiz = quizRepository
                 .findByQuizTitle(quiz.getQuizTitle());
         if (checkExistingQuiz.isPresent()) {
+            LOGGER.error("Add Quiz: Quiz already exists");
             throw new DuplicateResourceException("Quiz already exists");
         }
         Quiz savedQuiz = quizRepository.save(quiz);
+        LOGGER.info("Quiz added successfully.");
         return "Quiz: " + savedQuiz.getQuizTitle()
                 + ", added successfully!";
     }
@@ -79,11 +92,12 @@ public class QuizServiceImpl implements QuizService {
      * @return A list of QuizDto objects representing all quizzes.
      */
     @Override
-    public final List<QuizDto> getAllQuizzes() {
+    public final List<QuizDto> getQuizzes() {
         List<Quiz> quizzes = this.quizRepository.findAll();
         List<QuizDto> quizDtos = quizzes.stream()
                 .map((quiz) -> this.entityToDto(quiz))
                 .collect(Collectors.toList());
+        LOGGER.info("Retrieved a list of quiz successfully.");
         return quizDtos;
     }
 
@@ -98,8 +112,10 @@ public class QuizServiceImpl implements QuizService {
     public final QuizDto getQuizById(final long quizId) {
         Optional<Quiz> quiz = quizRepository.findById(quizId);
         if (quiz.isPresent()) {
+            LOGGER.info("Retrieved a quiz with ID: " + quizId + " successfully.");
             return this.entityToDto(quiz.get());
         } else {
+            LOGGER.error("Get Quiz: Quiz not found ");
             throw new ResourceNotFoundException("Quiz doesnot exists");
         }
     }
@@ -116,12 +132,15 @@ public class QuizServiceImpl implements QuizService {
     public final String updateQuiz(final QuizDto quizDto,
             final long quizId) {
         Quiz exisitingQuiz = quizRepository.findById(quizId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Quiz doesnot exists"));
+                .orElseGet(() ->{ 
+                    LOGGER.error("Update Quiz: Quiz not found ");
+                    throw new ResourceNotFoundException(
+                        "Quiz doesnot exists");});
 
         Optional<Category> checkExistingCategory = categoryRepository
                 .findById(quizDto.getCategory().getCategoryId());
         if (checkExistingCategory.isEmpty()) {
+            LOGGER.error("Update Quiz: Category not found ");
             throw new ResourceNotFoundException("Category with id:"
                     + quizDto.getCategory().getCategoryId()
                     + " doesnot exists");
@@ -133,6 +152,8 @@ public class QuizServiceImpl implements QuizService {
             Optional<Quiz> checkExistingQuiz = quizRepository
                     .findByQuizTitle(quizDto.getQuizTitle());
             if (checkExistingQuiz.isPresent()) {
+
+                LOGGER.error("Update Quiz: quiz already exists");
                 throw new DuplicateResourceException(
                         "Quiz with the same title already exists");
             }
@@ -146,6 +167,7 @@ public class QuizServiceImpl implements QuizService {
                 Category.class);
         exisitingQuiz.setCategory(updatedCategory);
         Quiz updatedQuiz = quizRepository.save(exisitingQuiz);
+        LOGGER.info("Quiz with ID: " + quizId + " updated successully");
         return "Quiz: " + updatedQuiz.getQuizTitle()
                 + ", updated successfully!";
     }
@@ -159,8 +181,11 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public final void deleteQuiz(final long quizId) {
         quizRepository.findById(quizId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Quiz doesnot exists"));
+                .orElseGet(() ->{ 
+                    LOGGER.error("Delete Quiz: Quiz not found ");
+                    throw new ResourceNotFoundException(
+                        "Quiz doesnot exists");});
+        LOGGER.info("Quiz with ID: " + quizId + "has been deleted successfully");
         quizRepository.deleteById(quizId);
     }
 
@@ -172,9 +197,12 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public final List<QuestionDto> getQuestionsByQuiz(final long quizId) {
         Quiz quiz = quizRepository.findById(quizId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Quiz doesnot exists"));
+                .orElseThrow(() -> {
+                    LOGGER.error("Get Question by Quiz: Quiz not found ");
+                    throw new ResourceNotFoundException(
+                        "Quiz doesnot exists");});
         List<Question> questions = quiz.getQuestions();
+        LOGGER.info("Retrieved a list of question by quiz successfully.");
         return questions.stream().map(this::questionEntityToDto)
                 .collect(Collectors.toList());
     }

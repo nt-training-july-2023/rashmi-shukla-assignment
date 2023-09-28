@@ -17,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 
 import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuizDto;
-import com.project.assesmentportal.entities.Category;
-import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.services.impl.CategoryServiceImpl;
 
 class CategoryControllerTest {
@@ -39,8 +37,8 @@ class CategoryControllerTest {
         List<CategoryDto> categories = new ArrayList<>();
         categories.add(new CategoryDto(1, "GK","GK Category"));
         categories.add(new CategoryDto(2, "Maths","Maths Category"));
-        when(categoryService.getAllCategories()).thenReturn(categories);
-        List<CategoryDto> result = categoryController.getAllCategories();
+        when(categoryService.getCategories()).thenReturn(categories);
+        List<CategoryDto> result = categoryController.getCategories();
         assertEquals(2, result.size());
         assertEquals("GK", result.get(0).getCategoryTitle());
         assertEquals("Maths Category", result.get(1).getCategoryDescription());
