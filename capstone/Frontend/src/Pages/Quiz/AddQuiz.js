@@ -28,7 +28,6 @@ const AddQuiz = () => {
         setCategories(response.data);
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -52,7 +51,6 @@ const AddQuiz = () => {
         setCategory(catObject);
       })
       .catch((error) => {
-        console.log(error);
       });
     setSelectedCategory(categoryId);
   };
@@ -69,12 +67,12 @@ const AddQuiz = () => {
           .then((response) => {
             Swal.fire({
               title: "Success",
-              text: "qUIZ updated successfully",
+              text: "Quiz updated successfully",
               icon: "success",
               timer: 2000,
               showConfirmButton: false,
             });
-            navigate("/ListQuiz");
+            navigate("/quizzes");
           })
           .catch((error) => {
             const submitError = error.response.data.message;
@@ -96,7 +94,7 @@ const AddQuiz = () => {
               timer: 2000,
               showConfirmButton: false,
             });
-            navigate("/ListQuiz");
+            navigate("/quizzes");
           })
           .catch((error) => {
             const submitError = error.response.data.message;
@@ -123,7 +121,6 @@ const AddQuiz = () => {
           setSelectedCategory(response.data.category.categoryId);
         })
         .catch((error) => {
-          console.log(error);
         });
     }
   }, [id]);
@@ -198,7 +195,7 @@ const AddQuiz = () => {
             <button onClick={(e) => saveQuiz(e)} className="cat-button">
               Submit
             </button>
-            <Link to="/ListQuiz">
+            <Link to="/quizzes">
               <button>Cancel</button>
             </Link>
           </div>

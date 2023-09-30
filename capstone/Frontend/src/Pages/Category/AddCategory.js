@@ -35,7 +35,7 @@ const AddCategory = () => {
               timer: 2000,
               showConfirmButton: false,
             });
-            navigate("/ListCategory");
+            navigate("/categories");
           })
           .catch((error) => {
             const submitError = error.response.data.message;
@@ -57,7 +57,7 @@ const AddCategory = () => {
               timer: 2000,
               showConfirmButton: false,
             });
-            navigate("/ListCategory");
+            navigate("/categories");
           })
           .catch((error) => {
             const submitError = error.response.data.message;
@@ -81,7 +81,6 @@ const AddCategory = () => {
           setCategoryDescription(response.data.categoryDescription);
         })
         .catch((error) => {
-          console.log(error);
         });
     }
   }, [id]);
@@ -127,7 +126,7 @@ const AddCategory = () => {
           <button onClick={(e) => saveCategory(e)} className="cat-button">
             Submit
           </button>
-          <Link to="/ListCategory">
+          <Link to="/categories">
             <button>Cancel</button>
           </Link>
         </form>

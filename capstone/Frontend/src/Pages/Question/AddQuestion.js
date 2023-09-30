@@ -31,7 +31,6 @@ const AddQuestion = () => {
         setQuiz(reponse.data);
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -82,7 +81,7 @@ const AddQuestion = () => {
               timer: 2000,
               showConfirmButton: false,
             });
-            navigate(`/ListQuiz/${quizId}/questions`);
+            navigate(`/quizzes/${quizId}/questions`);
           })
           .catch((error) => {
             const submitError = error.response.data.message;
@@ -104,7 +103,7 @@ const AddQuestion = () => {
               timer: 2000,
               showConfirmButton: false,
             });
-            navigate(`/ListQuiz/${id}/questions`);
+            navigate(`/quizzes/${id}/questions`);
           })
           .catch((error) => {
             const submitError = error.response.data.message;
@@ -141,7 +140,6 @@ const AddQuestion = () => {
           setQuiz(response.data.quiz);
         })
         .catch((error) => {
-          console.log(error);
         });
     }
   }, [questionId]);
@@ -236,7 +234,7 @@ const AddQuestion = () => {
             <button onClick={(e) => saveQuestion(e)} className="cat-button">
               Submit
             </button>
-            <Link to={`/ListQuiz/${quizId ? quizId : id}/questions`}>
+            <Link to={`/quizzes/${quizId ? quizId : id}/questions`}>
               <button>Cancel</button>
             </Link>
           </div>

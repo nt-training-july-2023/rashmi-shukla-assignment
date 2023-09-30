@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,16 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const userRole = localStorage.getItem("role");
+  const IsLoggedIn = localStorage.getItem("IsLoggedIn");
+
+  useEffect(() => {
+    if (IsLoggedIn === "true" && userRole === "admin") {
+      navigate("/dashboard");
+    } else if (IsLoggedIn === "true" && userRole === "user") {
+      navigate("/user-dashboard"); 
+    }
+  }, []);
 
   const handleLoginClick = async (event) => {
     event.preventDefault();
@@ -33,7 +43,7 @@ const LoginForm = () => {
         } else if (response.status === 200 && response.data.role === "admin") {
           navigate("/dashboard");
         }
-        localStorage.setItem("IsLoggedIn", response.status);
+        localStorage.setItem("IsLoggedIn", true);
         localStorage.setItem("role", response.data.role);
         localStorage.setItem("userName", response.data.fullName)
         localStorage.setItem("userEmail", response.data.email)

@@ -21,7 +21,6 @@ const ListCategory = () => {
         setCategories(response.data);
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -38,7 +37,6 @@ const ListCategory = () => {
         getAllCategories();
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -49,7 +47,7 @@ const ListCategory = () => {
         <div className="cat-header">
           <h1>ALL CATEGORIES</h1>
           {userRole === "admin" && (
-            <button onClick={() => navigate(`/AddCategory`)}>
+            <button onClick={() => navigate(`/categories/add`)}>
               Add Category
             </button>
           )}
@@ -73,7 +71,7 @@ const ListCategory = () => {
                   <button
                     className="action-buttons view-button"
                     onClick={() =>
-                      navigate(`/ListQuiz/${category.categoryId}/quizzes`)
+                      navigate(`/categories/${category.categoryId}/quizzes`)
                     }
                   >
                     View Quiz
@@ -83,7 +81,7 @@ const ListCategory = () => {
                       <button
                         className="action-buttons update-button"
                         onClick={() =>
-                          navigate(`/UpdateCategory/${category.categoryId}`)
+                          navigate(`/categories/update/${category.categoryId}`)
                         }
                       >
                         Update

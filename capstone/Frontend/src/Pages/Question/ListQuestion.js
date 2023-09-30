@@ -62,7 +62,6 @@ const ListQuestion = () => {
         setTotalMarks(response.data.length);  
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -76,7 +75,6 @@ const ListQuestion = () => {
         setTimeInSeconds(timerInSeconds);
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -94,7 +92,6 @@ const ListQuestion = () => {
         getQuestionsByQuiz();
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -108,7 +105,6 @@ const ListQuestion = () => {
   };
 
   const handleSubmit = (e) => {
-    console.log("handleSubmit called");
     if(e){
     e.preventDefault();
     }
@@ -143,7 +139,7 @@ const ListQuestion = () => {
       <div className="question-header">
         <h1>QUIZ: {quizTitle}</h1>
         {userRole === "admin" ? (
-          <button onClick={() => navigate(`/quiz/${id}/addQuestion`)}>
+          <button onClick={() => navigate(`/quizzes/${id}/questions/add`)}>
             Add Question
           </button>
         ) : (
@@ -166,7 +162,6 @@ const ListQuestion = () => {
                 {Object.values(question.options).map(
                   (optionValue, optionIndex) => (
                     <p key={optionIndex} className="question-card-text">
-                      {optionIndex + 1}:
                       <input
                         type="radio"
                         name={`options-${question.questionId}`}
@@ -201,7 +196,7 @@ const ListQuestion = () => {
                     className="ques-update-btn"
                     onClick={() =>
                       navigate(
-                        `/quiz/${id}/updateQuestion/${question.questionId}`
+                        `/quizzes/${id}/questions/update/${question.questionId}`
                       )
                     }
                   >

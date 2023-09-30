@@ -22,7 +22,6 @@ const ListResult = () => {
             setResults(response.data);
           })
           .catch((error) => {
-            console.log(error);
           });
     };
 
@@ -32,7 +31,6 @@ const ListResult = () => {
           setResults(response.data);
         })
         .catch((error) => {
-            console.log(error);
         });
     }
 

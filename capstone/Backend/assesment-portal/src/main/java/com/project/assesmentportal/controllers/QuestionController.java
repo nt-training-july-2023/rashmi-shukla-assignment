@@ -39,8 +39,8 @@ public class QuestionController {
     /**
      * The instance of Logger Class.
      */
-    private static final Logger LOGGER
-            = LoggerFactory.getLogger(QuestionController.class);
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(QuestionController.class);
 
     /**
      * handle add question.
@@ -51,11 +51,9 @@ public class QuestionController {
     public final ResponseEntity<String> addQuestion(
             @RequestBody @Valid final QuestionDto questionDto) {
         LOGGER.info("Adding a question.");
-        String addQuestion = this.questionService
-                .addQuestion(questionDto);
+        String addQuestion = this.questionService.addQuestion(questionDto);
         LOGGER.info("Added a question successfully.");
-        return new ResponseEntity<String>(addQuestion,
-                HttpStatus.CREATED);
+        return new ResponseEntity<String>(addQuestion, HttpStatus.CREATED);
     }
 
     /**
@@ -65,7 +63,7 @@ public class QuestionController {
     @GetMapping()
     public final List<QuestionDto> getQuestions() {
         LOGGER.info("Retrieving a list of question.");
-        List<QuestionDto> questionDtos =  questionService.getQuestions();
+        List<QuestionDto> questionDtos = questionService.getQuestions();
         LOGGER.info("Retrieved a list of question successfully.");
         return questionDtos;
     }
@@ -79,16 +77,16 @@ public class QuestionController {
     public final ResponseEntity<QuestionDto> getQuestionById(
             @PathVariable("id") final long questionId) {
         LOGGER.info("Retrieving a question.");
-        QuestionDto questionDto = questionService.getQuestionById(questionId);
+        QuestionDto questionDto = questionService
+                .getQuestionById(questionId);
         LOGGER.info("Retrieved a question successfully.");
-        return new ResponseEntity<QuestionDto>(
-                questionDto, HttpStatus.OK);
+        return new ResponseEntity<QuestionDto>(questionDto, HttpStatus.OK);
     }
 
     /**
      * updates question.
      * @param questionDto QuestionDto of new question.
-     * @param questionId id of the question
+     * @param questionId  id of the question
      * @return QuestionDto.
      */
     @PutMapping("/{id}")
@@ -96,9 +94,11 @@ public class QuestionController {
             @RequestBody @Valid final QuestionDto questionDto,
             @PathVariable("id") final long questionId) {
         LOGGER.info("Updating a question with ID: " + questionId);
-        String response = questionService.updateQuestion(questionDto, questionId);
-        LOGGER.info("Updated a question with ID: " + questionId + " successfully.");
-        return new ResponseEntity<String>(response,HttpStatus.OK);
+        String response = questionService.updateQuestion(questionDto,
+                questionId);
+        LOGGER.info("Updated a question with ID: " + questionId
+                + " successfully.");
+        return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 
     /**
@@ -111,7 +111,8 @@ public class QuestionController {
             @PathVariable("id") final long questionId) {
         LOGGER.info("Deleting a question with ID: " + questionId);
         questionService.deleteQuestion(questionId);
-        LOGGER.info("Deleted a question with ID: " + questionId + " successfully.");
+        LOGGER.info("Deleted a question with ID: " + questionId
+                + " successfully.");
         return new ResponseEntity<String>("Question deleted successfully",
                 HttpStatus.OK);
     }

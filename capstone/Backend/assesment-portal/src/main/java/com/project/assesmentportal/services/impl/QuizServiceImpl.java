@@ -52,9 +52,8 @@ public class QuizServiceImpl implements QuizService {
     /**
      * Creating a instance of Logger Class.
      */
-    private static final Logger LOGGER
-            = LoggerFactory
-                    .getLogger(QuizServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(QuizServiceImpl.class);
 
     /**
      * Adds a new quiz.
@@ -112,7 +111,8 @@ public class QuizServiceImpl implements QuizService {
     public final QuizDto getQuizById(final long quizId) {
         Optional<Quiz> quiz = quizRepository.findById(quizId);
         if (quiz.isPresent()) {
-            LOGGER.info("Retrieved a quiz with ID: " + quizId + " successfully.");
+            LOGGER.info("Retrieved a quiz with ID: " + quizId
+                    + " successfully.");
             return this.entityToDto(quiz.get());
         } else {
             LOGGER.error("Get Quiz: Quiz not found ");
@@ -132,10 +132,11 @@ public class QuizServiceImpl implements QuizService {
     public final String updateQuiz(final QuizDto quizDto,
             final long quizId) {
         Quiz exisitingQuiz = quizRepository.findById(quizId)
-                .orElseGet(() ->{ 
+                .orElseGet(() -> {
                     LOGGER.error("Update Quiz: Quiz not found ");
                     throw new ResourceNotFoundException(
-                        "Quiz doesnot exists");});
+                            "Quiz doesnot exists");
+                });
 
         Optional<Category> checkExistingCategory = categoryRepository
                 .findById(quizDto.getCategory().getCategoryId());
@@ -180,12 +181,12 @@ public class QuizServiceImpl implements QuizService {
      */
     @Override
     public final void deleteQuiz(final long quizId) {
-        quizRepository.findById(quizId)
-                .orElseGet(() ->{ 
-                    LOGGER.error("Delete Quiz: Quiz not found ");
-                    throw new ResourceNotFoundException(
-                        "Quiz doesnot exists");});
-        LOGGER.info("Quiz with ID: " + quizId + "has been deleted successfully");
+        quizRepository.findById(quizId).orElseGet(() -> {
+            LOGGER.error("Delete Quiz: Quiz not found ");
+            throw new ResourceNotFoundException("Quiz doesnot exists");
+        });
+        LOGGER.info("Quiz with ID: " + quizId
+                + "has been deleted successfully");
         quizRepository.deleteById(quizId);
     }
 
@@ -196,11 +197,10 @@ public class QuizServiceImpl implements QuizService {
      */
     @Override
     public final List<QuestionDto> getQuestionsByQuiz(final long quizId) {
-        Quiz quiz = quizRepository.findById(quizId)
-                .orElseThrow(() -> {
-                    LOGGER.error("Get Question by Quiz: Quiz not found ");
-                    throw new ResourceNotFoundException(
-                        "Quiz doesnot exists");});
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> {
+            LOGGER.error("Get Question by Quiz: Quiz not found ");
+            throw new ResourceNotFoundException("Quiz doesnot exists");
+        });
         List<Question> questions = quiz.getQuestions();
         LOGGER.info("Retrieved a list of question by quiz successfully.");
         return questions.stream().map(this::questionEntityToDto)

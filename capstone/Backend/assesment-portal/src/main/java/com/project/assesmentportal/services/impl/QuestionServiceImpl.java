@@ -50,8 +50,8 @@ public class QuestionServiceImpl implements QuestionService {
     /**
      * Creating a instance of Logger Class.
      */
-    private static final Logger LOGGER
-            = LoggerFactory.getLogger(QuestionServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(QuestionServiceImpl.class);
 
     /**
      * add new question.
@@ -97,10 +97,11 @@ public class QuestionServiceImpl implements QuestionService {
     public final String updateQuestion(final QuestionDto questionDto,
             final long questionId) {
         Question exisitingQuestion = questionRepository
-                .findById(questionId)
-                .orElseGet(() -> {
-                   LOGGER.error(" Update Question: question not found" + questionId);
-                   throw new ResourceNotFoundException("Question doesnot exists");
+                .findById(questionId).orElseGet(() -> {
+                    LOGGER.error(" Update Question: question not found"
+                            + questionId);
+                    throw new ResourceNotFoundException(
+                            "Question doesnot exists");
                 });
 
         Question question = dtoToEntity(questionDto);
@@ -122,7 +123,8 @@ public class QuestionServiceImpl implements QuestionService {
         exisitingQuestion.setQuiz(question.getQuiz());
 
         questionRepository.save(exisitingQuestion);
-        LOGGER.info("Question with ID: " + questionId + " Updated successfully.");
+        LOGGER.info("Question with ID: " + questionId
+                + " Updated successfully.");
         return "Question with id: " + questionId
                 + " updated successfully!";
     }
@@ -134,11 +136,14 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public final QuestionDto getQuestionById(final long questionId) {
         Question question = questionRepository.findById(questionId)
-                .orElseGet(() -> { 
-                    LOGGER.error("Get Question: question not found" + questionId);
-                   throw new ResourceNotFoundException("Question doesnot exists!");
-                    });
-        LOGGER.info("Retrieved a question with ID: " + questionId + " successfully.");
+                .orElseGet(() -> {
+                    LOGGER.error("Get Question: question not found"
+                            + questionId);
+                    throw new ResourceNotFoundException(
+                            "Question doesnot exists!");
+                });
+        LOGGER.info("Retrieved a question with ID: " + questionId
+                + " successfully.");
         return this.entityToDto(question);
     }
 
@@ -148,11 +153,14 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public final void deleteQuestion(final long questionId) {
-        questionRepository.findById(questionId)
-                .orElseGet(() ->{ 
-                    LOGGER.error("Delete Question: question not found" + questionId);
-                   throw new ResourceNotFoundException("Question doesnot exists!");});
-        LOGGER.info("Question with ID: " + questionId + " deleted successfully.");
+        questionRepository.findById(questionId).orElseGet(() -> {
+            LOGGER.error(
+                    "Delete Question: question not found" + questionId);
+            throw new ResourceNotFoundException(
+                    "Question doesnot exists!");
+        });
+        LOGGER.info("Question with ID: " + questionId
+                + " deleted successfully.");
         questionRepository.deleteById(questionId);
     }
 
@@ -167,15 +175,17 @@ public class QuestionServiceImpl implements QuestionService {
         question.setOptionTwo(questionDto.getOptions().getOptionII());
         question.setOptionThree(questionDto.getOptions().getOptionIII());
         question.setOptionFour(questionDto.getOptions().getOptionIV());
-        //check if answer belongs to options
+        // check if answer belongs to options
         boolean found = false;
         String correctAnswerMatch = questionDto.getAnswer();
-        if (correctAnswerMatch.equalsIgnoreCase(questionDto.getOptions().getOptionI())
-                || correctAnswerMatch.equalsIgnoreCase(questionDto.getOptions().getOptionII())
-                || correctAnswerMatch
-                        .equalsIgnoreCase(questionDto.getOptions().getOptionIII())
-                || correctAnswerMatch
-                        .equalsIgnoreCase(questionDto.getOptions().getOptionIV())) {
+        if (correctAnswerMatch
+                .equalsIgnoreCase(questionDto.getOptions().getOptionI())
+                || correctAnswerMatch.equalsIgnoreCase(
+                        questionDto.getOptions().getOptionII())
+                || correctAnswerMatch.equalsIgnoreCase(
+                        questionDto.getOptions().getOptionIII())
+                || correctAnswerMatch.equalsIgnoreCase(
+                        questionDto.getOptions().getOptionIV())) {
             found = true;
         }
         if (!found) {

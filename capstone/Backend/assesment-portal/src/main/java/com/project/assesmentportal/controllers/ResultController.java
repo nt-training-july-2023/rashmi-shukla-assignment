@@ -75,7 +75,8 @@ public class ResultController {
     public final List<ResultDto> getResultByUserEmail(
             @PathVariable final String userEmail) {
         LOGGER.info("Retrieving list of user at user side.");
-        List<ResultDto> resultDtos = resultService.getResultByUserEmail(userEmail);
+        List<ResultDto> resultDtos = resultService.getResultByUserEmail(
+                userEmail);
         LOGGER.info("Retrieved list of user at user side successfully.");
         return resultDtos;
     }

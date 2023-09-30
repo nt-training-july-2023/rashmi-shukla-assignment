@@ -24,7 +24,6 @@ const Dashboard = () => {
       setNumOfUsers(response.data.length);
     })
     .catch((error) => {
-      console.log(error);
     });
   }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios'
 import Swal from 'sweetalert2';
@@ -14,6 +14,16 @@ const RegistrationForm = () => {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const navigate = useNavigate(); 
+    const userRole = localStorage.getItem("role");
+    const IsLoggedIn = localStorage.getItem("IsLoggedIn");
+
+    useEffect(() => {
+      if (IsLoggedIn === "true" && userRole === "admin") {
+        navigate("/dashboard");
+      } else if (IsLoggedIn === "true" && userRole === "user") {
+        navigate("/user-dashboard"); 
+      }
+    }, []);
     
     const handleSubmit=async(e) =>{
       e.preventDefault()

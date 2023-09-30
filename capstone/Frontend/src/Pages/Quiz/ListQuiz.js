@@ -29,7 +29,6 @@ const ListQuiz = () => {
         setQuiz(response.data);
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -39,7 +38,6 @@ const ListQuiz = () => {
         setCategoryName(response.data.categoryTitle);
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -49,7 +47,6 @@ const ListQuiz = () => {
         setQuiz(response.data);
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -66,7 +63,6 @@ const ListQuiz = () => {
         getAllQuizzes();
       })
       .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -84,7 +80,7 @@ const ListQuiz = () => {
       <div className="quiz-header">
         {heading()}
         {userRole === "admin" && !id && (
-          <button onClick={() => navigate(`/addQuiz`)}>Add Quiz</button>
+          <button onClick={() => navigate(`/quizzes/add`)}>Add Quiz</button>
         )}
       </div>
       <div className="quiz-container">
@@ -107,14 +103,14 @@ const ListQuiz = () => {
                   <button
                     className="action-btn view-btn"
                     onClick={() =>
-                      navigate(`/ListQuiz/${quizItem.quizId}/questions`)
+                      navigate(`/quizzes/${quizItem.quizId}/questions`)
                     }
                   >
                     View Questions
                   </button>
                   <button
                     className="action-btn update-btn"
-                    onClick={() => navigate(`/UpdateQuiz/${quizItem.quizId}`)}
+                    onClick={() => navigate(`/quizzes/update/${quizItem.quizId}`)}
                   >
                     Update Quiz
                   </button>
@@ -145,6 +141,7 @@ const ListQuiz = () => {
                   onClick={() =>
                     Swal.fire({
                       title: "Instructions",
+                      icon:"info",
                       html: instructions,
                       confirmButtonText: "Start Quiz",
                       showCancelButton: true,

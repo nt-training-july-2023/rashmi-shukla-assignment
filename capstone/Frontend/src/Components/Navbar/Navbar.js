@@ -64,10 +64,10 @@ const Navbar = () => {
             Home
           </Link>)}
 
-          <Link to="/ListCategory" className="navbar-item">
+          <Link to="/categories" className="navbar-item">
             Category
           </Link>
-          <Link to="/ListQuiz" className="navbar-item">
+          <Link to="/quizzes" className="navbar-item">
             Quizzes
           </Link> 
           <Link to="/results" className="navbar-item">

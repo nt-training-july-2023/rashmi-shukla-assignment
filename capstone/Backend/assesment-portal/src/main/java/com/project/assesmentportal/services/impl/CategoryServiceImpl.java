@@ -40,8 +40,8 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * Creating a instance of Logger Class.
      */
-    private static final Logger LOGGER
-            = LoggerFactory.getLogger(CategoryServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(CategoryServiceImpl.class);
 
     /**
      * Adds a new category.
@@ -96,7 +96,8 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> category = categoryRepository
                 .findById(categoryId);
         if (category.isPresent()) {
-            LOGGER.info("Retrieved a category with ID: " + categoryId + " successfully.");
+            LOGGER.info("Retrieved a category with ID: " + categoryId
+                    + " successfully.");
             return this.modelMapper.map(category.get(), CategoryDto.class);
         } else {
             LOGGER.error("Get Category: category not found" + categoryId);
@@ -117,9 +118,11 @@ public class CategoryServiceImpl implements CategoryService {
             final long categoryId) {
         Category existingCategory = categoryRepository.findById(categoryId)
                 .orElseGet(() -> {
-                    LOGGER.error("Update Category: category not found" + categoryId);
-                    throw new ResourceNotFoundException("Category doesnot exists");
-                    });
+                    LOGGER.error("Update Category: category not found"
+                            + categoryId);
+                    throw new ResourceNotFoundException(
+                            "Category doesnot exists");
+                });
 
         // Check if the updated title is the same as the existing one
         if (!categoryDto.getCategoryTitle()
@@ -128,7 +131,8 @@ public class CategoryServiceImpl implements CategoryService {
             Optional<Category> checkExistingCatgeory = categoryRepository
                     .findByCategoryTitle(categoryDto.getCategoryTitle());
             if (checkExistingCatgeory.isPresent()) {
-                LOGGER.error("Update Category: category already exists" + categoryId);
+                LOGGER.error("Update Category: category already exists"
+                        + categoryId);
                 throw new DuplicateResourceException(
                         "Category with the same title already exists");
             }
@@ -140,7 +144,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category updatedCategory = categoryRepository
                 .save(existingCategory);
-        LOGGER.info("Category with ID: " + categoryId + " updated successfully.");
+        LOGGER.info("Category with ID: " + categoryId
+                + " updated successfully.");
         return "Category: " + updatedCategory.getCategoryTitle()
                 + ", updated successfully!";
     }
@@ -153,14 +158,14 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public final void deleteCategory(final long categoryId) {
-        categoryRepository.findById(categoryId)
-                .orElseGet(() ->{
-                    LOGGER.error("Update Category: category already exists" + categoryId);
-                    throw new ResourceNotFoundException(
-                        "Category doesnot exists");
-                    });
+        categoryRepository.findById(categoryId).orElseGet(() -> {
+            LOGGER.error("Update Category: category already exists"
+                    + categoryId);
+            throw new ResourceNotFoundException("Category doesnot exists");
+        });
         categoryRepository.deleteById(categoryId);
-        LOGGER.info("Category with ID: " + categoryId + " deleted successfully.");
+        LOGGER.info("Category with ID: " + categoryId
+                + " deleted successfully.");
 
     }
 
@@ -174,9 +179,11 @@ public class CategoryServiceImpl implements CategoryService {
             final long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> {
-                    LOGGER.error("Get Quiz By Category: category not found" + categoryId);
-                    throw new ResourceNotFoundException("Category doesn't exists");
-                    });
+                    LOGGER.error("Get Quiz By Category: category not found"
+                            + categoryId);
+                    throw new ResourceNotFoundException(
+                            "Category doesn't exists");
+                });
         List<Quiz> quizzes = category.getQuizzes();
         LOGGER.info("Retrieved a list of quiz by category successfully.");
         return quizzes.stream().map(this::entityToDto)

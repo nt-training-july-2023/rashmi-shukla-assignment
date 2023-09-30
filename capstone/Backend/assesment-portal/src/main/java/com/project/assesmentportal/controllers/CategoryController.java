@@ -115,7 +115,7 @@ public class CategoryController {
     public final ResponseEntity<String> deleteCategory(
             @PathVariable("id") final long catId) {
         LOGGER.info("Deleting a category with ID: " + catId + " invoked.");
-        categoryService.deleteCategory(catId);;
+        categoryService.deleteCategory(catId);
         LOGGER.info("Deleted a category with ID: " + catId + " successfully.");
         return new ResponseEntity<String>("Category deleted successfully!",
                 HttpStatus.OK);

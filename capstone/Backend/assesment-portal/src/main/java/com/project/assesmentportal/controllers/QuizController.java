@@ -99,8 +99,8 @@ public class QuizController {
         LOGGER.info("Updating a quiz");
         String response = quizService.updateQuiz(quizDto, quizId);
         LOGGER.info("Updated a quiz successfully.");
-        return new ResponseEntity<String>(response
-                , HttpStatus.OK);
+        return new ResponseEntity<String>(response,
+                HttpStatus.OK);
     }
 
     /**
