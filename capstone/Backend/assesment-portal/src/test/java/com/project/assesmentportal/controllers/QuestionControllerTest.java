@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.project.assesmentportal.dto.ApiResponse;
+import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.entities.Options;
@@ -54,7 +55,8 @@ class QuestionControllerTest {
     @Test
     public void testGetQuestions() {
         List<QuestionDto> questions = new ArrayList<>();
-        QuizDto quizDto = new QuizDto(1,"Gk","quiz",20,null);
+        CategoryDto categoryDto = new CategoryDto(1,"IT","Corporate");
+        QuizDto quizDto = new QuizDto(1,"Gk","quiz",20,categoryDto);
         questions.add(new QuestionDto(1L, "question",new Options("1","2","3","4"),"4", quizDto) );
         when(questionService.getQuestions()).thenReturn(questions);
         List<QuestionDto> result = questionController.getQuestions();

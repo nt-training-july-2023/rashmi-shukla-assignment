@@ -14,7 +14,8 @@ class QuestionDtoTest {
     @BeforeEach
     public void setUp() {
         Options options = new Options("Option 1", "Option 2", "Option 3", "Option 4");
-        QuizDto quizDto = new QuizDto(1L, "Sample Quiz", "Description", 60, null);
+        CategoryDto categoryDto = new CategoryDto(1,"IT","Corporate");
+        QuizDto quizDto = new QuizDto(1L, "Sample Quiz", "Description", 60, categoryDto);
         questionDto = new QuestionDto(1L, "Sample Question", options, "Option 1", quizDto);
     }
 
@@ -43,11 +44,14 @@ class QuestionDtoTest {
     @Test
     public void testDefaultConstructor() {
         QuestionDto defaultQuestionDto = new QuestionDto();
+        CategoryDto categoryDto = new CategoryDto(1,"IT","Corporate");
+        QuizDto quizDto =  new QuizDto(1,"React","Frontend Quiz",20,categoryDto);
+        defaultQuestionDto.setQuiz(quizDto);
 
         assertEquals(0L, defaultQuestionDto.getQuestionId());
         assertNull(defaultQuestionDto.getQuestionTitle());
         assertNull(defaultQuestionDto.getAnswer());
-        assertNull(defaultQuestionDto.getQuiz());
+        assertNotNull(defaultQuestionDto.getQuiz());
     }
 
     @Test
@@ -59,7 +63,8 @@ class QuestionDtoTest {
         Options updatedOptions = new Options("Updated Option 1", "Updated Option 2", "Updated Option 3", "Updated Option 4");
         newQuestionDto.setOptions(updatedOptions);
         newQuestionDto.setAnswer("Updated Option 1");
-        QuizDto updatedQuizDto = new QuizDto(2L, "Updated Quiz", "Updated Description", 120, null);
+        CategoryDto categoryDto = new CategoryDto(1,"IT","Corporate");
+        QuizDto updatedQuizDto = new QuizDto(2L, "Updated Quiz", "Updated Description", 120, categoryDto);
         newQuestionDto.setQuiz(updatedQuizDto);
 
         assertEquals(2L, newQuestionDto.getQuestionId());

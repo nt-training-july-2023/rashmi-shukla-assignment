@@ -23,14 +23,15 @@ class QuizTest {
         quiz.setQuizTitle("Sample Quiz");
         quiz.setQuizDescription("Sample description");
         quiz.setQuizTimer(30);
-        quiz.setCategory(null);
+        Category category = new Category(1,"IT","Corporate");
+        quiz.setCategory(category);
 
         // Verify values using getters
         assertEquals(1L, quiz.getQuizId());
         assertEquals("Sample Quiz", quiz.getQuizTitle());
         assertEquals("Sample description", quiz.getQuizDescription());
         assertEquals(30, quiz.getQuizTimer());
-        assertNull(quiz.getCategory());
+        assertNotNull(quiz.getCategory());
 
     }
     
@@ -60,11 +61,9 @@ class QuizTest {
     }
     @Test
     public void testConstructor() {
-        Quiz quiz1 = new Quiz(1L, "Quiz 1", "description 1", 45, null);
         Category category = new Category(1L, "Category 1", "Category description");
         Quiz newQuiz = new Quiz(2L, "Quiz 2", "description 2", 45,category);
-
-        assertNull(quiz1.getCategory());
+        
         assertEquals(2L, newQuiz.getQuizId());
         assertEquals("Quiz 2", newQuiz.getQuizTitle());
         assertEquals("description 2", newQuiz.getQuizDescription());

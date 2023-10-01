@@ -167,9 +167,13 @@ public class QuizServiceImpl implements QuizService {
         exisitingQuiz.setQuizTitle(quizDto.getQuizTitle());
         exisitingQuiz.setQuizDescription(quizDto.getQuizDescription());
         exisitingQuiz.setQuizTimer(quizDto.getQuizTimer());
-
-        Category updatedCategory = modelMapper.map(quizDto.getCategory(),
-                Category.class);
+        
+        Category updatedCategory = new Category(
+                quizDto.getCategory().getCategoryId(),
+                quizDto.getCategory().getCategoryTitle(),
+                quizDto.getCategory().getCategoryDescription()
+                );
+        
         exisitingQuiz.setCategory(updatedCategory);
         quizRepository.save(exisitingQuiz);
         LOGGER.info(MessageConstants.UPDATE_QUIZ_ENDED);
@@ -225,8 +229,9 @@ public class QuizServiceImpl implements QuizService {
         // Map the QuizDto to a Quiz entity
         Quiz quiz = modelMapper.map(quizDto, Quiz.class);
         if (quizDto.getCategory() != null) {
-            Category category = modelMapper.map(quizDto.getCategory(),
-                    Category.class);
+            Category category = new Category(quizDto.getCategory().getCategoryId(),
+                    quizDto.getCategory().getCategoryTitle(),
+                    quizDto.getCategory().getCategoryDescription());
             quiz.setCategory(category);
         }
         return quiz;
@@ -240,8 +245,9 @@ public class QuizServiceImpl implements QuizService {
     public final QuizDto entityToDto(final Quiz quiz) {
         QuizDto quizDto = modelMapper.map(quiz, QuizDto.class);
         if (quiz.getCategory() != null) {
-            CategoryDto categoryDto = modelMapper.map(quiz.getCategory(),
-                    CategoryDto.class);
+            CategoryDto categoryDto = new CategoryDto(quiz.getCategory().getCategoryId(),
+                    quiz.getCategory().getCategoryTitle(),
+                    quiz.getCategory().getCategoryDescription());
             quizDto.setCategory(categoryDto);
         }
         return quizDto;
@@ -253,23 +259,28 @@ public class QuizServiceImpl implements QuizService {
      * @return questionDto.
      */
     public final QuestionDto questionEntityToDto(final Question question) {
-        QuestionDto questionDto = modelMapper.map(question,
-                QuestionDto.class);
+//        QuestionDto questionDto = modelMapper.map(question,
+//                QuestionDto.class);
+        QuestionDto questionDto = new QuestionDto();
+        questionDto.setQuestionId(question.getQuestionId());
+        questionDto.setQuestionTitle(question.getQuestionTitle());
         Options options = new Options(question.getOptionOne(),
                 question.getOptionTwo(), question.getOptionThree(),
                 question.getOptionFour());
         questionDto.setOptions(options);
-        if (question.getQuiz() != null) {
-            QuizDto quizDto = modelMapper.map(question.getQuiz(),
-                    QuizDto.class);
-            if (question.getQuiz().getCategory() != null) {
-                CategoryDto categoryDto = modelMapper.map(
-                        question.getQuiz().getCategory(),
-                        CategoryDto.class);
-                quizDto.setCategory(categoryDto);
-            }
-            questionDto.setQuiz(quizDto);
-        }
+        questionDto.setAnswer(question.getAnswer());
+        QuizDto quizDto = new QuizDto();
+        quizDto.setQuizId(question.getQuiz().getQuizId()); 
+        quizDto.setQuizTitle(question.getQuiz().getQuizTitle());
+        quizDto.setQuizDescription(question.getQuiz().getQuizDescription());
+        quizDto.setQuizTimer(question.getQuiz().getQuizTimer());
+        CategoryDto categoryDto = new CategoryDto(
+                question.getQuiz().getCategory().getCategoryId(),
+                question.getQuiz().getCategory().getCategoryTitle(),
+                question.getQuiz().getCategory().getCategoryDescription()
+                );
+        quizDto.setCategory(categoryDto);
+        questionDto.setQuiz(quizDto);
         return questionDto;
     }
 }

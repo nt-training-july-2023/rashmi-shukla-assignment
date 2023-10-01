@@ -205,11 +205,10 @@ public class CategoryServiceImpl implements CategoryService {
      */
     public final QuizDto entityToDto(final Quiz quiz) {
         QuizDto quizDto = modelMapper.map(quiz, QuizDto.class);
-        if (quiz.getCategory() != null) {
-            CategoryDto categoryDto = modelMapper.map(quiz.getCategory(),
-                    CategoryDto.class);
-            quizDto.setCategory(categoryDto);
-        }
+        CategoryDto categoryDto = new CategoryDto(quiz.getCategory().getCategoryId(),
+                quiz.getCategory().getCategoryTitle(),
+                quiz.getCategory().getCategoryDescription());
+        quizDto.setCategory(categoryDto);
         return quizDto;
     }
 }

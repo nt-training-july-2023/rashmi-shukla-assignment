@@ -256,7 +256,7 @@ class CategoryServiceImplTest {
         categoryDto.setCategoryId(category.getCategoryId());
         categoryDto.setCategoryTitle(category.getCategoryTitle());
         categoryDto.setCategoryDescription(category.getCategoryDescription());
-        QuizDto quizDto = new QuizDto(1, "React", "descr", 20, null);
+        QuizDto quizDto = new QuizDto(1, "React", "descr", 20, categoryDto);
         
         when(categoryRepository.findById(catId)).thenReturn(Optional.of(category));
         when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
@@ -266,6 +266,25 @@ class CategoryServiceImplTest {
         
         assertNotNull(quizDtos);
         assertEquals(1, quizDtos.size());
+    }
+    
+    @Test
+    public final void testGetQuizzesByCategory_CategoryNotFound() {
+        long catId = 1L;
+        Category category = new Category();
+        category.setCategoryId(catId);
+        category.setCategoryTitle("React");
+        category.setCategoryDescription("Mcqs");
+        Quiz quiz = new Quiz(1, "React", "descr", 20, category);
+        List<Quiz> quizList = new ArrayList<>();
+        quizList.add(quiz);
+        category.setQuizzes(quizList);
+        
+        when(categoryRepository.findById(catId)).thenReturn(Optional.empty());
+        
+        assertThrows(ResourceNotFoundException.class, () -> {
+            categoryServiceImpl.getQuizzesByCategory(catId);
+        });
     }
 
 }

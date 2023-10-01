@@ -72,26 +72,19 @@ public class QuestionDto {
      * @return quiz belongs to.
      */
     public final QuizDto getQuiz() {
-        if (quiz != null) {
-            return new QuizDto(quiz.getQuizId(), quiz.getQuizTitle(),
-                    quiz.getQuizDescription(), quiz.getQuizTimer(),
-                    quiz.getCategory());
-        }
-        return null;
+        return new QuizDto(quiz.getQuizId(), quiz.getQuizTitle(),
+                quiz.getQuizDescription(), quiz.getQuizTimer(),
+                quiz.getCategory());
     }
 
     /**
      * setter for the quiz.
-     * @param qz which the quiz belongs to.
+     * @param quizDto which the quiz belongs to.
      */
-    public final void setQuiz(final QuizDto qz) {
-        if (qz != null) {
-            this.quiz = new QuizDto(qz.getQuizId(), qz.getQuizTitle(),
-                    qz.getQuizDescription(), qz.getQuizTimer(),
-                    qz.getCategory());
-        } else {
-            this.quiz = null;
-        }
+    public final void setQuiz(final QuizDto quizDto) {
+        this.quiz = new QuizDto(quizDto.getQuizId(), quizDto.getQuizTitle(),
+                quizDto.getQuizDescription(), quizDto.getQuizTimer(),
+                quizDto.getCategory());
     }
 
     /**
@@ -103,25 +96,22 @@ public class QuestionDto {
 
     /**
      * all args constructor.
-     * @param qId    id of question
-     * @param qTitle title of question
-     * @param opts options
+     * @param id    id of question
+     * @param title title of question
+     * @param option options
      * @param ans    answer
-     * @param qz     quizDto for question
+     * @param quizDto     quizDto for question
      */
-    public QuestionDto(final long qId, final String qTitle,
-            final Options opts, final String ans, final QuizDto qz) {
-        this.questionId = qId;
-        this.questionTitle = qTitle;
-        this.options = new Options(opts.getOptionI(), opts.getOptionII(),
-                opts.getOptionIII(), opts.getOptionIV());
+    public QuestionDto(final long id, final String title,
+            final Options option, final String ans, final QuizDto quizDto) {
+        this.questionId = id;
+        this.questionTitle = title;
+        this.options = new Options(option.getOptionI(), option.getOptionII(),
+                option.getOptionIII(), option.getOptionIV());
         this.answer = ans;
-        if (qz != null) {
-            this.quiz = new QuizDto(qz.getQuizId(), qz.getQuizTitle(),
-                qz.getQuizDescription(), qz.getQuizTimer(),
-                qz.getCategory());
-        } else {
-            this.quiz = null;
-        }
+        this.quiz = new QuizDto(quizDto.getQuizId(), quizDto.getQuizTitle(),
+                quizDto.getQuizDescription(), quizDto.getQuizTimer(),
+                quizDto.getCategory());
+
     }
 }

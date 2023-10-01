@@ -71,10 +71,10 @@ public class Category {
      * @param catTitle title of category.
      * @param catDesc  description of category.
      */
-    public Category(final long catId, final String catTitle,
-            final String catDesc) {
-        this.categoryId = catId;
-        this.categoryTitle = catTitle;
-        this.categoryDescription = catDesc;
+    public Category(final long id, final String title,
+            final String description) {
+        this.categoryId = id;
+        this.categoryTitle = title;
+        this.categoryDescription = description;
     }
 }

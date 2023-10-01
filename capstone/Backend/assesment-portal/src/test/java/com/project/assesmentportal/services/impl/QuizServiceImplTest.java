@@ -55,20 +55,25 @@ class QuizServiceImplTest {
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizId(1L);
         quizDto.setQuizTitle("Sample Quiz");
+        quizDto.setQuizDescription("Description");
+        quizDto.setQuizTimer(10);
+        CategoryDto categoryDto = new CategoryDto(1L,"IT","Corporate Quiz");
+        quizDto.setCategory(categoryDto);
         
         Quiz quiz = new Quiz();
-        quiz.setQuizId(1L);
-        quiz.setQuizTitle("Sample Quiz");
-        
-        Category category = new Category();
+        quiz.setQuizId(quizDto.getQuizId());
+        quiz.setQuizTitle(quizDto.getQuizTitle());
+        quiz.setQuizDescription(quizDto.getQuizDescription());
+        quiz.setQuizTimer(quizDto.getQuizTimer());
+        Category category = new Category(categoryDto.getCategoryId(), categoryDto.getCategoryTitle(),
+                categoryDto.getCategoryDescription());
         quiz.setCategory(category);
         
         when(modelMapper.map(quizDto, Quiz.class)).thenReturn(quiz);
-        when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
         when(categoryRepository.findById(quiz.getCategory().getCategoryId())).thenReturn(Optional.of(category));
         when(quizRepository.findByQuizTitle(quiz.getQuizTitle())).thenReturn(Optional.empty());
         when(quizRepository.save(any(Quiz.class))).thenReturn(quiz);
-        
+
         ApiResponse result = quizServiceImpl.addQuiz(quizDto);
         assertNotNull(result);
         assertEquals(result.getMessage(), MessageConstants.QUIZ_ADDED_SUCCESSFULLY);
@@ -80,6 +85,8 @@ class QuizServiceImplTest {
     void testAddQuiz_DuplicateQuiz() {
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizTitle("React");
+        CategoryDto categoryDto = new CategoryDto();
+        quizDto.setCategory(categoryDto);
         
         Quiz quiz = new Quiz();
         quiz.setQuizTitle("React");
@@ -100,10 +107,12 @@ class QuizServiceImplTest {
     void testAddQuiz_CategoryNotFound() {
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizTitle("React");
+        CategoryDto categoryDto = new CategoryDto(20L,"IT","Corporate");
+        quizDto.setCategory(categoryDto);
         
         Quiz quiz = new Quiz();
         quiz.setQuizTitle("React");
-        Category category = new Category();
+        Category category = new Category(1L,"IT","Corporate");
         quiz.setCategory(category);
         
         when(modelMapper.map(quizDto, Quiz.class)).thenReturn(quiz);
@@ -116,14 +125,18 @@ class QuizServiceImplTest {
     }
     
     @Test
-    void testGetCategoryById_Success() {
+    void testGetQuizById_Success() {
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizId(1L);
         quizDto.setQuizTitle("React");
+        CategoryDto categoryDto = new CategoryDto();
+        quizDto.setCategory(categoryDto);
         
         Quiz quiz = new Quiz();
         quiz.setQuizId(quizDto.getQuizId());
         quiz.setQuizTitle(quizDto.getQuizTitle());
+        Category category = new Category();
+        quiz.setCategory(category);
         
         when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
         when(quizRepository.findById(quiz.getQuizId())).thenReturn(Optional.of(quiz));
@@ -137,23 +150,29 @@ class QuizServiceImplTest {
     
     @Test
     void testGetQuizById_QuizNotFound() {
-        Quiz quiz = new Quiz();
-        quiz.setQuizId(1);
-        quiz.setQuizTitle("React");
+        long quizId = 1l;
         
-        when(quizRepository.findById(quiz.getQuizId())).thenReturn(Optional.empty());
+        when(quizRepository.findById(quizId)).thenReturn(Optional.empty());
         
         assertThrows(ResourceNotFoundException.class, () -> {
-            quizServiceImpl.getQuizById(1);
+            quizServiceImpl.getQuizById(quizId);
         });
     }
     
     @Test
     public void testGetQuizzes() {
         List<Quiz> quizList = new ArrayList<>();
-        quizList.add(new Quiz(1, "React", "descr", 20, null));
+        Category category = new Category(1L,"IT","Corporate Quiz");
+        Quiz quiz = new Quiz(1, "React", "descr", 20, category);
+        quizList.add(quiz);
         
-        when(quizRepository.findAll()).thenReturn(quizList);
+        List<Quiz> quizDtoList = new ArrayList<>();
+        CategoryDto categoryDto = new CategoryDto(1L,"IT","Corporate Quiz");
+        QuizDto quizdto = new QuizDto(1, "React", "descr", 20, categoryDto);
+        quizDtoList.add(quiz);
+        
+        when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizdto);
+        when(quizRepository.findAll()).thenReturn(quizDtoList);
         List<QuizDto> quizDtos = quizServiceImpl.getQuizzes();
         
         assertNotNull(quizDtos);
@@ -166,14 +185,14 @@ class QuizServiceImplTest {
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizId(1);
         quizDto.setQuizTitle("React");
-        CategoryDto categoryDto = new CategoryDto();
+        CategoryDto categoryDto = new CategoryDto(1,"IT","Corporate");
         quizDto.setCategory(categoryDto);
         
-        Category category = new Category();
-        
+        Category category = new Category(1,"IT","Corporate");
         Quiz existingQuiz = new Quiz();
         existingQuiz.setQuizId(quizIdToUpdate);
         existingQuiz.setQuizTitle("Java");
+        existingQuiz.setCategory(category);
         
         when(modelMapper.map(existingQuiz, QuizDto.class)).thenReturn(quizDto);
         when(quizRepository.findById(quizIdToUpdate)).thenReturn(Optional.of(existingQuiz));
@@ -188,7 +207,7 @@ class QuizServiceImplTest {
     }
     
     @Test
-    void testUpdateQuiz_ResourceNotFound() {
+    void testUpdateQuiz_QuizNotFound() {
         long quizIdToUpdate = 1L;
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizTitle("React");
@@ -283,10 +302,8 @@ class QuizServiceImplTest {
     void testDeleteQuiz_NotFound() {
         long quizIdToDelete = 1L;
 
-        // Mock the behavior of the repository to return an empty Optional
         when(quizRepository.findById(quizIdToDelete)).thenReturn(Optional.empty());
 
-        // Act and Assert
         assertThrows(ResourceNotFoundException.class, () -> {
             quizServiceImpl.deleteQuiz(quizIdToDelete);
         });
@@ -297,15 +314,23 @@ class QuizServiceImplTest {
         long quizId = 1L;
         Quiz quiz = new Quiz();
         quiz.setQuizId(quizId);
+        quiz.setCategory(new Category());
+        
+        QuizDto quizdto = new QuizDto();
+        quizdto.setQuizId(quizId);
+        quizdto.setCategory(new CategoryDto());
 
         List<Question> questions = new ArrayList<>();
-        Question question = new Question();
+        Question question = new Question(1L,"Complete sequence a,c,e..", "a","f","c","h","f");
+        question.setQuiz(quiz);
         questions.add(question);
         quiz.setQuestions(questions);
 
         when(quizRepository.findById(quizId)).thenReturn(Optional.of(quiz));
-
-        when(modelMapper.map(question, QuestionDto.class)).thenReturn(new QuestionDto());
+        when(modelMapper.map(question.getQuiz(),
+                QuizDto.class)).thenReturn(quizdto);
+        when(modelMapper.map(question.getQuiz().getCategory(),
+                CategoryDto.class)).thenReturn(new CategoryDto());
 
         List<QuestionDto> questionDtos = quizServiceImpl.getQuestionsByQuiz(quizId);
 

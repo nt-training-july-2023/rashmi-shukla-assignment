@@ -47,7 +47,8 @@ public class QuestionTest {
 
     @Test
     public void testQuizGetterAndSetter() {
-        Quiz quiz = new Quiz(1L, "Sample Quiz", "Description", 60, null);
+        Category category = new Category(1,"IT","Corporate");
+        Quiz quiz = new Quiz(1L, "Sample Quiz", "Description", 60, category);
         question.setQuiz(quiz);
 
         assertNotNull(question.getQuiz());
@@ -71,6 +72,9 @@ public class QuestionTest {
     @Test
     public void testDefaultConstructor() {
         Question defaultQuestion = new Question();
+        Category category = new Category(1,"IT","Corporate");
+        Quiz quiz =  new Quiz(1,"React","Frontend Quiz",20,category);
+        defaultQuestion.setQuiz(quiz);
         assertEquals(0L, defaultQuestion.getQuestionId());
         assertNull(defaultQuestion.getQuestionTitle());
         assertNull(defaultQuestion.getOptionOne());
@@ -78,7 +82,7 @@ public class QuestionTest {
         assertNull(defaultQuestion.getOptionThree());
         assertNull(defaultQuestion.getOptionFour());
         assertNull(defaultQuestion.getAnswer());
-        assertNull(defaultQuestion.getQuiz());
+        assertNotNull(defaultQuestion.getQuiz());
     }
 }
 

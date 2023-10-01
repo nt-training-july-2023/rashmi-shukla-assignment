@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +31,6 @@ import com.project.assesmentportal.services.QuestionService;
  */
 @Service
 public class QuestionServiceImpl implements QuestionService {
-
-    /**
-     * instance of ModelMapper.
-     */
-    @Autowired
-    private ModelMapper modelMapper;
 
     /**
      * instance of quizRepo.
@@ -178,7 +171,9 @@ public class QuestionServiceImpl implements QuestionService {
      * @return converted question.
      */
     public final Question dtoToEntity(final QuestionDto questionDto) {
-        Question question = modelMapper.map(questionDto, Question.class);
+        Question question = new Question();
+        question.setQuestionId(questionDto.getQuestionId());
+        question.setQuestionTitle(questionDto.getQuestionTitle());
         question.setOptionOne(questionDto.getOptions().getOptionI());
         question.setOptionTwo(questionDto.getOptions().getOptionII());
         question.setOptionThree(questionDto.getOptions().getOptionIII());
@@ -202,16 +197,18 @@ public class QuestionServiceImpl implements QuestionService {
         }
         question.setAnswer(correctAnswerMatch);
 
-        if (questionDto.getQuiz() != null) {
-            Quiz quiz = modelMapper.map(questionDto.getQuiz(), Quiz.class);
-            if (questionDto.getQuiz().getCategory() != null) {
-                Category category = modelMapper.map(
-                        questionDto.getQuiz().getCategory(),
-                        Category.class);
-                quiz.setCategory(category);
-            }
-            question.setQuiz(quiz);
-        }
+        Quiz quiz = new Quiz();
+        quiz.setQuizId(questionDto.getQuiz().getQuizId()); 
+        quiz.setQuizTitle(questionDto.getQuiz().getQuizTitle());
+        quiz.setQuizDescription(questionDto.getQuiz().getQuizDescription());
+        quiz.setQuizTimer(questionDto.getQuiz().getQuizTimer());
+        Category category = new Category(
+                questionDto.getQuiz().getCategory().getCategoryId(),
+                questionDto.getQuiz().getCategory().getCategoryTitle(),
+                questionDto.getQuiz().getCategory().getCategoryDescription()
+                );
+        quiz.setCategory(category);
+        question.setQuiz(quiz);
         return question;
     }
 
@@ -222,23 +219,26 @@ public class QuestionServiceImpl implements QuestionService {
      */
     public final QuestionDto entityToDto(final Question question) {
         // Map the QuizDto to a Quiz entity
-        QuestionDto questionDto = modelMapper.map(question,
-                QuestionDto.class);
+        QuestionDto questionDto = new QuestionDto();
+        questionDto.setQuestionId(question.getQuestionId());
+        questionDto.setQuestionTitle(question.getQuestionTitle());
+        questionDto.setAnswer(question.getAnswer());
         Options options = new Options(question.getOptionOne(),
                 question.getOptionTwo(), question.getOptionThree(),
                 question.getOptionFour());
         questionDto.setOptions(options);
-        if (question.getQuiz() != null) {
-            QuizDto quizDto = modelMapper.map(question.getQuiz(),
-                    QuizDto.class);
-            if (question.getQuiz().getCategory() != null) {
-                CategoryDto categoryDto = modelMapper.map(
-                        question.getQuiz().getCategory(),
-                        CategoryDto.class);
-                quizDto.setCategory(categoryDto);
-            }
-            questionDto.setQuiz(quizDto);
-        }
+        QuizDto quizDto = new QuizDto();
+        quizDto.setQuizId(question.getQuiz().getQuizId()); 
+        quizDto.setQuizTitle(question.getQuiz().getQuizTitle());
+        quizDto.setQuizDescription(question.getQuiz().getQuizDescription());
+        quizDto.setQuizTimer(question.getQuiz().getQuizTimer());
+        CategoryDto categoryDto = new CategoryDto(
+                question.getQuiz().getCategory().getCategoryId(),
+                question.getQuiz().getCategory().getCategoryTitle(),
+                question.getQuiz().getCategory().getCategoryDescription()
+                );
+        quizDto.setCategory(categoryDto);
+        questionDto.setQuiz(quizDto);
         return questionDto;
     }
 
