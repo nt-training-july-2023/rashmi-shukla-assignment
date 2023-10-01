@@ -16,7 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
@@ -25,6 +27,7 @@ import com.project.assesmentportal.entities.Question;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.repositories.CategoryRepository;
 import com.project.assesmentportal.repositories.QuizRepository;
 
@@ -66,9 +69,10 @@ class QuizServiceImplTest {
         when(quizRepository.findByQuizTitle(quiz.getQuizTitle())).thenReturn(Optional.empty());
         when(quizRepository.save(any(Quiz.class))).thenReturn(quiz);
         
-        String result = quizServiceImpl.addQuiz(quizDto);
+        ApiResponse result = quizServiceImpl.addQuiz(quizDto);
         assertNotNull(result);
-        assertEquals(result, "Quiz: "+quiz.getQuizTitle()+", added successfully!");
+        assertEquals(result.getMessage(), MessageConstants.QUIZ_ADDED_SUCCESSFULLY);
+        assertEquals(HttpStatus.CREATED.value(), result.getStatus());
         
     }
     
@@ -177,9 +181,10 @@ class QuizServiceImplTest {
         when(quizRepository.findByQuizTitle(quizDto.getQuizTitle())).thenReturn(Optional.empty());
         when(quizRepository.save(any(Quiz.class))).thenReturn(existingQuiz);
         
-        String result = quizServiceImpl.updateQuiz(quizDto,quizIdToUpdate);
+        ApiResponse result = quizServiceImpl.updateQuiz(quizDto,quizIdToUpdate);
         assertNotNull(result);
-        assertEquals(result,"Quiz: "+existingQuiz.getQuizTitle()+", updated successfully!");
+        assertEquals(result.getMessage(), MessageConstants.QUIZ_UPDATED_SUCCESSFULLY);
+        assertEquals(HttpStatus.OK.value(), result.getStatus());
     }
     
     @Test
@@ -266,14 +271,12 @@ class QuizServiceImplTest {
         Quiz quizToDelete = new Quiz();
         quizToDelete.setQuizId(quizIdToDelete);
 
-        // Mock the behavior of the repository
         when(quizRepository.findById(quizIdToDelete)).thenReturn(Optional.of(quizToDelete));
 
-        // Act
-        quizServiceImpl.deleteQuiz(quizIdToDelete);
-
-        // Assert
+        ApiResponse response = quizServiceImpl.deleteQuiz(quizIdToDelete);
         verify(quizRepository, times(1)).deleteById(quizIdToDelete);
+        assertEquals(response.getMessage(), MessageConstants.QUIZ_DELETED_SUCCESSFULLY);
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
     
     @Test

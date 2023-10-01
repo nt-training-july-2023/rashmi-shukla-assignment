@@ -15,8 +15,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuizDto;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.services.impl.CategoryServiceImpl;
 
 class CategoryControllerTest {
@@ -50,10 +52,13 @@ class CategoryControllerTest {
         categoryDto.setCategoryId(1);
         categoryDto.setCategoryTitle("Maths");
         categoryDto.setCategoryDescription("Maths Category");
-        when(categoryService.addCategory(categoryDto)).thenReturn("Category: "+categoryDto.getCategoryTitle()+", added successfully!");
-        ResponseEntity<String> response = categoryController.addCategory(categoryDto);
+        
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_ADDED_SUCCESSFULLY, HttpStatus.CREATED.value());
+        when(categoryService.addCategory(categoryDto)).thenReturn(apiResponse);
+        
+        ResponseEntity<ApiResponse> response = categoryController.addCategory(categoryDto);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Category: "+categoryDto.getCategoryTitle()+", added successfully!", response.getBody());
+        assertEquals(apiResponse, response.getBody());
     }
     
     @Test
@@ -75,17 +80,24 @@ class CategoryControllerTest {
         CategoryDto categoryDTO = new CategoryDto();
         categoryDTO.setCategoryId(categoryId);
         categoryDTO.setCategoryTitle("Maths Category");
-        when(categoryService.updateCategory(categoryDTO,categoryId)).thenReturn("Category: "+categoryDTO.getCategoryTitle()+", updated successfully!");
-        ResponseEntity<String> result = categoryController.updateCategory(categoryId, categoryDTO);
-        assertEquals("Category: "+categoryDTO.getCategoryTitle()+", updated successfully!", result.getBody());
+        
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_UPDATED_SUCCESSFULLY, HttpStatus.OK.value());
+        when(categoryService.updateCategory(categoryDTO,categoryId)).thenReturn(apiResponse);
+       
+        ResponseEntity<ApiResponse> result = categoryController.updateCategory(categoryId, categoryDTO);
+        assertEquals(apiResponse, result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
     
     @Test
     public void testDeleteCategory() {
         long categoryId = 1L;
-        ResponseEntity<?> result = categoryController.deleteCategory(categoryId);
-        assertEquals("Category deleted successfully!", result.getBody());
+        
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_DELETED_SUCCESSFULLY, HttpStatus.OK.value());
+        when(categoryService.deleteCategory(categoryId)).thenReturn(apiResponse);
+        
+        ResponseEntity<ApiResponse> result = categoryController.deleteCategory(categoryId);
+        assertEquals(apiResponse, result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
         verify(categoryService).deleteCategory(categoryId);
     }

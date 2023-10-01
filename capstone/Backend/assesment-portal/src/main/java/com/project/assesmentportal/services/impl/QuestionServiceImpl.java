@@ -8,8 +8,10 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
@@ -18,6 +20,8 @@ import com.project.assesmentportal.entities.Options;
 import com.project.assesmentportal.entities.Question;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
+import com.project.assesmentportal.messages.ErrorConstants;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.repositories.QuestionRepository;
 import com.project.assesmentportal.repositories.QuizRepository;
 import com.project.assesmentportal.services.QuestionService;
@@ -59,19 +63,20 @@ public class QuestionServiceImpl implements QuestionService {
      * @return returns QuestionDto of added question.
      */
     @Override
-    public final String addQuestion(final QuestionDto questionDto) {
+    public final ApiResponse addQuestion(final QuestionDto questionDto) {
+        LOGGER.info(MessageConstants.ADD_QUESTION_INVOKED);
         Question question = this.dtoToEntity(questionDto);
         Optional<Quiz> existingQuiz = quizRepository
                 .findById(question.getQuiz().getQuizId());
         if (existingQuiz.isEmpty()) {
-            LOGGER.error("Add Question: quiz not found"
-                    + question.getQuiz().getQuizId());
-            throw new ResourceNotFoundException("Quiz with id:"
-                    + question.getQuiz().getQuizId() + " doesnot exists");
+            LOGGER.error(ErrorConstants.QUIZ_DOESNOT_EXISTS+question.getQuiz().getQuizId());
+            throw new ResourceNotFoundException(ErrorConstants.QUIZ_DOESNOT_EXISTS+question.getQuiz().getQuizId());
         }
         questionRepository.save(question);
-        LOGGER.info("Question added successfully.");
-        return "Question added successfully!";
+        LOGGER.info(MessageConstants.ADD_QUESTION_ENDED);
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_ADDED_SUCCESSFULLY,
+                HttpStatus.CREATED.value());
+        return apiResponse;
     }
 
     /**
@@ -80,10 +85,11 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public final List<QuestionDto> getQuestions() {
+        LOGGER.info(MessageConstants.GET_QUESTIONS_INVOKED);
         List<Question> questions = questionRepository.findAll();
         List<QuestionDto> questionDtos = questions.stream()
                 .map(this::entityToDto).collect(Collectors.toList());
-        LOGGER.info("Retrieved a list of question successfully.");
+        LOGGER.info(MessageConstants.GET_QUESTIONS_ENDED);
         return questionDtos;
     }
 
@@ -94,14 +100,14 @@ public class QuestionServiceImpl implements QuestionService {
      * @return updated quiz.
      */
     @Override
-    public final String updateQuestion(final QuestionDto questionDto,
+    public final ApiResponse updateQuestion(final QuestionDto questionDto,
             final long questionId) {
+        LOGGER.info(MessageConstants.UPDATE_QUESTION_INVOKED);
         Question exisitingQuestion = questionRepository
                 .findById(questionId).orElseGet(() -> {
-                    LOGGER.error(" Update Question: question not found"
-                            + questionId);
+                    LOGGER.error(ErrorConstants.QUESTION_DOESNOT_EXISTS+questionId);
                     throw new ResourceNotFoundException(
-                            "Question doesnot exists");
+                            ErrorConstants.QUESTION_DOESNOT_EXISTS+questionId);
                 });
 
         Question question = dtoToEntity(questionDto);
@@ -109,9 +115,8 @@ public class QuestionServiceImpl implements QuestionService {
         Optional<Quiz> existingQuiz = quizRepository
                 .findById(question.getQuiz().getQuizId());
         if (existingQuiz.isEmpty()) {
-            LOGGER.error(" Update Question: quiz not found");
-            throw new ResourceNotFoundException("Quiz with id:"
-                    + question.getQuiz().getQuizId() + " doesnot exists");
+            LOGGER.error(ErrorConstants.QUIZ_DOESNOT_EXISTS+question.getQuiz().getQuizId());
+            throw new ResourceNotFoundException(ErrorConstants.QUIZ_DOESNOT_EXISTS+question.getQuiz().getQuizId());
         }
 
         exisitingQuestion.setQuestionTitle(question.getQuestionTitle());
@@ -123,10 +128,10 @@ public class QuestionServiceImpl implements QuestionService {
         exisitingQuestion.setQuiz(question.getQuiz());
 
         questionRepository.save(exisitingQuestion);
-        LOGGER.info("Question with ID: " + questionId
-                + " Updated successfully.");
-        return "Question with id: " + questionId
-                + " updated successfully!";
+        LOGGER.info(MessageConstants.UPDATE_QUESTION_ENDED);
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_UPDATED_SUCCESSFULLY,
+                HttpStatus.OK.value());
+        return apiResponse;
     }
 
     /**
@@ -135,15 +140,15 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public final QuestionDto getQuestionById(final long questionId) {
+        LOGGER.info(MessageConstants.GET_QUESTION_INVOKED);
         Question question = questionRepository.findById(questionId)
                 .orElseGet(() -> {
-                    LOGGER.error("Get Question: question not found"
+                    LOGGER.error(ErrorConstants.QUESTION_DOESNOT_EXISTS
                             + questionId);
                     throw new ResourceNotFoundException(
-                            "Question doesnot exists!");
+                            ErrorConstants.QUESTION_DOESNOT_EXISTS+questionId);
                 });
-        LOGGER.info("Retrieved a question with ID: " + questionId
-                + " successfully.");
+        LOGGER.info(MessageConstants.GET_QUESTION_ENDED);
         return this.entityToDto(question);
     }
 
@@ -152,16 +157,19 @@ public class QuestionServiceImpl implements QuestionService {
      * @param questionId id of the question to delete.
      */
     @Override
-    public final void deleteQuestion(final long questionId) {
+    public final ApiResponse deleteQuestion(final long questionId) {
+        LOGGER.info(MessageConstants.DELETE_QUESTION_INVOKED);
         questionRepository.findById(questionId).orElseGet(() -> {
             LOGGER.error(
                     "Delete Question: question not found" + questionId);
             throw new ResourceNotFoundException(
-                    "Question doesnot exists!");
+                    ErrorConstants.QUESTION_DOESNOT_EXISTS);
         });
-        LOGGER.info("Question with ID: " + questionId
-                + " deleted successfully.");
         questionRepository.deleteById(questionId);
+        LOGGER.info(MessageConstants.DELETE_QUESTION_ENDED);
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_DELETED_SUCCESSFULLY,
+                HttpStatus.OK.value());
+        return apiResponse;
     }
 
     /**
@@ -179,18 +187,18 @@ public class QuestionServiceImpl implements QuestionService {
         boolean found = false;
         String correctAnswerMatch = questionDto.getAnswer();
         if (correctAnswerMatch
-                .equalsIgnoreCase(questionDto.getOptions().getOptionI())
-                || correctAnswerMatch.equalsIgnoreCase(
+                .equals(questionDto.getOptions().getOptionI())
+                || correctAnswerMatch.equals(
                         questionDto.getOptions().getOptionII())
-                || correctAnswerMatch.equalsIgnoreCase(
+                || correctAnswerMatch.equals(
                         questionDto.getOptions().getOptionIII())
-                || correctAnswerMatch.equalsIgnoreCase(
+                || correctAnswerMatch.equals(
                         questionDto.getOptions().getOptionIV())) {
             found = true;
         }
         if (!found) {
             throw new ResourceNotFoundException(
-                    "Correct Answer doesn't match with the options");
+                    ErrorConstants.ANSWER_NOT_IN_OPTIONS);
         }
         question.setAnswer(correctAnswerMatch);
 

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.ResultDto;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.services.ResultService;
 
 import jakarta.validation.Valid;
@@ -46,12 +48,12 @@ public class ResultController {
      * @return ResponseEntity<String>
      */
     @PostMapping()
-    public final ResponseEntity<String> addResult(
+    public final ResponseEntity<ApiResponse> addResult(
             @RequestBody @Valid final ResultDto resultDto) {
-        LOGGER.info("Adding Result");
-        String addResult = this.resultService.addResult(resultDto);
-        LOGGER.info("Added a result successfully.");
-        return new ResponseEntity<String>(addResult, HttpStatus.CREATED);
+        LOGGER.info(MessageConstants.ADD_RESULT_INVOKED);
+        ApiResponse addResult = this.resultService.addResult(resultDto);
+        LOGGER.info(MessageConstants.RESULT_ADDED_SUCCESSFULLY);
+        return new ResponseEntity<ApiResponse>(addResult, HttpStatus.CREATED);
     }
 
     /**
@@ -60,9 +62,9 @@ public class ResultController {
      */
     @GetMapping()
     public final List<ResultDto> getResults() {
-        LOGGER.info("Retrieving list of results at admin side.");
+        LOGGER.info(MessageConstants.GET_RESULTS_INVOKED);
         List<ResultDto> resultDtos = resultService.getResults();
-        LOGGER.info("Retrieved list of results at admin side successfully.");
+        LOGGER.info(MessageConstants.RESULTS_RETRIEVED_SUCCESSFULLY);
         return resultDtos;
     }
 
@@ -74,10 +76,10 @@ public class ResultController {
     @GetMapping("/{userEmail}")
     public final List<ResultDto> getResultByUserEmail(
             @PathVariable final String userEmail) {
-        LOGGER.info("Retrieving list of user at user side.");
+        LOGGER.info(MessageConstants.GET_RESULT_INVOKED);
         List<ResultDto> resultDtos = resultService.getResultByUserEmail(
                 userEmail);
-        LOGGER.info("Retrieved list of user at user side successfully.");
+        LOGGER.info(MessageConstants.RESULT_RETRIEVED_SUCCESSFULLY+userEmail);
         return resultDtos;
     }
 

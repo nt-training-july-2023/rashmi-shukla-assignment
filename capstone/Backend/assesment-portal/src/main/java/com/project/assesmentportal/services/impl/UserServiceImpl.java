@@ -8,9 +8,11 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.LoginRequestDto;
 import com.project.assesmentportal.dto.LoginResponseDto;
 import com.project.assesmentportal.dto.UserDto;
@@ -18,6 +20,8 @@ import com.project.assesmentportal.entities.User;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.InvalidDataException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
+import com.project.assesmentportal.messages.ErrorConstants;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.repositories.UserRepository;
 import com.project.assesmentportal.services.UserService;
 
@@ -29,7 +33,7 @@ import com.project.assesmentportal.services.UserService;
 public class UserServiceImpl implements UserService {
 
     /**
-     * instance of Modelmapper.
+     * instance of ModelMapper.
      */
     @Autowired
     private ModelMapper modelMapper;
@@ -59,20 +63,22 @@ public class UserServiceImpl implements UserService {
      * @throws ResourceNotFoundException if the email is already registered.
      */
     @Override
-    public final String register(final UserDto userDto) {
-        LOGGER.info("Service: User Registration invoked.");
+    public final ApiResponse register(final UserDto userDto) {
+        LOGGER.info(MessageConstants.USER_REGISTRATION_INVOKED);
         User user = this.dtoToUser(userDto);
         Optional<User> checkExistingUser = userRepository
                 .findByEmail(user.getEmail());
         if (checkExistingUser.isPresent()) {
-            LOGGER.error("Registration error: email id already exists");
+            LOGGER.error(ErrorConstants.EMAIL_ALREADY_REGISTERED);
             throw new DuplicateResourceException(
-                    "The email-id already exists");
+                    ErrorConstants.EMAIL_ALREADY_REGISTERED);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        LOGGER.info("Service: User registered successfully.");
-        return userDto.getFirstName() + " registered successfully!";
+        LOGGER.info(MessageConstants.USER_REGISTRATION_ENDED);
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.USER_REGISTERED_SUCCESSFULLY,
+                HttpStatus.CREATED.value());
+        return apiResponse;
 
     }
 
@@ -86,19 +92,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public final LoginResponseDto login(
             final LoginRequestDto inputUserDto) {
-        LOGGER.info("Service: Login method invoked.");
+        LOGGER.info(MessageConstants.USER_LOGIN_INVOKED);
         User registeredUser = userRepository
                 .findByEmail(inputUserDto.getEmail())
                 .orElseGet(() -> {
-                    LOGGER.error("Login error: user not found");
+                    LOGGER.error(ErrorConstants.USER_NOT_FOUND);
                     throw new ResourceNotFoundException(
-                        "Invalid email or password");
+                        ErrorConstants.USER_NOT_FOUND);
                 });
 
         if (!passwordEncoder.matches(inputUserDto.getPassword(),
                 registeredUser.getPassword())) {
-            LOGGER.error("Login error: invalid credentials");
-            throw new InvalidDataException("Invalid credentials");
+            LOGGER.error(ErrorConstants.INVALID_CREDENTIALS);
+            throw new InvalidDataException(ErrorConstants.INVALID_CREDENTIALS);
         }
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         loginResponseDto.setFullName(registeredUser.getFirstName() + " "
@@ -107,7 +113,7 @@ public class UserServiceImpl implements UserService {
         loginResponseDto.setEmail(registeredUser.getEmail());
         loginResponseDto.setMessage(
                 registeredUser.getFirstName() + "logged-in successfully");
-        LOGGER.info("Service: User logged-in successfully.");
+        LOGGER.info(MessageConstants.USER_LOGIN_ENDED);
         return loginResponseDto;
     }
 
@@ -117,12 +123,12 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public final List<UserDto> getUsers() {
-        LOGGER.info("Service: getUsers methods invoked.");
+        LOGGER.info(MessageConstants.GET_USERS_INVOKED);
         List<User> users = this.userRepository.findAll();
         List<UserDto> userDtos = users.stream()
                 .map(user -> this.userToDto(user))
                 .collect(Collectors.toList());
-        LOGGER.info("Service: Retrieved list of users successfully.");
+        LOGGER.info(MessageConstants.GET_USERS_ENDED);
         return userDtos;
     }
 

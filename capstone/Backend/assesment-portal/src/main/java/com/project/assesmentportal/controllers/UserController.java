@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.LoginRequestDto;
 import com.project.assesmentportal.dto.LoginResponseDto;
 import com.project.assesmentportal.dto.UserDto;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.services.UserService;
 
 import jakarta.validation.Valid;
@@ -49,12 +51,12 @@ public class UserController {
      *         registration or a bad request response in case of failure.
      */
     @PostMapping("/register")
-    public final ResponseEntity<String> register(
+    public final ResponseEntity<ApiResponse> register(
             @RequestBody @Valid final UserDto userDto) {
-        LOGGER.info("User registration method invoked.");
-        String response = userService.register(userDto);
-        LOGGER.info("User Registered Successfully.");
-        return new ResponseEntity<String>(response, HttpStatus.CREATED);
+        LOGGER.info(MessageConstants.USER_REGISTRATION_INVOKED);
+        ApiResponse response = userService.register(userDto);
+        LOGGER.info(MessageConstants.USER_REGISTERED_SUCCESSFULLY);
+        return new ResponseEntity<ApiResponse>(response, HttpStatus.CREATED);
     }
 
     /**
@@ -63,9 +65,9 @@ public class UserController {
      */
     @GetMapping()
     public final List<UserDto> getUsers() {
-        LOGGER.info("Retrieving list of users.");
+        LOGGER.info(MessageConstants.GET_USERS_INVOKED);
         List<UserDto> usersDtos =  userService.getUsers();
-        LOGGER.info("Retrieved list of users successfully.");
+        LOGGER.info(MessageConstants.USERS_RETRIEVED_SUCCESSFULLY);
         return usersDtos;
     }
 
@@ -80,9 +82,9 @@ public class UserController {
     @PostMapping("/login")
     public final ResponseEntity<LoginResponseDto> login(
             @RequestBody @Valid final LoginRequestDto loginRequestDto) {
-        LOGGER.info("Login method invoked.");
+        LOGGER.info(MessageConstants.USER_LOGIN_INVOKED);
         LoginResponseDto loginResponseDto = userService.login(loginRequestDto);
-        LOGGER.info("User logged-in successfully");
+        LOGGER.info(MessageConstants.USER_LOGGED_IN_SUCCESSFULLY);
         return ResponseEntity.ok(loginResponseDto);
 
     }

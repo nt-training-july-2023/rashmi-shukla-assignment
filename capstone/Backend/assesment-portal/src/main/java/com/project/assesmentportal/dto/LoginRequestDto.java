@@ -1,5 +1,7 @@
 package com.project.assesmentportal.dto;
 
+import com.project.assesmentportal.messages.ErrorConstants;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,11 +20,11 @@ public class LoginRequestDto {
     /**
      * The Email Address of the User.
      */
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = ErrorConstants.EMAIL_REQUIRED)
     private String email;
     /**
      * The Password of the User.
      */
-    @NotBlank(message = "Password is required.")
+    @NotBlank(message = ErrorConstants.PASSWORD_REQUIRED)
     private String password;
 }

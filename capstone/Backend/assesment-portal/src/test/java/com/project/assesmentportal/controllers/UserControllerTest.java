@@ -13,9 +13,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.LoginRequestDto;
 import com.project.assesmentportal.dto.LoginResponseDto;
 import com.project.assesmentportal.dto.UserDto;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.repositories.UserRepository;
 import com.project.assesmentportal.services.impl.UserServiceImpl;
 
@@ -39,10 +41,12 @@ class UserControllerTest {
     void testRegister_Sucess() {
         UserDto userDto = new UserDto();
         userDto.setFirstName("Rashmi");
-        when(userService.register(userDto)).thenReturn(userDto.getFirstName()+" registered successfully!");
-        ResponseEntity<String> response = userController.register(userDto);
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.USER_REGISTERED_SUCCESSFULLY, HttpStatus.CREATED.value());
+        when(userService.register(userDto)).thenReturn(apiResponse);
+        ResponseEntity<ApiResponse> response = userController.register(userDto);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(userDto.getFirstName()+" registered successfully!", response.getBody());
+        assertEquals(apiResponse, response.getBody());
+        assertEquals(201, response.getBody().getStatus());
     }
     
     @Test

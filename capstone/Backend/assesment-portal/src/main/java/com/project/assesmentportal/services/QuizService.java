@@ -2,6 +2,7 @@ package com.project.assesmentportal.services;
 
 import java.util.List;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
 
@@ -15,7 +16,7 @@ public interface QuizService {
      * @param quizDto The QuizDto representing the quiz to be added.
      * @return The QuizDto of the added quiz.
      */
-    String addQuiz(QuizDto quizDto);
+    ApiResponse addQuiz(QuizDto quizDto);
 
     /**
      * Retrieves a list of all quizzes.
@@ -36,13 +37,13 @@ public interface QuizService {
      * @param quizId of existing quiz.
      * @return QuizDto of updated quiz.
      */
-    String updateQuiz(QuizDto quizDto, long quizId);
+    ApiResponse updateQuiz(QuizDto quizDto, long quizId);
 
     /**
      * delete quiz.
      * @param quizId of existing quiz.
      */
-    void deleteQuiz(long quizId);
+    ApiResponse deleteQuiz(long quizId);
 
     /**
      * Gets list of questions for a quiz.

@@ -2,6 +2,7 @@ package com.project.assesmentportal.services;
 
 import java.util.List;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.ResultDto;
 
 /**
@@ -13,7 +14,7 @@ public interface ResultService {
      * @param resultDto of the result to be added.
      * @return String with message added success.
      */
-    String addResult(ResultDto resultDto);
+    ApiResponse addResult(ResultDto resultDto);
 
     /**
      * gets all results.

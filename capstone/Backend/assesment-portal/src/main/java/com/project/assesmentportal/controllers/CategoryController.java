@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuizDto;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.services.CategoryService;
 
 import jakarta.validation.Valid;
@@ -52,12 +54,12 @@ public class CategoryController {
      *         status CREATED (201).
      */
     @PostMapping()
-    public final ResponseEntity<String> addCategory(
+    public final ResponseEntity<ApiResponse> addCategory(
             @RequestBody @Valid final CategoryDto categoryDto) {
-        LOGGER.info("Adding a category method invoked.");
-        String response = categoryService.addCategory(categoryDto);
-        LOGGER.info("Added a category successfully.");
-        return new ResponseEntity<String>(response,
+        LOGGER.info(MessageConstants.ADD_CATEGORY_INVOKED);
+        ApiResponse response = categoryService.addCategory(categoryDto);
+        LOGGER.info(MessageConstants.CATEGORY_ADDED_SUCCESSFULLY);
+        return new ResponseEntity<ApiResponse>(response,
                 HttpStatus.CREATED);
     }
 
@@ -67,9 +69,9 @@ public class CategoryController {
      */
     @GetMapping()
     public final List<CategoryDto> getCategories() {
-        LOGGER.info("Retrieving all categories");
+        LOGGER.info(MessageConstants.GET_CATEGORIES_INVOKED);
         List<CategoryDto> categories = categoryService.getCategories();
-        LOGGER.info("Retrieved list of category successfully.");
+        LOGGER.info(MessageConstants.CATEGORIES_RETRIEVED_SUCCESSFULLY);
         return categories;
     }
 
@@ -82,9 +84,9 @@ public class CategoryController {
     @GetMapping("/{id}")
     public final ResponseEntity<CategoryDto> getCategoryById(
             @PathVariable("id") final long catId) {
-        LOGGER.info("Getting a category with ID: " + catId);
+        LOGGER.info(MessageConstants.GET_CATEGORY_INVOKED);
         CategoryDto categoryDto = categoryService.getCategoryById(catId);
-        LOGGER.info("Retrieved a category successfully with ID: " + catId);
+        LOGGER.info(MessageConstants.CATEGORY_RETRIEVED_SUCCESSFULLY+ catId);
         return new ResponseEntity<CategoryDto>(categoryDto, HttpStatus.OK);
     }
 
@@ -96,13 +98,13 @@ public class CategoryController {
      *         status OK (200).
      */
     @PutMapping("/{id}")
-    public final ResponseEntity<String> updateCategory(
+    public final ResponseEntity<ApiResponse> updateCategory(
             @PathVariable("id") final long catId,
             @RequestBody @Valid final CategoryDto categoryDto) {
-        LOGGER.info("Updating a category with ID: " + catId + " invoked.");
-        String response = categoryService.updateCategory(categoryDto, catId);
-        LOGGER.info("Updated a category with ID: " + catId + " successfully.");
-        return new ResponseEntity<String>(response, HttpStatus.OK);
+        LOGGER.info(MessageConstants.UPDATE_CATEGORY_INVOKED);
+        ApiResponse response = categoryService.updateCategory(categoryDto, catId);
+        LOGGER.info(MessageConstants.CATEGORY_UPDATED_SUCCESSFULLY);
+        return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
     }
 
     /**
@@ -112,12 +114,12 @@ public class CategoryController {
      *         (200) after deletion.
      */
     @DeleteMapping("/{id}")
-    public final ResponseEntity<String> deleteCategory(
+    public final ResponseEntity<ApiResponse> deleteCategory(
             @PathVariable("id") final long catId) {
-        LOGGER.info("Deleting a category with ID: " + catId + " invoked.");
-        categoryService.deleteCategory(catId);
-        LOGGER.info("Deleted a category with ID: " + catId + " successfully.");
-        return new ResponseEntity<String>("Category deleted successfully!",
+        LOGGER.info(MessageConstants.DELETE_CATEGORY_INVOKED);
+        ApiResponse response = categoryService.deleteCategory(catId);
+        LOGGER.info(MessageConstants.CATEGORY_DELETED_SUCCESSFULLY);
+        return new ResponseEntity<ApiResponse>(response,
                 HttpStatus.OK);
     }
 
@@ -129,9 +131,9 @@ public class CategoryController {
     @GetMapping("/{id}/quizzes")
     public final ResponseEntity<List<QuizDto>> getQuizzesById(
             @PathVariable("id") final long id) {
-        LOGGER.info("Retrieving list of quizzes by category method invoked.");
+        LOGGER.info(MessageConstants.GET_QUIZZES_BY_CATEGORY_INVOKED);
         List<QuizDto> quizzes = categoryService.getQuizzesByCategory(id);
-        LOGGER.info("Retrieved list of quizzes by category successfully.");
+        LOGGER.info(MessageConstants.QUIZZES_BY_CATEGORY_RETRIEVED+id);
         return new ResponseEntity<List<QuizDto>>(quizzes, HttpStatus.OK);
     }
 }

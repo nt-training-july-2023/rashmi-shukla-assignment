@@ -3,6 +3,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import "./Form.css";
+import UserService from "../../Services/UserService";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -32,22 +33,18 @@ const LoginForm = () => {
     }
 
     if (Object.keys(validattionErrors).length === 0) {
-      try {
-        const response = await axios.post("http://localhost:8080/users/login", {
-          email,
-          password,
-        });
-        if (response.status === 200 && response.data.role === "user") {
-          // Redirect upon successful login
+      const user = {email,password}
+      UserService.login(user).then((response) => {
+        if(response.data.role === "user"){
           navigate("/user-dashboard");
-        } else if (response.status === 200 && response.data.role === "admin") {
+        } else if(response.data.role === "admin") {
           navigate("/dashboard");
         }
         localStorage.setItem("IsLoggedIn", true);
         localStorage.setItem("role", response.data.role);
         localStorage.setItem("userName", response.data.fullName)
         localStorage.setItem("userEmail", response.data.email)
-      } catch (error) {
+      }).catch((error) => {
         const submitError = error.response.data.message;
         Swal.fire({
           title: "Error",
@@ -58,7 +55,7 @@ const LoginForm = () => {
         });
         setEmail("");
         setPassword("");
-      }
+      })
     } else {
       setErrors(validattionErrors);
     }

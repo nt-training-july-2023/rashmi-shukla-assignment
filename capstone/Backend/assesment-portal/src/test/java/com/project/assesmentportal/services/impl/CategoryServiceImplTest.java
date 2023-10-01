@@ -15,13 +15,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.entities.Category;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.repositories.CategoryRepository;
 
 class CategoryServiceImplTest {
@@ -56,10 +59,10 @@ class CategoryServiceImplTest {
         when(categoryRepository.findByCategoryTitle(category.getCategoryTitle())).thenReturn(Optional.empty());
         when(categoryRepository.save(any(Category.class))).thenReturn(category);
         
-        String result = categoryServiceImpl.addCategory(categoryDto);
+        ApiResponse result = categoryServiceImpl.addCategory(categoryDto);
         assertNotNull(result);
-        assertEquals("Category: "+category.getCategoryTitle()+", added successfully!", result);
-        
+        assertEquals(MessageConstants.CATEGORY_ADDED_SUCCESSFULLY, result.getMessage());
+        assertEquals(HttpStatus.CREATED.value(), result.getStatus());
     }
     
     @Test
@@ -153,9 +156,10 @@ class CategoryServiceImplTest {
         when(categoryRepository.findByCategoryTitle(categoryDto.getCategoryTitle())).thenReturn(Optional.empty());
         when(categoryRepository.save(any(Category.class))).thenReturn(existingCategory);
         
-        String result = categoryServiceImpl.updateCategory(categoryDto,categoryIdToUpdate);
+        ApiResponse result = categoryServiceImpl.updateCategory(categoryDto,categoryIdToUpdate);
         assertNotNull(result);
-        assertEquals("Category: "+existingCategory.getCategoryTitle()+", updated successfully!", result);
+        assertEquals(MessageConstants.CATEGORY_UPDATED_SUCCESSFULLY, result.getMessage());
+        assertEquals(HttpStatus.OK.value(), result.getStatus());
         
     }
     
@@ -215,10 +219,12 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(categoryIdToDelete)).thenReturn(Optional.of(categoryToDelete));
 
         // Act
-        categoryServiceImpl.deleteCategory(categoryIdToDelete);
+        ApiResponse response = categoryServiceImpl.deleteCategory(categoryIdToDelete);
 
         // Assert
         verify(categoryRepository, times(1)).deleteById(categoryIdToDelete);
+        assertEquals(MessageConstants.CATEGORY_DELETED_SUCCESSFULLY, response.getMessage());
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
     
     @Test

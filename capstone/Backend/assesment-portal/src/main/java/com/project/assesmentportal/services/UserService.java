@@ -2,6 +2,7 @@ package com.project.assesmentportal.services;
 
 import java.util.List;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.LoginRequestDto;
 import com.project.assesmentportal.dto.LoginResponseDto;
 import com.project.assesmentportal.dto.UserDto;
@@ -16,7 +17,7 @@ public interface UserService {
      * @param user The UserDto representing the user to be registered.
      * @return The UserDto of the registered user.
      */
-    String register(UserDto user);
+    ApiResponse register(UserDto user);
 
     /**
      * Performs user login.

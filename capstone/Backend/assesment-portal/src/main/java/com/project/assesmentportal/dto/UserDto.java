@@ -1,5 +1,7 @@
 package com.project.assesmentportal.dto;
 
+import com.project.assesmentportal.messages.ErrorConstants;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -23,38 +25,38 @@ public class UserDto {
     /**
      * The first name of the user.
      */
-    @NotBlank(message = "first name is required")
-    @Pattern(regexp = "^[a-zA-Z]*$", message = "Enter a valid FirstName")
+    @NotBlank(message = ErrorConstants.FIRST_NAME_REQUIRED)
+    @Pattern(regexp = "^[a-zA-Z]*$", message = ErrorConstants.FIRST_NAME_PATTERN)
     private String firstName;
 
     /**
      * The last name of the user.
      */
-    @NotBlank(message = "last name is required")
-    @Pattern(regexp = "^[a-zA-Z]*$", message = "Enter a valid lastName")
+    @NotBlank(message = ErrorConstants.LAST_NAME_REQUIRED)
+    @Pattern(regexp = "^[a-zA-Z]*$", message = ErrorConstants.LAST_NAME_PATTERN)
     private String lastName;
 
     /**
      * The password of the user.
      */
 
-    @NotBlank(message = "Password is required.")
+    @NotBlank(message = ErrorConstants.PASSWORD_REQUIRED)
     private String password;
 
     /**
      * The email address of the user.
      */
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = ErrorConstants.EMAIL_REQUIRED)
     @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@nucleusteq\\.com$", message =
-            "Email should have @nucleusteq.com domain")
+            ErrorConstants.USER_EMAIL_DOMAIN)
     private String email;
 
     /**
      * The phone number of the user.
      */
-    @NotBlank(message = "Phone number is required.")
+    @NotBlank(message = ErrorConstants.PHONE_NUMBER_REQUIRED)
     @Pattern(regexp = "^\\d{10}$", message =
-            "Phone number must be a 10-digit number.")
+            ErrorConstants.PHONE_NUMBER_PATTERN)
     private String phoneNumber;
 
     /**

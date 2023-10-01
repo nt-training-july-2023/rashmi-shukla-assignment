@@ -55,7 +55,7 @@ const ListQuiz = () => {
       .then((response) => {
         Swal.fire({
           title: "Success",
-          text: "Quiz deleted successfully",
+          text: response.data.message,
           icon: "success",
           timer: 2000,
           showConfirmButton: false,
@@ -147,7 +147,7 @@ const ListQuiz = () => {
                       showCancelButton: true,
                     }).then((result) => {
                       if (result.isConfirmed) {
-                        navigate(`/ListQuiz/${quizItem.quizId}/questions`);
+                        navigate(`/quizzes/${quizItem.quizId}/questions`);
                       }
                     })
                   }

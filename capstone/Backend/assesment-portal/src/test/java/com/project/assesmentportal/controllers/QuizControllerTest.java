@@ -15,9 +15,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.services.impl.QuizServiceImpl;
 
 class QuizControllerTest {
@@ -52,10 +54,12 @@ class QuizControllerTest {
         quizDto.setQuizId(1);
         quizDto.setQuizTitle("Maths");
         quizDto.setQuizDescription("Maths Category");
-        when(quizService.addQuiz(quizDto)).thenReturn("Quiz: "+quizDto.getQuizTitle()+", added successfully!");
-        ResponseEntity<String> response = quizController.addQuiz(quizDto);
+        
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUIZ_ADDED_SUCCESSFULLY, HttpStatus.CREATED.value());
+        when(quizService.addQuiz(quizDto)).thenReturn(apiResponse);
+        ResponseEntity<ApiResponse> response = quizController.addQuiz(quizDto);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Quiz: "+quizDto.getQuizTitle()+", added successfully!", response.getBody());
+        assertEquals(apiResponse, response.getBody());
     }
     
     @Test
@@ -77,17 +81,24 @@ class QuizControllerTest {
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizId(quizId);
         quizDto.setQuizTitle("Aptitude Quiz");
-        when(quizService.updateQuiz(quizDto,quizId)).thenReturn("Quiz: "+quizDto.getQuizTitle()+", updated successfully!");
-        ResponseEntity<String> result = quizController.updateQuiz(quizId, quizDto);
-        assertEquals("Quiz: "+quizDto.getQuizTitle()+", updated successfully!", result.getBody());
+        
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUIZ_UPDATED_SUCCESSFULLY, HttpStatus.OK.value());
+        when(quizService.updateQuiz(quizDto,quizId)).thenReturn(apiResponse);
+        
+        ResponseEntity<ApiResponse> result = quizController.updateQuiz(quizId, quizDto);
+        assertEquals(apiResponse, result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
     
     @Test
     public void testDeleteQuiz() {
         long quizId = 1L;
-        ResponseEntity<?> result = quizController.deleteQuiz(quizId);
-        assertEquals("Quiz deleted successfully!", result.getBody());
+        
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUIZ_DELETED_SUCCESSFULLY, HttpStatus.OK.value());
+        when(quizService.deleteQuiz(quizId)).thenReturn(apiResponse);
+        
+        ResponseEntity<ApiResponse> result = quizController.deleteQuiz(quizId);
+        assertEquals(apiResponse, result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
         verify(quizService).deleteQuiz(quizId);
     }

@@ -30,7 +30,7 @@ const AddCategory = () => {
           .then((response) => {
             Swal.fire({
               title: "Success",
-              text: "Category updated successfully",
+              text: response.data.message,
               icon: "success",
               timer: 2000,
               showConfirmButton: false,
@@ -52,7 +52,7 @@ const AddCategory = () => {
           .then((response) => {
             Swal.fire({
               title: "Success",
-              text: "Category added successfully",
+              text: response.data.message,
               icon: "success",
               timer: 2000,
               showConfirmButton: false,

@@ -15,9 +15,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.entities.Options;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.services.impl.QuestionServiceImpl;
 
 class QuestionControllerTest {
@@ -41,10 +43,12 @@ class QuestionControllerTest {
         Options options = new Options("2", "4", "5", "6");
         questionDto.setOptions(options);
         questionDto.setAnswer(options.getOptionII());
-        when(questionService.addQuestion(questionDto)).thenReturn("Question added successfully!");
-        ResponseEntity<String> response = questionController.addQuestion(questionDto);
+        
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_ADDED_SUCCESSFULLY, HttpStatus.CREATED.value());
+        when(questionService.addQuestion(questionDto)).thenReturn(apiResponse);
+        ResponseEntity<ApiResponse> response = questionController.addQuestion(questionDto);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Question added successfully!", response.getBody());
+        assertEquals(apiResponse, response.getBody());
     }
     
     @Test
@@ -85,17 +89,22 @@ class QuestionControllerTest {
         questionDto.setOptions(options);
         questionDto.setAnswer(options.getOptionII());
         
-        when(questionService.updateQuestion(questionDto,questionId)).thenReturn("Category with id: 1 updated successfully!");
-        ResponseEntity<String> result = questionController.updateQuestion(questionDto, questionId);
-        assertEquals("Category with id: 1 updated successfully!", result.getBody());
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_UPDATED_SUCCESSFULLY, HttpStatus.OK.value());
+        when(questionService.updateQuestion(questionDto,questionId)).thenReturn(apiResponse);
+        ResponseEntity<ApiResponse> result = questionController.updateQuestion(questionDto, questionId);
+        assertEquals(apiResponse, result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
     
     @Test
     public void testDeleteQuestion() {
         long questionId = 1L;
-        ResponseEntity<?> result = questionController.deleteQuestion(questionId);
-        assertEquals("Question deleted successfully", result.getBody());
+        
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_DELETED_SUCCESSFULLY, HttpStatus.OK.value());
+        when(questionService.deleteQuestion(questionId)).thenReturn(apiResponse);
+        
+        ResponseEntity<ApiResponse> result = questionController.deleteQuestion(questionId);
+        assertEquals(apiResponse, result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
         verify(questionService).deleteQuestion(questionId);
     }

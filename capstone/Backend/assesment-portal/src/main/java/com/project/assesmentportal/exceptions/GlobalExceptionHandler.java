@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.project.assesmentportal.dto.ApiResponse;
+
 /**
  * Global exception handler for handling various exceptions in the
  * application.
@@ -27,7 +29,7 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(
             final ResourceNotFoundException ex) {
         String message = ex.getMessage();
-        ApiResponse apiResponse = new ApiResponse(message, false);
+        ApiResponse apiResponse = new ApiResponse(message, HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<ApiResponse>(apiResponse,
                 HttpStatus.NOT_FOUND);
     }
@@ -42,7 +44,7 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ApiResponse> invalidDataExceptionHandler(
             final InvalidDataException ex) {
         String message = ex.getMessage();
-        ApiResponse apiResponse = new ApiResponse(message, false);
+        ApiResponse apiResponse = new ApiResponse(message, HttpStatus.UNAUTHORIZED.value());
         return new ResponseEntity<ApiResponse>(apiResponse,
                 HttpStatus.UNAUTHORIZED);
     }
@@ -57,7 +59,7 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ApiResponse> duplicateResourceExceptionHandler(
             final DuplicateResourceException ex) {
         String message = ex.getMessage();
-        ApiResponse apiResponse = new ApiResponse(message, false);
+        ApiResponse apiResponse = new ApiResponse(message, HttpStatus.CONFLICT.value());
         return new ResponseEntity<ApiResponse>(apiResponse,
                 HttpStatus.CONFLICT);
     }

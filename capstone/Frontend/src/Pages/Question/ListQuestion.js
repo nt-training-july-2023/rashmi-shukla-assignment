@@ -32,6 +32,7 @@ const ListQuestion = () => {
   const { id } = useParams();
 
   const [timeInSeconds, setTimeInSeconds] = useState(0);
+  const [loadingQuestions, setLoadingQuestions] = useState(true);
 
   useEffect(() => {
     const handleCountdown = () => {
@@ -55,13 +56,16 @@ const ListQuestion = () => {
   }, []);
 
   const getQuestionsByQuiz = () => {
+    setLoadingQuestions(true);
     QuizService.getQuestionsByQuiz(id)
       .then((response) => {
         setQuestions(response.data);
         setTotalQuestions(response.data.length);
-        setTotalMarks(response.data.length);  
+        setTotalMarks(response.data.length);
+        setLoadingQuestions(false);  
       })
       .catch((error) => {
+        setLoadingQuestions(false);
       });
   };
 
@@ -80,10 +84,10 @@ const ListQuestion = () => {
 
   const deleteQuestion = (questionId) => {
     QuestionService.deleteQuestion(questionId)
-      .then(() => {
+      .then((response) => {
         Swal.fire({
           title: "Success",
-          text: "Question deleted successfully",
+          text: response.data.message,
           icon: "success",
           timer: 2000,
           showConfirmButton: false,
@@ -107,6 +111,9 @@ const ListQuestion = () => {
   const handleSubmit = (e) => {
     if(e){
     e.preventDefault();
+    }
+    if(loadingQuestions){
+      return
     }
     setSubmitted(true);
     let score = 0;

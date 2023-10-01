@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.dto.QuizDto;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.services.QuizService;
 
 import jakarta.validation.Valid;
@@ -50,12 +52,12 @@ public class QuizController {
      * @return added quiz.
      */
     @PostMapping()
-    public final ResponseEntity<String> addQuiz(
+    public final ResponseEntity<ApiResponse> addQuiz(
             @RequestBody @Valid final QuizDto quizDto) {
-        LOGGER.info("Add Quiz method invoked.");
-        String response = quizService.addQuiz(quizDto);
-        LOGGER.info("Added a quiz successfully.");
-        return new ResponseEntity<String>(response,
+        LOGGER.info(MessageConstants.ADD_QUIZ_INVOKED);
+        ApiResponse response = quizService.addQuiz(quizDto);
+        LOGGER.info(MessageConstants.QUIZ_ADDED_SUCCESSFULLY);
+        return new ResponseEntity<ApiResponse>(response,
                 HttpStatus.CREATED);
     }
 
@@ -65,9 +67,9 @@ public class QuizController {
      */
     @GetMapping()
     public final List<QuizDto> getQuizzes() {
-        LOGGER.info("Retrieving list of quiz.");
+        LOGGER.info(MessageConstants.GET_QUIZZES_INVOKED);
         List<QuizDto> quizDtos = quizService.getQuizzes();
-        LOGGER.info("Retrieved a list of quiz successfully.");
+        LOGGER.info(MessageConstants.QUIZZES_RETRIEVED_SUCCESSFULLY);
         return quizDtos;
     }
 
@@ -79,9 +81,9 @@ public class QuizController {
     @GetMapping("/{id}")
     public final ResponseEntity<QuizDto> getQuizById(
             @PathVariable("id") final long quizId) {
-        LOGGER.info("Retrieving a quiz.");
+        LOGGER.info(MessageConstants.GET_QUIZ_INVOKED);
         QuizDto quizDto = quizService.getQuizById(quizId);
-        LOGGER.info("Retrieved a quiz successfully.");
+        LOGGER.info(MessageConstants.QUIZ_RETRIEVED_SUCCESSFULLY + quizId);
         return new ResponseEntity<QuizDto>(quizDto,
                 HttpStatus.OK);
     }
@@ -93,13 +95,13 @@ public class QuizController {
      * @return updated QuizDto.
      */
     @PutMapping("/{id}")
-    public final ResponseEntity<String> updateQuiz(
+    public final ResponseEntity<ApiResponse> updateQuiz(
             @PathVariable("id") final long quizId,
             @RequestBody @Valid final QuizDto quizDto) {
-        LOGGER.info("Updating a quiz");
-        String response = quizService.updateQuiz(quizDto, quizId);
-        LOGGER.info("Updated a quiz successfully.");
-        return new ResponseEntity<String>(response,
+        LOGGER.info(MessageConstants.UPDATE_QUIZ_INVOKED);
+        ApiResponse response = quizService.updateQuiz(quizDto, quizId);
+        LOGGER.info(MessageConstants.QUIZ_UPDATED_SUCCESSFULLY);
+        return new ResponseEntity<ApiResponse>(response,
                 HttpStatus.OK);
     }
 
@@ -109,12 +111,12 @@ public class QuizController {
      * @return responseEntity.
      */
     @DeleteMapping("/{id}")
-    public final ResponseEntity<String> deleteQuiz(
+    public final ResponseEntity<ApiResponse> deleteQuiz(
             @PathVariable("id") final long quizId) {
-        LOGGER.info("Deleting a quiz");
-        quizService.deleteQuiz(quizId);
-        LOGGER.info("Deleted a quiz successfully.");
-        return new ResponseEntity<String>("Quiz deleted successfully!",
+        LOGGER.info(MessageConstants.DELETE_QUIZ_INVOKED);
+        ApiResponse response = quizService.deleteQuiz(quizId);
+        LOGGER.info(MessageConstants.QUIZ_DELETED_SUCCESSFULLY);
+        return new ResponseEntity<ApiResponse>(response,
                 HttpStatus.OK);
     }
 
@@ -126,9 +128,9 @@ public class QuizController {
     @GetMapping("/{id}/questions")
     public final ResponseEntity<List<QuestionDto>> getQuestionsByQuiz(
             @PathVariable("id") final long id) {
-        LOGGER.info("Retrieving Questions by quiz.");
+        LOGGER.info(MessageConstants.GET_QUESTIONS_BY_QUIZ_INVOKED);
         List<QuestionDto> questionsDTO = quizService.getQuestionsByQuiz(id);
-        LOGGER.info("Retrieved a list of question by quiz successfully.");
+        LOGGER.info(MessageConstants.QUESTIONS_BY_QUIZ_RETRIEVED + id);
         return new ResponseEntity<List<QuestionDto>>(
                 questionsDTO, HttpStatus.OK);
     }

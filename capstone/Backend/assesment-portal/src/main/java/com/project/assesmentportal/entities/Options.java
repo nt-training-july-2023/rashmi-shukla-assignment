@@ -1,5 +1,7 @@
 package com.project.assesmentportal.entities;
 
+import com.project.assesmentportal.messages.ErrorConstants;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,21 +19,21 @@ public class Options {
     /**
      * The optionI of the question.
      */
-    @NotBlank(message = "Option I is required")
+    @NotBlank(message = ErrorConstants.OPTIONI_REQUIRED)
     private String optionI;
     /**
      * The optionII of the question.
      */
-    @NotBlank(message = "Option II is required")
+    @NotBlank(message = ErrorConstants.OPTIONII_REQUIRED)
     private String optionII;
     /**
      * The optionIII of the question.
      */
-    @NotBlank(message = "Option III is required")
+    @NotBlank(message = ErrorConstants.OPTIONIII_REQUIRED)
     private String optionIII;
     /**
      * The optionIV of the question.
      */
-    @NotBlank(message = "Option IV is required")
+    @NotBlank(message = ErrorConstants.OPTIONIV_REQUIRED)
     private String optionIV;
 }

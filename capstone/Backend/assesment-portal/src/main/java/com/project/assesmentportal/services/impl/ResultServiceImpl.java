@@ -7,10 +7,13 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.ResultDto;
 import com.project.assesmentportal.entities.Result;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.repositories.ResultRepository;
 import com.project.assesmentportal.services.ResultService;
 
@@ -45,11 +48,14 @@ public class ResultServiceImpl implements ResultService {
      * @return String for successful operation.
      */
     @Override
-    public final String addResult(final ResultDto resultDto) {
+    public final ApiResponse addResult(final ResultDto resultDto) {
+        LOGGER.info(MessageConstants.ADD_RESULT_INVOKED);
         Result result = this.modelMapper.map(resultDto, Result.class);
         resultRepository.save(result);
-        LOGGER.info("Service:Results added successfully");
-        return "Result added successfully!";
+        LOGGER.info(MessageConstants.ADD_RESULT_ENDED);
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.RESULT_ADDED_SUCCESSFULLY,
+                HttpStatus.CREATED.value());
+        return apiResponse;
     }
 
     /**
@@ -58,11 +64,12 @@ public class ResultServiceImpl implements ResultService {
      */
     @Override
     public final List<ResultDto> getResults() {
+        LOGGER.info(MessageConstants.GET_RESULTS_INVOKED);
         List<Result> results = this.resultRepository.findAll();
         List<ResultDto> resultDtos = results.stream().map(
                 (result) -> this.modelMapper.map(result, ResultDto.class))
                 .collect(Collectors.toList());
-        LOGGER.info("Retrieved list of results at admin side successfully.");
+        LOGGER.info(MessageConstants.GET_RESULTS_ENDED);
         return resultDtos;
     }
 
@@ -73,12 +80,13 @@ public class ResultServiceImpl implements ResultService {
      */
     @Override
     public final List<ResultDto> getResultByUserEmail(final String userEmail) {
+        LOGGER.info(MessageConstants.GET_RESULT_INVOKED);
         List<Result> results = this.resultRepository
                 .findByUserEmail(userEmail);
         List<ResultDto> resultDtos = results.stream().map(
                 (result) -> this.modelMapper.map(result, ResultDto.class))
                 .collect(Collectors.toList());
-        LOGGER.info("Retrieved list of user at user side successfully.");
+        LOGGER.info(MessageConstants.GET_RESULT_ENDED);
         return resultDtos;
     }
 

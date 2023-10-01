@@ -4,6 +4,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom'
 import './Form.css';
+import UserService from '../../Services/UserService';
 
 const RegistrationForm = () => {
 
@@ -46,20 +47,17 @@ const RegistrationForm = () => {
       }
 
       if(Object.keys(validattionErrors).length === 0){
-        try{
-          const response = await axios.post('http://localhost:8080/users/register', { firstName, lastName, phoneNumber, email, password });
-          Swal.fire({
-            title: "Success",
-            text: "User registered successfully",
-            icon: "success",
-            timer:2000,
-            showConfirmButton:false
-          });
-
-          if(response.status===201){
+        const user = { firstName, lastName, phoneNumber, email, password };
+          UserService.register(user).then((response) => {
+            Swal.fire({
+              title: "Success",
+              text: response.data.message,
+              icon: "success",
+              timer:2000,
+              showConfirmButton:false
+            });
             navigate("/")
-          }
-        }catch(error){
+          }).catch((error) => {
             const submitError=error.response.data.message
             Swal.fire({
               title: "Error",
@@ -68,7 +66,7 @@ const RegistrationForm = () => {
               confirmButtonText: "Retry",
               confirmButtonColor:"red"
             });
-        } 
+          });
       }
       else{
         setErrors(validattionErrors)

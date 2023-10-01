@@ -15,7 +15,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.ResultDto;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.services.impl.ResultServiceImpl;
 
 class ResultControllerTest {
@@ -33,10 +35,12 @@ class ResultControllerTest {
     @Test
     void testAddResult() {
         ResultDto resultDto = new ResultDto();
-        when(resultService.addResult(resultDto)).thenReturn("Result Added Successfully!");
-        ResponseEntity<String> response = resultController.addResult(resultDto);
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.RESULT_ADDED_SUCCESSFULLY, HttpStatus.CREATED.value());
+        when(resultService.addResult(resultDto)).thenReturn(apiResponse);
+        ResponseEntity<ApiResponse> response = resultController.addResult(resultDto);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Result Added Successfully!", response.getBody());
+        assertEquals(apiResponse, response.getBody());
+        assertEquals(201, response.getBody().getStatus());
     }
     
     @Test

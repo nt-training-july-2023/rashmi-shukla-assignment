@@ -76,7 +76,7 @@ const AddQuestion = () => {
           .then((response) => {
             Swal.fire({
               title: "Success",
-              text: "Question updated successfully",
+              text: response.data.message,
               icon: "success",
               timer: 2000,
               showConfirmButton: false,
@@ -98,7 +98,7 @@ const AddQuestion = () => {
           .then((response) => {
             Swal.fire({
               title: "Success",
-              text: "Question added successfully",
+              text: response.data.message,
               icon: "success",
               timer: 2000,
               showConfirmButton: false,

@@ -16,12 +16,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.QuestionDto;
 import com.project.assesmentportal.entities.Options;
 import com.project.assesmentportal.entities.Question;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.repositories.QuestionRepository;
 import com.project.assesmentportal.repositories.QuizRepository;
 
@@ -68,8 +71,9 @@ class QuestionServiceImplTest {
         when(quizRepository.findById(question.getQuiz().getQuizId())).thenReturn(Optional.of(new Quiz()));
         when(questionRepository.save(question)).thenReturn(question);
         
-        String result = questionService.addQuestion(questionDto);
-        assertEquals("Question added successfully!", result);
+        ApiResponse result = questionService.addQuestion(questionDto);
+        assertEquals(MessageConstants.QUESTION_ADDED_SUCCESSFULLY, result.getMessage());
+        assertEquals(HttpStatus.CREATED.value(), result.getStatus());
     }
     
     @Test
@@ -142,8 +146,9 @@ class QuestionServiceImplTest {
         when(questionRepository.findById(questionIdToUpdate)).thenReturn(Optional.of(question));
         when(questionRepository.save(question)).thenReturn(question);
         
-        String result = questionService.updateQuestion(questionDto, questionIdToUpdate);
-        assertEquals("Question with id: 1 updated successfully!", result);
+        ApiResponse result = questionService.updateQuestion(questionDto, questionIdToUpdate);
+        assertEquals(MessageConstants.QUESTION_UPDATED_SUCCESSFULLY, result.getMessage());
+        assertEquals(HttpStatus.OK.value(), result.getStatus());
     }
     
     @Test
@@ -257,8 +262,10 @@ class QuestionServiceImplTest {
         long questionIdToDelete = 1;
         when(questionRepository.findById(questionIdToDelete)).thenReturn(Optional.of(new Question()));
         
-        questionService.deleteQuestion(questionIdToDelete);
+        ApiResponse result = questionService.deleteQuestion(questionIdToDelete);
         verify(questionRepository, times(1)).deleteById(questionIdToDelete);
+        assertEquals(MessageConstants.QUESTION_DELETED_SUCCESSFULLY, result.getMessage());
+        assertEquals(HttpStatus.OK.value(), result.getStatus());
     }
     
     @Test

@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.QuestionDto;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.services.QuestionService;
 
 import jakarta.validation.Valid;
@@ -48,12 +50,12 @@ public class QuestionController {
      * @return added quiz.
      */
     @PostMapping()
-    public final ResponseEntity<String> addQuestion(
+    public final ResponseEntity<ApiResponse> addQuestion(
             @RequestBody @Valid final QuestionDto questionDto) {
-        LOGGER.info("Adding a question.");
-        String addQuestion = this.questionService.addQuestion(questionDto);
-        LOGGER.info("Added a question successfully.");
-        return new ResponseEntity<String>(addQuestion, HttpStatus.CREATED);
+        LOGGER.info(MessageConstants.ADD_QUESTION_INVOKED);
+        ApiResponse addQuestion = this.questionService.addQuestion(questionDto);
+        LOGGER.info(MessageConstants.QUESTION_ADDED_SUCCESSFULLY);
+        return new ResponseEntity<ApiResponse>(addQuestion, HttpStatus.CREATED);
     }
 
     /**
@@ -62,9 +64,9 @@ public class QuestionController {
      */
     @GetMapping()
     public final List<QuestionDto> getQuestions() {
-        LOGGER.info("Retrieving a list of question.");
+        LOGGER.info(MessageConstants.GET_QUESTIONS_INVOKED);
         List<QuestionDto> questionDtos = questionService.getQuestions();
-        LOGGER.info("Retrieved a list of question successfully.");
+        LOGGER.info(MessageConstants.QUESTIONS_RETRIEVED_SUCCESSFULLY);
         return questionDtos;
     }
 
@@ -76,10 +78,10 @@ public class QuestionController {
     @GetMapping("/{id}")
     public final ResponseEntity<QuestionDto> getQuestionById(
             @PathVariable("id") final long questionId) {
-        LOGGER.info("Retrieving a question.");
+        LOGGER.info(MessageConstants.GET_QUESTION_INVOKED);
         QuestionDto questionDto = questionService
                 .getQuestionById(questionId);
-        LOGGER.info("Retrieved a question successfully.");
+        LOGGER.info(MessageConstants.QUESTIONS_RETRIEVED_SUCCESSFULLY + questionId);
         return new ResponseEntity<QuestionDto>(questionDto, HttpStatus.OK);
     }
 
@@ -90,15 +92,14 @@ public class QuestionController {
      * @return QuestionDto.
      */
     @PutMapping("/{id}")
-    public final ResponseEntity<String> updateQuestion(
+    public final ResponseEntity<ApiResponse> updateQuestion(
             @RequestBody @Valid final QuestionDto questionDto,
             @PathVariable("id") final long questionId) {
-        LOGGER.info("Updating a question with ID: " + questionId);
-        String response = questionService.updateQuestion(questionDto,
+        LOGGER.info(MessageConstants.UPDATE_QUESTION_INVOKED);
+        ApiResponse response = questionService.updateQuestion(questionDto,
                 questionId);
-        LOGGER.info("Updated a question with ID: " + questionId
-                + " successfully.");
-        return new ResponseEntity<String>(response, HttpStatus.OK);
+        LOGGER.info(MessageConstants.QUESTION_UPDATED_SUCCESSFULLY);
+        return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
     }
 
     /**
@@ -107,13 +108,12 @@ public class QuestionController {
      * @return string
      */
     @DeleteMapping("/{id}")
-    public final ResponseEntity<String> deleteQuestion(
+    public final ResponseEntity<ApiResponse> deleteQuestion(
             @PathVariable("id") final long questionId) {
-        LOGGER.info("Deleting a question with ID: " + questionId);
-        questionService.deleteQuestion(questionId);
-        LOGGER.info("Deleted a question with ID: " + questionId
-                + " successfully.");
-        return new ResponseEntity<String>("Question deleted successfully",
+        LOGGER.info(MessageConstants.DELETE_QUESTION_INVOKED);
+        ApiResponse response = questionService.deleteQuestion(questionId);
+        LOGGER.info(MessageConstants.QUESTION_DELETED_SUCCESSFULLY);
+        return new ResponseEntity<ApiResponse>(response,
                 HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ package com.project.assesmentportal.dto;
 import org.springframework.validation.annotation.Validated;
 
 import com.project.assesmentportal.entities.Options;
+import com.project.assesmentportal.messages.ErrorConstants;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -25,13 +26,13 @@ public class QuestionDto {
     /**
      * The title of the question.
      */
-    @NotBlank(message = "Question title is required.")
+    @NotBlank(message = ErrorConstants.QUESTION_TITLE_REQUIRED)
     private String questionTitle;
 
     /**
      * The options of answer.
      */
-    @NotNull(message = "Options are required.")
+    @NotNull(message = ErrorConstants.OPTIONS_REQUIRED)
     @Valid
     private Options options;
 
@@ -56,13 +57,13 @@ public class QuestionDto {
     /**
      * The correct answer.
      */
-    @NotBlank(message = "answer is required.")
+    @NotBlank(message = ErrorConstants.ANSWER_REQUIRED)
     private String answer;
 
     /**
      * instance of quiz.
      */
-    @NotNull(message = "Quiz is required.")
+    @NotNull(message = ErrorConstants.QUIZ_REQUIRED)
     @Valid
     private QuizDto quiz;
 

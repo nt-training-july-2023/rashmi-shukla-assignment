@@ -29,7 +29,7 @@ const ListCategory = () => {
       .then((response) => {
         Swal.fire({
           title: "Success",
-          text: "Category deleted successfully",
+          text: response.data.message,
           icon: "success",
           timer: 2000,
           showConfirmButton: false,

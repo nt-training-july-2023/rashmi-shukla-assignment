@@ -13,9 +13,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.ResultDto;
 import com.project.assesmentportal.entities.Result;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.repositories.ResultRepository;
 
 class ResultServiceImplTest {
@@ -41,8 +44,9 @@ class ResultServiceImplTest {
         when(modelMapper.map(resultDto, Result.class)).thenReturn(result);
         when(resultRepository.save(result)).thenReturn(result);
         
-        String output = resultService.addResult(resultDto);
-        assertEquals("Result added successfully!", output);
+        ApiResponse output = resultService.addResult(resultDto);
+        assertEquals(MessageConstants.RESULT_ADDED_SUCCESSFULLY, output.getMessage());
+        assertEquals(HttpStatus.CREATED.value(), output.getStatus());
     }
     
     @Test

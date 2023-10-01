@@ -2,6 +2,8 @@ package com.project.assesmentportal.dto;
 
 import org.springframework.validation.annotation.Validated;
 
+import com.project.assesmentportal.messages.ErrorConstants;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -26,25 +28,25 @@ public class QuizDto {
     /**
      * The title of the quiz.
      */
-    @NotBlank(message = "Quiz title is required")
+    @NotBlank(message = ErrorConstants.QUIZ_TITLE_REQUIRED)
     private String quizTitle;
 
     /**
      * The description of the quiz.
      */
-    @NotBlank(message = "Quiz Description is required")
+    @NotBlank(message = ErrorConstants.QUIZ_DESCRIPTION_REQUIRED)
     private String quizDescription;
 
     /**
      * timer for the quiz.
      */
-    @Min(value = 1, message = "Quiz timer cannot be zero")
+    @Min(value = 1, message = ErrorConstants.QUIZ_TIMER_MIN)
     private int quizTimer;
 
     /**
      * The category of the quiz.
      */
-    @NotNull(message = "Category is required")
+    @NotNull(message = ErrorConstants.CATEGORY_REQUIRED)
     @Valid
     private CategoryDto category;
 

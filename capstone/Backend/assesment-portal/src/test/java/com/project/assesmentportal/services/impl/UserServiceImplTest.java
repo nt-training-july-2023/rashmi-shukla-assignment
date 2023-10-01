@@ -14,8 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.LoginRequestDto;
 import com.project.assesmentportal.dto.LoginResponseDto;
 import com.project.assesmentportal.dto.UserDto;
@@ -23,6 +25,7 @@ import com.project.assesmentportal.entities.User;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.InvalidDataException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.repositories.UserRepository;
 
 class UserServiceImplTest {
@@ -68,9 +71,12 @@ class UserServiceImplTest {
         when(modelMapper.map(user, UserDto.class)).thenReturn(userDto);
         when(userRepository.save(any(User.class))).thenReturn(user);
         
-        String response = userService.register(userDto);
+        ApiResponse response = userService.register(userDto);
+        
         assertNotNull(response);
-        assertEquals(user.getFirstName()+" registered successfully!",response);
+        assertEquals(MessageConstants.USER_REGISTERED_SUCCESSFULLY,response.getMessage());
+        assertEquals(HttpStatus.CREATED.value(),response.getStatus());
+        
     }
     
     @Test

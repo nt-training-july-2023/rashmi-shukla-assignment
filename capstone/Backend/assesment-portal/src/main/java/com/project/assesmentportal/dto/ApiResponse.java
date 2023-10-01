@@ -1,4 +1,4 @@
-package com.project.assesmentportal.exceptions;
+package com.project.assesmentportal.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class ApiResponse {
     private String message;
 
     /**
-     * Indicates the success status of the API response.
+     * Indicates the status of the API response.
      */
-    private boolean success;
+    private int status;
 }
