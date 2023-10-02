@@ -15,7 +15,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.CategoryDto;
+import com.project.assesmentportal.dto.QuizDto;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.services.impl.CategoryServiceImpl;
 
 class CategoryControllerTest {
@@ -36,8 +39,8 @@ class CategoryControllerTest {
         List<CategoryDto> categories = new ArrayList<>();
         categories.add(new CategoryDto(1, "GK","GK Category"));
         categories.add(new CategoryDto(2, "Maths","Maths Category"));
-        when(categoryService.getAllCategories()).thenReturn(categories);
-        List<CategoryDto> result = categoryController.getAllCategories();
+        when(categoryService.getCategories()).thenReturn(categories);
+        List<CategoryDto> result = categoryController.getCategories();
         assertEquals(2, result.size());
         assertEquals("GK", result.get(0).getCategoryTitle());
         assertEquals("Maths Category", result.get(1).getCategoryDescription());
@@ -49,10 +52,13 @@ class CategoryControllerTest {
         categoryDto.setCategoryId(1);
         categoryDto.setCategoryTitle("Maths");
         categoryDto.setCategoryDescription("Maths Category");
-        when(categoryService.addCategory(categoryDto)).thenReturn(categoryDto);
-        ResponseEntity<CategoryDto> response = categoryController.addCategory(categoryDto);
+        
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_ADDED_SUCCESSFULLY, HttpStatus.CREATED.value());
+        when(categoryService.addCategory(categoryDto)).thenReturn(apiResponse);
+        
+        ResponseEntity<ApiResponse> response = categoryController.addCategory(categoryDto);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(categoryDto, response.getBody());
+        assertEquals(apiResponse, response.getBody());
     }
     
     @Test
@@ -74,19 +80,39 @@ class CategoryControllerTest {
         CategoryDto categoryDTO = new CategoryDto();
         categoryDTO.setCategoryId(categoryId);
         categoryDTO.setCategoryTitle("Maths Category");
-        when(categoryService.updateCategory(categoryDTO,categoryId)).thenReturn(categoryDTO);
-        ResponseEntity<CategoryDto> result = categoryController.updateCategory(categoryId, categoryDTO);
-        assertEquals(categoryDTO, result.getBody());
+        
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_UPDATED_SUCCESSFULLY, HttpStatus.OK.value());
+        when(categoryService.updateCategory(categoryDTO,categoryId)).thenReturn(apiResponse);
+       
+        ResponseEntity<ApiResponse> result = categoryController.updateCategory(categoryId, categoryDTO);
+        assertEquals(apiResponse, result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
     
     @Test
     public void testDeleteCategory() {
         long categoryId = 1L;
-        ResponseEntity<?> result = categoryController.deleteCategory(categoryId);
-        assertEquals("Category deleted successfully!", result.getBody());
+        
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_DELETED_SUCCESSFULLY, HttpStatus.OK.value());
+        when(categoryService.deleteCategory(categoryId)).thenReturn(apiResponse);
+        
+        ResponseEntity<ApiResponse> result = categoryController.deleteCategory(categoryId);
+        assertEquals(apiResponse, result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
         verify(categoryService).deleteCategory(categoryId);
+    }
+    
+    @Test
+    public void testGetQuizzesById(){
+        long categoryId = 1L;
+        List<QuizDto> quizList = new ArrayList<>();
+
+        when(categoryService.getQuizzesByCategory(categoryId)).thenReturn(quizList);
+
+        ResponseEntity<List<QuizDto>> response = categoryController.getQuizzesById(categoryId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(quizList, response.getBody());
     }
 
 }

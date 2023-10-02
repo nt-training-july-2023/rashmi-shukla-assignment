@@ -34,7 +34,7 @@ const ErrorPage = () => {
         <h1>Unauthorized Access</h1>
         <p>Oops! The page you are looking for is unaccessible.</p>
         <button onClick = {handleNavigate}>
-          Go back to the homepage
+          Go to homepage
         </button>
       </div>
     </div>

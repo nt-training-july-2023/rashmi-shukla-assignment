@@ -1,86 +1,166 @@
-import React, { useEffect, useState } from 'react'
-import QuizService from '../../Services/QuizService';
-import Swal from 'sweetalert2';
-import Navbar from '../../Components/Navbar/Navbar';
-import './Quiz.css';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import QuizService from "../../Services/QuizService";
+import Swal from "sweetalert2";
+import Navbar from "../../Components/Navbar/Navbar";
+import "./Quiz.css";
+import instructions from "./Instructions";
+import { useNavigate, useParams } from "react-router-dom";
+import CategoryService from "../../Services/CategoryService";
 
 const ListQuiz = () => {
+  const [quiz, setQuiz] = useState([]);
+  const [categoryName, setCategoryName] = useState("");
+  const navigate = useNavigate();
+  const userRole = localStorage.getItem("role");
+  const { id } = useParams();
 
-    const[quiz, setQuiz] = useState([]);
-    const navigate = useNavigate();
-
-    useEffect(()=>{
-        getAllQuizzes();
-    },[]);
-
-    const getAllQuizzes =() =>{
-        QuizService.getAllQuizzes().then((response)=>{
-            setQuiz(response.data)
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+  useEffect(() => {
+    if (id) {
+      getQuizzesByCategory();
+      getCategoryById();
+    } else {
+      getAllQuizzes();
     }
+  }, [id]);
 
-    const deleteQuiz = (quizId) =>{
-        QuizService.deleteQuiz(quizId).then((response) =>{
-            Swal.fire({
-                title: "Success",
-                text: "Quiz deleted successfully",
-                icon: "success",
-                timer:2000,
-                showConfirmButton:false
-              });
-            getAllQuizzes();
-        })
-        .catch((error) => {
-            console.log(error);
+  const getQuizzesByCategory = () => {
+    CategoryService.getQuizzesByCategory(id)
+      .then((response) => {
+        setQuiz(response.data);
+      })
+      .catch((error) => {
+      });
+  };
+
+  const getCategoryById = () => {
+    CategoryService.getCategoryById(id)
+      .then((response) => {
+        setCategoryName(response.data.categoryTitle);
+      })
+      .catch((error) => {
+      });
+  };
+
+  const getAllQuizzes = () => {
+    QuizService.getAllQuizzes()
+      .then((response) => {
+        setQuiz(response.data);
+      })
+      .catch((error) => {
+      });
+  };
+
+  const deleteQuiz = (quizId) => {
+    QuizService.deleteQuiz(quizId)
+      .then((response) => {
+        Swal.fire({
+          title: "Success",
+          text: response.data.message,
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
         });
+        getAllQuizzes();
+      })
+      .catch((error) => {
+      });
+  };
+
+  const heading = () => {
+    if (id) {
+      return <h1 style={{ textAlign: "center" }}>CATEGORY: {categoryName}</h1>;
+    } else {
+      return <h1 style={{ textAlign: "center" }}>ALL QUIZZES</h1>;
     }
+  };
 
   return (
     <div>
-      <Navbar/>
-      <div className='quiz-header'>
-            <h1>ALL QUIZZES</h1>
-            <button onClick={()=> navigate(`/addQuiz`)}>
-                Add Quiz
-            </button>
+      <Navbar />
+      <div className="quiz-header">
+        {heading()}
+        {userRole === "admin" && !id && (
+          <button onClick={() => navigate(`/quizzes/add`)}>Add Quiz</button>
+        )}
       </div>
-      <div className='quiz-container'>
-      {quiz.map((quizItem) => (
-          <div key={quizItem.quizId} className="card">
-            <div className="card-body">
-              <h5 className="card-title">{quizItem.quizTitle}</h5>
-              <p className="card-text">{quizItem.quizDescription}</p>
-              <p className="card-text">Quiz Timer: {quizItem.quizTimer}</p>
-              <div className="card-text">
-                  <div>
-                    <h6>Category: {quizItem.category.categoryTitle}</h6>
-                    <p>{quizItem.category.categoryDescription}</p>
-                  </div>
+      <div className="quiz-container">
+        {quiz.map((quizItem) => (
+          <div key={quizItem.quizId} className="quiz-card">
+            <div className="quiz-card-body">
+              <h5 className="quiz-card-title">Quiz: {quizItem.quizTitle}</h5>
+              <p className="quiz-card-text">{quizItem.quizDescription}</p>
+              <p className="quiz-card-text">
+                Time limit: {quizItem.quizTimer} minutes
+              </p>
+              <div className="quiz-card-text">
+                <div>
+                  <h5>Category: {quizItem.category.categoryTitle}</h5>
+                  <h6>{quizItem.category.categoryDescription}</h6>
+                </div>
               </div>
-              <button className='action-btn update-btn' onClick={()=> navigate(`/UpdateQuiz/${quizItem.quizId}`)}>Update</button>
-              <button
-                className='action-btn delete-btn'
-                onClick={() => 
-                    Swal.fire({
+              {userRole === "admin" ? (
+                <>
+                  <button
+                    className="action-btn view-btn"
+                    onClick={() =>
+                      navigate(`/quizzes/${quizItem.quizId}/questions`)
+                    }
+                  >
+                    View Questions
+                  </button>
+                  <button
+                    className="action-btn update-btn"
+                    onClick={() => navigate(`/quizzes/update/${quizItem.quizId}`)}
+                  >
+                    Update Quiz
+                  </button>
+                  <button
+                    className="action-btn delete-btn"
+                    onClick={() =>
+                      Swal.fire({
                         title: "Warning",
                         text: "Delete Quiz?",
                         icon: "warning",
-                        confirmButtonText:"delete",
-                        confirmButtonColor:"red",
-                        showCancelButton:true
-                      }).then((result)=>{ if(result.isConfirmed) {
-                        deleteQuiz(quizItem.quizId)}
-                    } ) }> Delete </button>
+                        confirmButtonText: "Delete",
+                        confirmButtonColor: "red",
+                        showCancelButton: true,
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          deleteQuiz(quizItem.quizId);
+                        }
+                      })
+                    }
+                  >
+                    {" "}
+                    Delete{" "}
+                  </button>
+                </>
+              ) : (
+                <button
+                  className="action-btn start-btn"
+                  onClick={() =>
+                    Swal.fire({
+                      title: "Instructions",
+                      icon:"info",
+                      html: instructions,
+                      confirmButtonText: "Start Quiz",
+                      showCancelButton: true,
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        navigate(`/quizzes/${quizItem.quizId}/questions`);
+                      }
+                    })
+                  }
+                >
+                  Start Assesment
+                </button>
+              )}
             </div>
           </div>
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ListQuiz
+export default ListQuiz;

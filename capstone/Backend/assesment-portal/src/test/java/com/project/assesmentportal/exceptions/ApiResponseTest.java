@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.project.assesmentportal.dto.ApiResponse;
+
 class ApiResponseTest {
     
     ApiResponse apiResponse;
@@ -17,14 +19,14 @@ class ApiResponseTest {
     @Test
     void testGettersSetters() {
         assertEquals(null, apiResponse.getMessage());
-        assertEquals(false, apiResponse.isSuccess());
+        assertEquals(0, apiResponse.getStatus());
         
         
-        apiResponse.setMessage("User doesnot exists");
-        apiResponse.setSuccess(true);
+        apiResponse.setMessage("User not found");
+        apiResponse.setStatus(404);
         
-        assertEquals("User doesnot exists", apiResponse.getMessage());
-        assertEquals(true, apiResponse.isSuccess());
+        assertEquals("User not found", apiResponse.getMessage());
+        assertEquals(404, apiResponse.getStatus());
         
     }
     
@@ -32,14 +34,14 @@ class ApiResponseTest {
     void testDefaultConstructor() {
         ApiResponse apiResponse = new ApiResponse();
         assertEquals(null, apiResponse.getMessage());
-        assertEquals(false, apiResponse.isSuccess());
+        assertEquals(0, apiResponse.getStatus());
     }
     
     @Test
     void testParameterizedConstructor() {
-        ApiResponse apiResponse = new ApiResponse("User doesnot exists", true);
-        assertEquals("User doesnot exists", apiResponse.getMessage());
-        assertEquals(true, apiResponse.isSuccess());
+        ApiResponse apiResponse = new ApiResponse("User not found", 404);
+        assertEquals("User not found", apiResponse.getMessage());
+        assertEquals(404, apiResponse.getStatus());
     }
 
 }

@@ -15,13 +15,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 
+import com.project.assesmentportal.dto.ApiResponse;
 import com.project.assesmentportal.dto.CategoryDto;
 import com.project.assesmentportal.dto.QuizDto;
 import com.project.assesmentportal.entities.Category;
 import com.project.assesmentportal.entities.Quiz;
 import com.project.assesmentportal.exceptions.DuplicateResourceException;
 import com.project.assesmentportal.exceptions.ResourceNotFoundException;
+import com.project.assesmentportal.messages.MessageConstants;
 import com.project.assesmentportal.repositories.CategoryRepository;
 
 class CategoryServiceImplTest {
@@ -56,12 +59,10 @@ class CategoryServiceImplTest {
         when(categoryRepository.findByCategoryTitle(category.getCategoryTitle())).thenReturn(Optional.empty());
         when(categoryRepository.save(any(Category.class))).thenReturn(category);
         
-        CategoryDto resultCategoryDto = categoryServiceImpl.addCategory(categoryDto);
-        assertNotNull(resultCategoryDto);
-        assertEquals(resultCategoryDto.getCategoryId(), category.getCategoryId());
-        assertEquals(resultCategoryDto.getCategoryTitle(), resultCategoryDto.getCategoryTitle());
-        assertEquals(resultCategoryDto.getCategoryDescription(), resultCategoryDto.getCategoryDescription());
-        
+        ApiResponse result = categoryServiceImpl.addCategory(categoryDto);
+        assertNotNull(result);
+        assertEquals(MessageConstants.CATEGORY_ADDED_SUCCESSFULLY, result.getMessage());
+        assertEquals(HttpStatus.CREATED.value(), result.getStatus());
     }
     
     @Test
@@ -126,13 +127,13 @@ class CategoryServiceImplTest {
     }
     
     @Test
-    public void testGetAllCategories() {
+    public void testGetCategories() {
         List<Category> catList = new ArrayList<>();
         catList.add(new Category(1,"React","Mcq"));
         catList.add(new Category(2,"Java","Mcq"));
 
         when(categoryRepository.findAll()).thenReturn(catList);
-        List<CategoryDto> categoryDtos = categoryServiceImpl.getAllCategories();
+        List<CategoryDto> categoryDtos = categoryServiceImpl.getCategories();
 
         assertNotNull(categoryDtos);
         assertEquals(2, categoryDtos.size()); // Assuming there are 2 users in the list
@@ -155,11 +156,10 @@ class CategoryServiceImplTest {
         when(categoryRepository.findByCategoryTitle(categoryDto.getCategoryTitle())).thenReturn(Optional.empty());
         when(categoryRepository.save(any(Category.class))).thenReturn(existingCategory);
         
-        CategoryDto resultCategoryDto = categoryServiceImpl.updateCategory(categoryDto,categoryIdToUpdate);
-        assertNotNull(resultCategoryDto);
-        assertEquals(resultCategoryDto.getCategoryId(), categoryDto.getCategoryId());
-        assertEquals(resultCategoryDto.getCategoryTitle(), categoryDto.getCategoryTitle());
-        assertEquals(resultCategoryDto.getCategoryDescription(), categoryDto.getCategoryDescription());
+        ApiResponse result = categoryServiceImpl.updateCategory(categoryDto,categoryIdToUpdate);
+        assertNotNull(result);
+        assertEquals(MessageConstants.CATEGORY_UPDATED_SUCCESSFULLY, result.getMessage());
+        assertEquals(HttpStatus.OK.value(), result.getStatus());
         
     }
     
@@ -219,10 +219,12 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(categoryIdToDelete)).thenReturn(Optional.of(categoryToDelete));
 
         // Act
-        categoryServiceImpl.deleteCategory(categoryIdToDelete);
+        ApiResponse response = categoryServiceImpl.deleteCategory(categoryIdToDelete);
 
         // Assert
         verify(categoryRepository, times(1)).deleteById(categoryIdToDelete);
+        assertEquals(MessageConstants.CATEGORY_DELETED_SUCCESSFULLY, response.getMessage());
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
     
     @Test
@@ -238,24 +240,51 @@ class CategoryServiceImplTest {
         });
     }
 
-//    @Test
-//    public final void testGetQuizzesByCategory_Success() {
-//        long catId = 1L;
-//        Category category = new Category();
-//        category.setCategoryId(catId);
-//        category.setCategoryId(category.getCategoryId());
-//        category.setCategoryTitle(category.getCategoryTitle());
-//        category.setCategoryDescription(category.getCategoryDescription());
-//        
-//        List<Quiz> quizList = new ArrayList<>();
-//        quizList.add(new Quiz(1, "React", "descr", 20, null));
-//        
-//        when(categoryRepository.findById(catId)).thenReturn(Optional.of(category));
-//        
-//        List<QuizDto> quizDtos = categoryServiceImpl.getQuizzesByCategory(catId);
-//        
-//        assertNotNull(quizDtos);
-//        assertEquals(1, quizDtos.size());
-//    }
+    @Test
+    public final void testGetQuizzesByCategory_Success() {
+        long catId = 1L;
+        Category category = new Category();
+        category.setCategoryId(catId);
+        category.setCategoryTitle("React");
+        category.setCategoryDescription("Mcqs");
+        Quiz quiz = new Quiz(1, "React", "descr", 20, category);
+        List<Quiz> quizList = new ArrayList<>();
+        quizList.add(quiz);
+        category.setQuizzes(quizList);
+        
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategoryId(category.getCategoryId());
+        categoryDto.setCategoryTitle(category.getCategoryTitle());
+        categoryDto.setCategoryDescription(category.getCategoryDescription());
+        QuizDto quizDto = new QuizDto(1, "React", "descr", 20, categoryDto);
+        
+        when(categoryRepository.findById(catId)).thenReturn(Optional.of(category));
+        when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
+        when(modelMapper.map(quiz.getCategory(), CategoryDto.class)).thenReturn(categoryDto);
+        
+        List<QuizDto> quizDtos = categoryServiceImpl.getQuizzesByCategory(catId);
+        
+        assertNotNull(quizDtos);
+        assertEquals(1, quizDtos.size());
+    }
+    
+    @Test
+    public final void testGetQuizzesByCategory_CategoryNotFound() {
+        long catId = 1L;
+        Category category = new Category();
+        category.setCategoryId(catId);
+        category.setCategoryTitle("React");
+        category.setCategoryDescription("Mcqs");
+        Quiz quiz = new Quiz(1, "React", "descr", 20, category);
+        List<Quiz> quizList = new ArrayList<>();
+        quizList.add(quiz);
+        category.setQuizzes(quizList);
+        
+        when(categoryRepository.findById(catId)).thenReturn(Optional.empty());
+        
+        assertThrows(ResourceNotFoundException.class, () -> {
+            categoryServiceImpl.getQuizzesByCategory(catId);
+        });
+    }
 
 }

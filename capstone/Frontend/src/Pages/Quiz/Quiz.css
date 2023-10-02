@@ -7,7 +7,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #7895CB; 
+  background-image: linear-gradient(90deg, #8c52ff,#5ce1e6);
   color: #fff; 
 }  
 
@@ -35,7 +35,7 @@
     justify-content: center;
   }
   
-  .card {
+  .quiz-card {
     margin: 10px;
     padding: 20px;
     border: 1px solid #ccc;
@@ -44,16 +44,29 @@
     text-align: center;
     font-family: Arial, sans-serif; 
     background-color: #f9f9f9; 
+    transition: box-shadow 0.3s ease-in-out;
   }
   
-  .card-title {
+  .quiz-card:hover{
+    transform: scale(1);
+    box-shadow: 0px 0px 20px rgba(145,142,142,0.7);
+  }
+
+  .quiz-card-title {
     font-size: 1.5rem; 
     margin-bottom: 10px;
     text-transform: capitalize
   }
   
-  .card-text {
+  .quiz-card-text {
     font-size: 1rem; 
+    margin-bottom: 10px;
+  }
+
+  #category-select{
+    width: 95%;
+    padding: 8px;
+    margin-top: 5px;
     margin-bottom: 10px;
   }
   
@@ -67,10 +80,11 @@
     margin-top: 20px;
     text-align: center;
     text-decoration: none;
-    background-color: #4A55A2;
+    background-color: #5160d4;
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
+    border: wheat;
     width: 50%;
   }
 
@@ -80,14 +94,61 @@
     margin-top: 20px;
     text-align: center;
     text-decoration: none;
-    background-color: #252B48;
+    background-color: darkgray;
     color: white;
     padding: 10px 20px;
+    border: wheat;
     border-radius: 5px;
     width: 50%;
   }
+
+  .action-btn.start-btn{
+    display: block;
+    font-size: 12px;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border: wheat;
+    border-radius: 5px;
+    width: 50%;
+  }
+
+  .action-btn.view-btn{
+    display: block;
+    font-size: 12px;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #007bff;
+    /* background-color: #123C89; */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: wheat;
+    width: 50%;
+  }
+
+  .view-btn:hover {
+    background-color: #123C89; 
+  }
   
-  .update-btn:hover,
+  .update-btn:hover{
+    background-color: #4A55A2;
+  }
   .delete-btn:hover {
-    background-color: #0056b3; 
+    background-color: gray; 
+  }
+  .start-btn:hover {
+    background-color: darkgreen; 
+  }
+
+
+  @media (max-width:600px){
+    .quiz-header{
+      margin:1.4%
+    }
+
   }
