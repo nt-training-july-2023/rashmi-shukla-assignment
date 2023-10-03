@@ -44,8 +44,8 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * Creating a instance of Logger Class.
      */
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(CategoryServiceImpl.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     /**
      * Adds a new category.
@@ -58,19 +58,20 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public final ApiResponse addCategory(final CategoryDto categoryDto) {
         LOGGER.info(MessageConstants.ADD_CATEGORY_INVOKED);
-        Category category = this.modelMapper.map(categoryDto,
-                Category.class);
+        Category category =
+                this.modelMapper.map(categoryDto, Category.class);
         Optional<Category> checkExistingCategory = categoryRepository
                 .findByCategoryTitle(category.getCategoryTitle());
         if (checkExistingCategory.isPresent()) {
-            LOGGER.error(ErrorConstants.CATEGORY_ALREADY_EXISTS );
+            LOGGER.error(ErrorConstants.CATEGORY_ALREADY_EXISTS);
             throw new DuplicateResourceException(
                     ErrorConstants.CATEGORY_ALREADY_EXISTS);
         }
 
         this.categoryRepository.save(category);
         LOGGER.info(MessageConstants.ADD_CATEGORY_ENDED);
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_ADDED_SUCCESSFULLY,
+        ApiResponse apiResponse = new ApiResponse(
+                MessageConstants.CATEGORY_ADDED_SUCCESSFULLY,
                 HttpStatus.CREATED.value());
         return apiResponse;
     }
@@ -83,10 +84,11 @@ public class CategoryServiceImpl implements CategoryService {
     public final List<CategoryDto> getCategories() {
         LOGGER.info(MessageConstants.GET_CATEGORIES_INVOKED);
         List<Category> categories = this.categoryRepository.findAll();
-        List<CategoryDto> categoryDtos = categories.stream()
-                .map((category) -> this.modelMapper.map(category,
-                        CategoryDto.class))
-                .collect(Collectors.toList());
+        List<CategoryDto> categoryDtos =
+                categories.stream()
+                        .map((category) -> this.modelMapper.map(category,
+                                CategoryDto.class))
+                        .collect(Collectors.toList());
         LOGGER.info(MessageConstants.GET_CATEGORIES_ENDED);
         return categoryDtos;
     }
@@ -101,14 +103,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public final CategoryDto getCategoryById(final long categoryId) {
         LOGGER.info(MessageConstants.GET_CATEGORY_INVOKED);
-        Optional<Category> category = categoryRepository
-                .findById(categoryId);
+        Optional<Category> category =
+                categoryRepository.findById(categoryId);
         if (category.isPresent()) {
             LOGGER.info(MessageConstants.GET_CATEGORY_ENDED);
             return this.modelMapper.map(category.get(), CategoryDto.class);
         } else {
-            LOGGER.error(ErrorConstants.CATEGORY_DOESNOT_EXISTS + categoryId);
-            throw new ResourceNotFoundException(ErrorConstants.CATEGORY_DOESNOT_EXISTS+categoryId);
+            LOGGER.error(
+                    ErrorConstants.CATEGORY_DOESNOT_EXISTS + categoryId);
+            throw new ResourceNotFoundException(
+                    ErrorConstants.CATEGORY_DOESNOT_EXISTS + categoryId);
         }
     }
 
@@ -124,11 +128,13 @@ public class CategoryServiceImpl implements CategoryService {
     public final ApiResponse updateCategory(final CategoryDto categoryDto,
             final long categoryId) {
         LOGGER.info(MessageConstants.UPDATE_CATEGORY_INVOKED);
-        Category existingCategory = categoryRepository.findById(categoryId)
-                .orElseGet(() -> {
-                    LOGGER.error(ErrorConstants.CATEGORY_DOESNOT_EXISTS+categoryId);
+        Category existingCategory =
+                categoryRepository.findById(categoryId).orElseGet(() -> {
+                    LOGGER.error(ErrorConstants.CATEGORY_DOESNOT_EXISTS
+                            + categoryId);
                     throw new ResourceNotFoundException(
-                            ErrorConstants.CATEGORY_DOESNOT_EXISTS+categoryId);
+                            ErrorConstants.CATEGORY_DOESNOT_EXISTS
+                                    + categoryId);
                 });
 
         // Check if the updated title is the same as the existing one
@@ -150,7 +156,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         categoryRepository.save(existingCategory);
         LOGGER.info(MessageConstants.UPDATE_CATEGORY_ENDED);
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_UPDATED_SUCCESSFULLY,
+        ApiResponse apiResponse = new ApiResponse(
+                MessageConstants.CATEGORY_UPDATED_SUCCESSFULLY,
                 HttpStatus.OK.value());
         return apiResponse;
     }
@@ -165,13 +172,15 @@ public class CategoryServiceImpl implements CategoryService {
     public final ApiResponse deleteCategory(final long categoryId) {
         LOGGER.info(MessageConstants.DELETE_CATEGORY_INVOKED);
         categoryRepository.findById(categoryId).orElseGet(() -> {
-            LOGGER.error(ErrorConstants.CATEGORY_DOESNOT_EXISTS
-                    + categoryId);
-            throw new ResourceNotFoundException(ErrorConstants.CATEGORY_DOESNOT_EXISTS+categoryId);
+            LOGGER.error(
+                    ErrorConstants.CATEGORY_DOESNOT_EXISTS + categoryId);
+            throw new ResourceNotFoundException(
+                    ErrorConstants.CATEGORY_DOESNOT_EXISTS + categoryId);
         });
         categoryRepository.deleteById(categoryId);
         LOGGER.info(MessageConstants.DELETE_CATEGORY_ENDED);
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_DELETED_SUCCESSFULLY,
+        ApiResponse apiResponse = new ApiResponse(
+                MessageConstants.CATEGORY_DELETED_SUCCESSFULLY,
                 HttpStatus.OK.value());
         return apiResponse;
     }
@@ -185,12 +194,13 @@ public class CategoryServiceImpl implements CategoryService {
     public final List<QuizDto> getQuizzesByCategory(
             final long categoryId) {
         LOGGER.info(MessageConstants.GET_QUIZZES_BY_CATEGORY_INVOKED);
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> {
+        Category category =
+                categoryRepository.findById(categoryId).orElseThrow(() -> {
                     LOGGER.error(ErrorConstants.CATEGORY_DOESNOT_EXISTS
                             + categoryId);
                     throw new ResourceNotFoundException(
-                            ErrorConstants.CATEGORY_DOESNOT_EXISTS+categoryId);
+                            ErrorConstants.CATEGORY_DOESNOT_EXISTS
+                                    + categoryId);
                 });
         List<Quiz> quizzes = category.getQuizzes();
         LOGGER.info(MessageConstants.GET_QUIZZES_BY_CATEGORY_ENDED);
@@ -205,9 +215,10 @@ public class CategoryServiceImpl implements CategoryService {
      */
     public final QuizDto entityToDto(final Quiz quiz) {
         QuizDto quizDto = modelMapper.map(quiz, QuizDto.class);
-        CategoryDto categoryDto = new CategoryDto(quiz.getCategory().getCategoryId(),
-                quiz.getCategory().getCategoryTitle(),
-                quiz.getCategory().getCategoryDescription());
+        CategoryDto categoryDto =
+                new CategoryDto(quiz.getCategory().getCategoryId(),
+                        quiz.getCategory().getCategoryTitle(),
+                        quiz.getCategory().getCategoryDescription());
         quizDto.setCategory(categoryDto);
         return quizDto;
     }

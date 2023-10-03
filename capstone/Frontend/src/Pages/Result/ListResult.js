@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../../Components/Navbar/Navbar';
 import ResultService from '../../Services/ResultService';
 import './Result.css'
+import PageHeader from '../../Components/Header/PageHeader';
 
 const ListResult = () => {
     const [results, setResults] = useState([]);
@@ -38,9 +39,14 @@ const ListResult = () => {
     <div className="res-page-container">
       <Navbar />
       <div className="res-table-container">
-        <div className="res-header">
-          <h1>ALL RESULTS</h1>
-        </div>
+      <PageHeader
+        className="result-header"
+        heading="RESULTS"
+        displayButton=""
+        isTest=""
+        timer=""
+        onClick=""
+      />
         <table className="res-table">
           <thead>
             <tr>

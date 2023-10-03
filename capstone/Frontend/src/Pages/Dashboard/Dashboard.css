@@ -11,23 +11,6 @@ body, html {
     justify-content: space-between;
     margin-top: 20px;
   }
-
-  .dashboard-info {
-    margin-top: 15px;
-    padding: 2%;
-    margin: 1.4%;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-image: linear-gradient(90deg, #8c52ff,#5ce1e6);
-    color: #fff; 
-  }  
-  
-  .dashboard-info h1 {
-    margin: 0;
-    font-size: 1.5 rem;
-  }
   
   .welcome-box,
   .user-profile-box {
@@ -41,7 +24,6 @@ body, html {
   
   .welcome-box {
     background-color: #e6f7ff; 
-    align-items: center;
   }
 
   .welcome-box h2{
@@ -57,6 +39,9 @@ body, html {
     height: 70px;
   }
 
+  .user-box{
+    margin-top: 100px;
+  }
 
   .custom-button {
     background-color: #007bff;

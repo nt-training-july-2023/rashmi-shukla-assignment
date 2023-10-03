@@ -1,49 +1,54 @@
-import React, { useEffect } from 'react'
-import Navbar from '../../Components/Navbar/Navbar'
-import welcomeImg from  './welcome-img.png';
-import ErrorPage from '../ErrorPage/ErrorPage'
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from "react";
+import Navbar from "../../Components/Navbar/Navbar";
+import welcomeImg from "../../Assests/images/welcome-img.png";
+import ErrorPage from "../ErrorPage/ErrorPage";
+import { useNavigate } from "react-router-dom";
+import PageHeader from "../../Components/Header/PageHeader";
 
 const UserDashboard = () => {
-
   const userName = localStorage.getItem("userName");
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.history.pushState(null, '', '/user-dashboard');
-    window.addEventListener('popstate', () => {
-      window.history.pushState(null, '', '/user-dashboard');
+    window.history.pushState(null, "", "/user-dashboard");
+    window.addEventListener("popstate", () => {
+      window.history.pushState(null, "", "/user-dashboard");
     });
-  },[])
+  }, []);
 
-  const userRole = localStorage.getItem('role');
-  if (userRole !== 'user') {
-    return (
-        <ErrorPage/>
-      );
-    }
-  
+  const userRole = localStorage.getItem("role");
+  if (userRole !== "user") {
+    return <ErrorPage />;
+  }
+
   return (
-    <div className='dashboard-container'>
-      <Navbar/>
-      <div className='dashboard-info'>
-          <h1>USER DASHBOARD</h1>
-      </div>
-      <div className='dashboard-content'>
-          <div className='welcome-box'>
-              <h1>Welcome, {userName}</h1>
-              <div>
-              <img className='welcome-img' src={welcomeImg} alt="img"/>
-              </div>
+    <div className="dashboard-container">
+      <Navbar />
+      <PageHeader
+        className="dashboard-header"
+        heading="USER DASHBOARD"
+        displayButton=""
+        onClick=""
+        name=""
+      />
+      <div className="dashboard-content">
+        <div className="welcome-box">
+          <h1>Welcome, {userName}</h1>
+          <div>
+            <img className="welcome-img" src={welcomeImg} alt="img" />
           </div>
-          <div className='user-profile-box'>
+        </div>
+        <div className="user-profile-box">
+          <div className="user-box">
             <h2>Check Your Progress:</h2>
-            <button class="custom-button" onClick={() => navigate('/results')}>Results</button>
+            <button class="custom-button" onClick={() => navigate("/results")}>
+              Results
+            </button>
           </div>
+        </div>
       </div>
-      
     </div>
-  )
-}
+  );
+};
 
-export default UserDashboard
+export default UserDashboard;

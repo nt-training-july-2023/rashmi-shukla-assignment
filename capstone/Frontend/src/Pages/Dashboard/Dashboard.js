@@ -1,10 +1,11 @@
 import React,{useEffect, useState} from 'react'
 import Navbar from '../../Components/Navbar/Navbar'
 import './Dashboard.css'
-import welcomeImg from  './welcome-img.png';
-import usersImg from './icon-users.png';
+import welcomeImg from  '../../Assests/images/welcome-img.png';
+import usersImg from '../../Assests/images/icon-users.png';
 import ErrorPage from '../ErrorPage/ErrorPage'
 import UserService from '../../Services/UserService';
+import PageHeader from '../../Components/Header/PageHeader';
 
 const Dashboard = () => {
   const userName = localStorage.getItem("userName");
@@ -37,9 +38,8 @@ const Dashboard = () => {
   return (
     <div className='dashboard-container'>
       <Navbar/>
-      <div className="dashboard-info">
-        <h1>ADMIN DASHBOARD</h1>
-      </div>
+      <PageHeader className="dashboard-header" heading="ADMIN DASHBOARD"
+          displayButton="" onClick="" name="" />
       <div className='dashboard-content'>
           <div className='welcome-box'>
               <h1>Welcome, {userName}</h1>

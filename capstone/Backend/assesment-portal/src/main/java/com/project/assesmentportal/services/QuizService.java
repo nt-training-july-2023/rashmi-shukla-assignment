@@ -14,7 +14,7 @@ public interface QuizService {
     /**
      * Adds a new quiz.
      * @param quizDto The QuizDto representing the quiz to be added.
-     * @return The QuizDto of the added quiz.
+     * @return ApiResponse for the added quiz.
      */
     ApiResponse addQuiz(QuizDto quizDto);
 
@@ -35,13 +35,14 @@ public interface QuizService {
      * Updates an existing quiz.
      * @param quizDto QuizDto of updated quiz.
      * @param quizId of existing quiz.
-     * @return QuizDto of updated quiz.
+     * @return ApiResponse for updated quiz.
      */
     ApiResponse updateQuiz(QuizDto quizDto, long quizId);
 
     /**
      * delete quiz.
      * @param quizId of existing quiz.
+     * @return ApiResponse
      */
     ApiResponse deleteQuiz(long quizId);
 

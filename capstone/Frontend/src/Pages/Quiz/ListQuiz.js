@@ -6,6 +6,7 @@ import "./Quiz.css";
 import instructions from "./Instructions";
 import { useNavigate, useParams } from "react-router-dom";
 import CategoryService from "../../Services/CategoryService";
+import PageHeader from "../../Components/Header/PageHeader";
 
 const ListQuiz = () => {
   const [quiz, setQuiz] = useState([]);
@@ -28,8 +29,7 @@ const ListQuiz = () => {
       .then((response) => {
         setQuiz(response.data);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const getCategoryById = () => {
@@ -37,8 +37,7 @@ const ListQuiz = () => {
       .then((response) => {
         setCategoryName(response.data.categoryTitle);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const getAllQuizzes = () => {
@@ -46,8 +45,7 @@ const ListQuiz = () => {
       .then((response) => {
         setQuiz(response.data);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const deleteQuiz = (quizId) => {
@@ -62,27 +60,27 @@ const ListQuiz = () => {
         });
         getAllQuizzes();
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const heading = () => {
     if (id) {
-      return <h1 style={{ textAlign: "center" }}>CATEGORY: {categoryName}</h1>;
+      return `CATEGORY: ${categoryName}`;
     } else {
-      return <h1 style={{ textAlign: "center" }}>ALL QUIZZES</h1>;
+      return "QUIZZES";
     }
   };
 
   return (
     <div>
       <Navbar />
-      <div className="quiz-header">
-        {heading()}
-        {userRole === "admin" && !id && (
-          <button onClick={() => navigate(`/quizzes/add`)}>Add Quiz</button>
-        )}
-      </div>
+      <PageHeader
+        className="quiz-header"
+        heading={heading()}
+        displayButton="true"
+        onClick={() => navigate(`/quizzes/add`)}
+        name="Add Quiz"
+      />
       <div className="quiz-container">
         {quiz.map((quizItem) => (
           <div key={quizItem.quizId} className="quiz-card">
@@ -110,7 +108,9 @@ const ListQuiz = () => {
                   </button>
                   <button
                     className="action-btn update-btn"
-                    onClick={() => navigate(`/quizzes/update/${quizItem.quizId}`)}
+                    onClick={() =>
+                      navigate(`/quizzes/update/${quizItem.quizId}`)
+                    }
                   >
                     Update Quiz
                   </button>
@@ -141,7 +141,7 @@ const ListQuiz = () => {
                   onClick={() =>
                     Swal.fire({
                       title: "Instructions",
-                      icon:"info",
+                      icon: "info",
                       html: instructions,
                       confirmButtonText: "Start Quiz",
                       showCancelButton: true,

@@ -1,0 +1,102 @@
+
+  .dashboard-header{
+    margin-top: 15px;
+    padding: 2%;
+    margin-left: 1.4%;
+    margin-right: 1.4%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: linear-gradient(90deg, #8c52ff,#5ce1e6);
+    color: #fff; 
+  }  
+
+  .category-header {
+    margin-top: 15px;
+    margin-left: 13%;
+    margin-right: 13%;
+    padding: 2%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: linear-gradient(90deg, #8c52ff,#5ce1e6);
+    background-size: cover;
+    color: #fff; 
+  }  
+
+  .quiz-header {
+    margin-top: 15px;
+    padding: 2%;
+    margin-left: 10.5%;
+    margin-right: 10.5%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: linear-gradient(90deg, #8c52ff,#5ce1e6);
+    color: #fff; 
+  } 
+
+  .question-header {
+    margin-top: 15px;
+    padding: 2%;
+    margin-left: 4%;
+    margin-right: 4%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: linear-gradient(90deg, #8c52ff,#5ce1e6);
+    color: #fff; 
+  } 
+
+  .result-header {
+    margin-top: 15px;
+    padding: 2%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: linear-gradient(90deg, #8c52ff,#5ce1e6);
+    color: #fff; 
+  } 
+  
+  .dashboard-header h1,
+  .category-header h1,
+  .quiz-header h1,
+  .question-header h1,
+  .result-header h1 {
+    margin: 0;
+    font-size: 1.5 rem;
+  }
+  
+  .category-header button,
+  .quiz-header button,
+  .question-header button {
+    background-color: #fff; 
+    color: #272829; 
+    border: none;
+    padding: 5px 10px; 
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem; 
+  }
+  
+  .category-header button:hover,
+  .quiz-header button:hover,
+  .question-header button:hover {
+    background-color: #e0e0e0; 
+  }   
+
+  @media (max-width:600px){  
+    .category-header,
+    .quiz-header{
+      margin: 1.4%;
+    }
+  }
+ 
+   

@@ -6,10 +6,12 @@
 
 .res-table {
   margin: 1.4%;
-    width: 100%;
+    width: 95%;
     border-collapse: collapse;
     border-radius: 20px;
-    margin: 25px 0px 20px 0px;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
     font-size: 1em;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -52,24 +54,6 @@
     background-color: #4e5052;
     background-size: cover;
     font-weight: bold;
-  }
-
-.res-header{
-    margin-top: 15px;
-    margin: 1.4%;
-  padding: 2%;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-image: linear-gradient(90deg, #8c52ff,#5ce1e6);
-  background-size: cover;
-  color: #fff;
-}
-
-.res-header h1 {
-    margin: 0; 
-    font-size: 1.5 rem;
   }
 
   @media (max-width: 768px) {

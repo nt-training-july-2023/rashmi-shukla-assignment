@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import "./Category.css";
 import CategoryService from "../../Services/CategoryService";
 import Navbar from "../../Components/Navbar/Navbar";
+import PageHeader from "../../Components/Header/PageHeader";
 
 const ListCategory = () => {
   const userRole = localStorage.getItem("role");
@@ -43,15 +44,11 @@ const ListCategory = () => {
   return (
     <div className="page-container">
       <Navbar />
+      <PageHeader className="category-header"
+         heading="CATEGORIES" displayButton="true" 
+         onClick={() => navigate(`/categories/add`)}
+         name="Add Category" />
       <div className="table-container">
-        <div className="cat-header">
-          <h1>ALL CATEGORIES</h1>
-          {userRole === "admin" && (
-            <button onClick={() => navigate(`/categories/add`)}>
-              Add Category
-            </button>
-          )}
-        </div>
         <table className="category-table">
           <thead>
             <tr>

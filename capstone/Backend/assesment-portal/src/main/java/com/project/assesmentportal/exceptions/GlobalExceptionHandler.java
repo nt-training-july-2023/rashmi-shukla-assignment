@@ -72,16 +72,18 @@ public class GlobalExceptionHandler {
      *         validation error messages.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public final ResponseEntity<Map<String, String>>
+    public final ResponseEntity<ApiResponse>
         handleMethodArgsNotValidException(
             final MethodArgumentNotValidException ex) {
-            Map<String, String> resp = new HashMap<>();
+            Map<String, String> errors = new HashMap<>();
             ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String message = error.getDefaultMessage();
-            resp.put(fieldName, message);
+            errors.put(fieldName, message);
         });
-        return new ResponseEntity<Map<String, String>>(resp,
+        ApiResponse apiResponse = new ApiResponse(
+                "Validation failed",HttpStatus.BAD_REQUEST.value(), errors);
+        return new ResponseEntity<ApiResponse>(apiResponse,
                 HttpStatus.BAD_REQUEST);
     }
 }

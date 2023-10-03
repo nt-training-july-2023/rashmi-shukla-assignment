@@ -6,6 +6,7 @@ import "./Question.css";
 import QuizService from "../../Services/QuizService";
 import Swal from "sweetalert2";
 import ResultService from "../../Services/ResultService";
+import PageHeader from "../../Components/Header/PageHeader";
 
 const ListQuestion = () => {
   const [questions, setQuestions] = useState([]);
@@ -38,7 +39,7 @@ const ListQuestion = () => {
     const handleCountdown = () => {
       if (timeInSeconds > 0) {
         setTimeInSeconds((prevTime) => prevTime - 1);
-      } else {
+      } else if (userRole === "user") {
         handleSubmit();
       }
     };
@@ -48,7 +49,9 @@ const ListQuestion = () => {
   }, [timeInSeconds]);
 
   // Format the remaining time as HH:MM:SS
-  const formattedTime = new Date(timeInSeconds * 1000).toISOString().substr(11, 8);
+  const formattedTime = new Date(timeInSeconds * 1000)
+    .toISOString()
+    .substr(11, 8);
 
   useEffect(() => {
     getQuestionsByQuiz();
@@ -62,7 +65,7 @@ const ListQuestion = () => {
         setQuestions(response.data);
         setTotalQuestions(response.data.length);
         setTotalMarks(response.data.length);
-        setLoadingQuestions(false);  
+        setLoadingQuestions(false);
       })
       .catch((error) => {
         setLoadingQuestions(false);
@@ -75,11 +78,10 @@ const ListQuestion = () => {
         setQuizTitle(response.data.quizTitle);
         setCategoryTitle(response.data.category.categoryTitle);
         const timerInMinutes = response.data.quizTimer;
-        const timerInSeconds = timerInMinutes * 60; 
+        const timerInSeconds = timerInMinutes * 60;
         setTimeInSeconds(timerInSeconds);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const deleteQuestion = (questionId) => {
@@ -92,11 +94,10 @@ const ListQuestion = () => {
           timer: 2000,
           showConfirmButton: false,
         });
-        
+
         getQuestionsByQuiz();
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const handleOptionChange = (questionId, selectedOption, correctAnswer) => {
@@ -109,11 +110,11 @@ const ListQuestion = () => {
   };
 
   const handleSubmit = (e) => {
-    if(e){
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
     }
-    if(loadingQuestions){
-      return
+    if (loadingQuestions) {
+      return;
     }
     setSubmitted(true);
     let score = 0;
@@ -126,9 +127,18 @@ const ListQuestion = () => {
     setObtainedMarks(score);
     setAttemptedQuestions(Object.keys(selectedAnswers).length);
 
-    const result = {totalMarks,obtainedMarks: score, attemptedQuestions: Object.keys(selectedAnswers).length, totalQuestions, dateTime, userEmail, userName, quizTitle, categoryTitle }
-    ResultService.addResult(result)
-    .then((response) => {
+    const result = {
+      totalMarks,
+      obtainedMarks: score,
+      attemptedQuestions: Object.keys(selectedAnswers).length,
+      totalQuestions,
+      dateTime,
+      userEmail,
+      userName,
+      quizTitle,
+      categoryTitle,
+    };
+    ResultService.addResult(result).then((response) => {
       Swal.fire({
         title: "Success",
         text: "Quiz submitted successfully",
@@ -136,102 +146,100 @@ const ListQuestion = () => {
         timer: 2000,
         showConfirmButton: false,
       });
-    })
-    navigate("/user-dashboard")
+    });
+    navigate("/user-dashboard");
   };
 
   return (
     <div>
       {userRole === "admin" && <Navbar />}
-      <div className="question-header">
-        <h1>QUIZ: {quizTitle}</h1>
-        {userRole === "admin" ? (
-          <button onClick={() => navigate(`/quizzes/${id}/questions/add`)}>
-            Add Question
-          </button>
-        ) : (
-          <>
-          <p>Time Remaining: {formattedTime}</p>
-          <button onClick={handleSubmit} disabled={submitted}>
-                Submit Quiz
-          </button>
-          </>
-        )}
-      </div>
+      <PageHeader
+        className="question-header"
+        heading={`QUIZ: ${quizTitle}`}
+        displayButton={userRole === "admin"}
+        name="Add Question"
+        isTest={userRole === "user"}
+        timer={formattedTime}
+        onClick={
+          userRole === "admin"
+            ? () => navigate(`/quizzes/${id}/questions/add`)
+            : handleSubmit
+        }
+      />
       <div className="question-container">
-          {questions.map((question, index) => (
-            <div key={index} class="question-card">
-              <div className="question-form">
-                <h5 className="question-card-title">
-                  Q{++index} : {question.questionTitle}
-                </h5>
+        {questions.map((question, index) => (
+          <div key={index} class="question-card">
+            <div className="question-form">
+              <h5 className="question-card-title">
+                Q{++index} : {question.questionTitle}
+              </h5>
 
-                {Object.values(question.options).map(
-                  (optionValue, optionIndex) => (
-                    <p key={optionIndex} className="question-card-text">
-                      <input
-                        type="radio"
-                        name={`options-${question.questionId}`}
-                        value={optionValue}
-                        onChange={() =>
-                          handleOptionChange(
-                            question.questionId,
-                            optionValue,
-                            question.answer
-                          )
-                        }
-                        checked={
-                          selectedAnswers[question.questionId] === optionValue
-                        }
-                        disabled={submitted}
-                      />
-                      {optionValue}
-                    </p>
-                  )
-                )}
-
-                <br />
-                {userRole === "admin" && (
-                  <p className="question-card-text">
-                    Correct answer: {question.answer}
+              {Object.values(question.options).map(
+                (optionValue, optionIndex) => (
+                  <p key={optionIndex} className="question-card-text">
+                    <input
+                      type="radio"
+                      name={`options-${question.questionId}`}
+                      value={optionValue}
+                      onChange={() =>
+                        handleOptionChange(
+                          question.questionId,
+                          optionValue,
+                          question.answer
+                        )
+                      }
+                      checked={
+                        selectedAnswers[question.questionId] === optionValue
+                      }
+                      disabled={submitted}
+                    />
+                    {optionValue}
                   </p>
-                )}
-              </div>
+                )
+              )}
+
+              <br />
               {userRole === "admin" && (
-                <div className="question-btns">
-                  <button
-                    className="ques-update-btn"
-                    onClick={() =>
-                      navigate(
-                        `/quizzes/${id}/questions/update/${question.questionId}`
-                      )
-                    }
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="ques-delete-btn"
-                    onClick={() =>
-                      Swal.fire({
-                        title: "Warning",
-                        text: "Delete Question?",
-                        icon: "warning",
-                        confirmButtonText: "Delete",
-                        confirmButtonColor: "red",
-                        showCancelButton: true,
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          deleteQuestion(question.questionId);
-                        }
-                      })
-                    }
-                  >
-                    Delete
-                  </button>
-                </div>
+                <p className="question-card-text">
+                  Correct answer: {question.answer}
+                </p>
               )}
             </div>
-          ))}
+            {userRole === "admin" && (
+              <div className="question-btns">
+                <button
+                  className="ques-update-btn"
+                  onClick={() =>
+                    navigate(
+                      `/quizzes/${id}/questions/update/${question.questionId}`
+                    )
+                  }
+                >
+                  Update
+                </button>
+                <button
+                  className="ques-delete-btn"
+                  onClick={() =>
+                    Swal.fire({
+                      title: "Warning",
+                      text: "Delete Question?",
+                      icon: "warning",
+                      confirmButtonText: "Delete",
+                      confirmButtonColor: "red",
+                      showCancelButton: true,
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        deleteQuestion(question.questionId);
+                      }
+                    })
+                  }
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
