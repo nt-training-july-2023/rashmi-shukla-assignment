@@ -5,6 +5,7 @@ import "./Category.css";
 import CategoryService from "../../Services/CategoryService";
 import Navbar from "../../Components/Navbar/Navbar";
 import PageHeader from "../../Components/Header/PageHeader";
+import Table from "../../Components/Table/Table";
 
 const ListCategory = () => {
   const userRole = localStorage.getItem("role");
@@ -48,69 +49,18 @@ const ListCategory = () => {
          heading="CATEGORIES" displayButton="true" 
          onClick={() => navigate(`/categories/add`)}
          name="Add Category" />
+
       <div className="table-container">
-        <table className="category-table">
-          <thead>
-            <tr>
-              <th>Category Id</th>
-              <th>Category title</th>
-              <th>Category Description</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categories.map((category, index) => (
-              <tr key={index}>
-                <td>{++index}</td>
-                <td>{category.categoryTitle}</td>
-                <td>{category.categoryDescription}</td>
-                <td>
-                  <button
-                    className="action-buttons view-button"
-                    onClick={() =>
-                      navigate(`/categories/${category.categoryId}/quizzes`)
-                    }
-                  >
-                    View Quiz
-                  </button>
-                  {userRole === "admin" && (
-                    <>
-                      <button
-                        className="action-buttons update-button"
-                        onClick={() =>
-                          navigate(`/categories/update/${category.categoryId}`)
-                        }
-                      >
-                        Update
-                      </button>
-                      <button
-                        className="action-buttons delete-button"
-                        onClick={() =>
-                          Swal.fire({
-                            title: "Warning",
-                            text: "Delete Category?",
-                            icon: "warning",
-                            confirmButtonText: "Delete",
-                            confirmButtonColor: "red",
-                            showCancelButton: true,
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-                              deleteCategory(category.categoryId);
-                            }
-                          })
-                        }
-                      >
-                        {" "}
-                        Delete{" "}
-                      </button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table
+          className="category-table"
+          rows = {["Category Id", "Category title","Category Description","Actions" ]}
+          responseData={categories}
+          fields={["categoryTitle","categoryDescription"]}
+          displayButtons="true"
+          deleteFunction = {deleteCategory}
+         />
       </div>
+      
     </div>
   );
 };

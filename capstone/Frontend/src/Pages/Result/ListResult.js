@@ -3,6 +3,7 @@ import Navbar from '../../Components/Navbar/Navbar';
 import ResultService from '../../Services/ResultService';
 import './Result.css'
 import PageHeader from '../../Components/Header/PageHeader';
+import Table from '../../Components/Table/Table';
 
 const ListResult = () => {
     const [results, setResults] = useState([]);
@@ -47,7 +48,23 @@ const ListResult = () => {
         timer=""
         onClick=""
       />
-        <table className="res-table">
+
+        <Table
+          className="res-table"
+          rows = {["SNo.", "User Name","User Email","Quiz",
+            "Category","Total Questions","Attempted Questions",
+            "Obtained Marks","Total Marks","Date & Time"
+          ]}
+          responseData={results}
+          fields={["userName","userEmail","quizTitle",
+            "categoryTitle","totalQuestions","attemptedQuestions",
+            "obtainedMarks","totalMarks","dateTime"
+          ]}
+          displayButtons=""
+          deleteFunction = ""
+         />
+
+        {/* <table className="res-table">
           <thead>
             <tr>
               <th>SNo.</th>
@@ -78,7 +95,7 @@ const ListResult = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table> */}
       </div>
     </div>
   )

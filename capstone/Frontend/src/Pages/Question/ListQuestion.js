@@ -36,27 +36,40 @@ const ListQuestion = () => {
   const [loadingQuestions, setLoadingQuestions] = useState(true);
 
   useEffect(() => {
+    const storedSelectedAnswers = localStorage.getItem("selectedAnswers");
+    if(storedSelectedAnswers) {
+      setSelectedAnswers(JSON.parse(storedSelectedAnswers));
+    }
+
+    const storedTimer = localStorage.getItem("timerInSeconds");
+    if (storedTimer) {
+      const timerInSeconds = parseInt(storedTimer);
+      setTimeInSeconds(timerInSeconds);
+    }
+
+    getQuestionsByQuiz();
+    getQuizById();
+  }, []);
+
+  useEffect(() => {
+    if(userRole === "user"){
     const handleCountdown = () => {
       if (timeInSeconds > 0) {
         setTimeInSeconds((prevTime) => prevTime - 1);
-      } else if (userRole === "user") {
+        localStorage.setItem("timerInSeconds", (timeInSeconds - 1).toString());
+      } else {
         handleSubmit();
       }
     };
     const countdownInterval = setInterval(handleCountdown, 1000);
     // Clean up the interval when the component unmounts
     return () => clearInterval(countdownInterval);
-  }, [timeInSeconds]);
+  }}, [timeInSeconds]);
 
   // Format the remaining time as HH:MM:SS
   const formattedTime = new Date(timeInSeconds * 1000)
     .toISOString()
     .substr(11, 8);
-
-  useEffect(() => {
-    getQuestionsByQuiz();
-    getQuizById();
-  }, []);
 
   const getQuestionsByQuiz = () => {
     setLoadingQuestions(true);
@@ -73,13 +86,18 @@ const ListQuestion = () => {
   };
 
   const getQuizById = () => {
+    const storedTimer = localStorage.getItem("timerInSeconds");
     QuizService.getQuizById(id)
       .then((response) => {
         setQuizTitle(response.data.quizTitle);
         setCategoryTitle(response.data.category.categoryTitle);
         const timerInMinutes = response.data.quizTimer;
         const timerInSeconds = timerInMinutes * 60;
+        if (!storedTimer) {
         setTimeInSeconds(timerInSeconds);
+        userRole==="user" && localStorage.setItem("timerInSeconds",
+          timerInSeconds.toString());
+        }
       })
       .catch((error) => {});
   };
@@ -104,6 +122,11 @@ const ListQuestion = () => {
     if (!submitted) {
       setSelectedAnswers((prevSelectedAnswers) => ({
         ...prevSelectedAnswers,
+        [questionId]: selectedOption,
+      }));
+
+      userRole==="user" && localStorage.setItem("selectedAnswers", JSON.stringify({
+        ...selectedAnswers,
         [questionId]: selectedOption,
       }));
     }
@@ -147,6 +170,10 @@ const ListQuestion = () => {
         showConfirmButton: false,
       });
     });
+    localStorage.removeItem("timerInSeconds");
+    localStorage.removeItem("selectedAnswers");
+    localStorage.removeItem("inTest");
+    localStorage.removeItem("testPageLocation");
     navigate("/user-dashboard");
   };
 

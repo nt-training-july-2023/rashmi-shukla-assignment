@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import Swal from "sweetalert2";
-import logo from './logo.png';
+import logo from '../../Assests/images/logo.png';
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
