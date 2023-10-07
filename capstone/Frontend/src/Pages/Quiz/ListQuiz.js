@@ -3,24 +3,35 @@ import QuizService from "../../Services/QuizService";
 import Swal from "sweetalert2";
 import Navbar from "../../Components/Navbar/Navbar";
 import "./Quiz.css";
-import instructions from "./Instructions";
 import { useNavigate, useParams } from "react-router-dom";
 import CategoryService from "../../Services/CategoryService";
 import PageHeader from "../../Components/Header/PageHeader";
+import QuizCard from "../../Components/Quiz-Card/QuizCard";
 
 const ListQuiz = () => {
   const [quiz, setQuiz] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const navigate = useNavigate();
-  const userRole = localStorage.getItem("role");
   const { id } = useParams();
 
   useEffect(() => {
+    localStorage.removeItem("timerInSeconds");
+    localStorage.removeItem("selectedAnswers");
+    localStorage.removeItem("quizTitle");
+    localStorage.removeItem("categoryTitle");
+    localStorage.removeItem("totalQuestions");	
+    localStorage.removeItem("totalMarks");	
+    localStorage.removeItem("reloadAttempts");
+    localStorage.removeItem("obtainedMarks");
+    localStorage.removeItem("attemptedQuestions");
+    localStorage.removeItem("dateTime");
     if (id) {
-      getQuizzesByCategory();
-      getCategoryById();
+      return () => { 
+        getQuizzesByCategory();
+        getCategoryName();
+      }
     } else {
-      getAllQuizzes();
+      return () => getQuizzes();
     }
   }, [id]);
 
@@ -32,16 +43,18 @@ const ListQuiz = () => {
       .catch((error) => {});
   };
 
-  const getCategoryById = () => {
+  const getCategoryName = () => {
     CategoryService.getCategoryById(id)
       .then((response) => {
         setCategoryName(response.data.categoryTitle);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
-  const getAllQuizzes = () => {
-    QuizService.getAllQuizzes()
+  const getQuizzes = () => {
+    QuizService.getQuizzes()
       .then((response) => {
         setQuiz(response.data);
       })
@@ -58,7 +71,7 @@ const ListQuiz = () => {
           timer: 2000,
           showConfirmButton: false,
         });
-        getAllQuizzes();
+        getQuizzes();
       })
       .catch((error) => {});
   };
@@ -83,80 +96,9 @@ const ListQuiz = () => {
       />
       <div className="quiz-container">
         {quiz.map((quizItem) => (
-          <div key={quizItem.quizId} className="quiz-card">
-            <div className="quiz-card-body">
-              <h5 className="quiz-card-title">Quiz: {quizItem.quizTitle}</h5>
-              <p className="quiz-card-text">{quizItem.quizDescription}</p>
-              <p className="quiz-card-text">
-                Time limit: {quizItem.quizTimer} minutes
-              </p>
-              <div className="quiz-card-text">
-                <div>
-                  <h5>Category: {quizItem.category.categoryTitle}</h5>
-                  <h6>{quizItem.category.categoryDescription}</h6>
-                </div>
-              </div>
-              {userRole === "admin" ? (
-                <>
-                  <button
-                    className="action-btn view-btn"
-                    onClick={() =>
-                      navigate(`/quizzes/${quizItem.quizId}/questions`)
-                    }
-                  >
-                    View Questions
-                  </button>
-                  <button
-                    className="action-btn update-btn"
-                    onClick={() =>
-                      navigate(`/quizzes/update/${quizItem.quizId}`)
-                    }
-                  >
-                    Update Quiz
-                  </button>
-                  <button
-                    className="action-btn delete-btn"
-                    onClick={() =>
-                      Swal.fire({
-                        title: "Warning",
-                        text: "Delete Quiz?",
-                        icon: "warning",
-                        confirmButtonText: "Delete",
-                        confirmButtonColor: "red",
-                        showCancelButton: true,
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          deleteQuiz(quizItem.quizId);
-                        }
-                      })
-                    }
-                  >
-                    {" "}
-                    Delete{" "}
-                  </button>
-                </>
-              ) : (
-                <button
-                  className="action-btn start-btn"
-                  onClick={() =>
-                    Swal.fire({
-                      title: "Instructions",
-                      icon: "info",
-                      html: instructions,
-                      confirmButtonText: "Start Quiz",
-                      showCancelButton: true,
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                        navigate(`/quizzes/${quizItem.quizId}/questions`);
-                      }
-                    })
-                  }
-                >
-                  Start Assesment
-                </button>
-              )}
-            </div>
-          </div>
+
+          <QuizCard key={quizItem.quizId} quizItem={quizItem} deleteQuiz={deleteQuiz}/>
+
         ))}
       </div>
     </div>

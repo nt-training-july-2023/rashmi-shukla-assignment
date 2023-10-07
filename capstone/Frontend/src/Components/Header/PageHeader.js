@@ -1,5 +1,4 @@
 import React from 'react'
-import './PageHeader.css'
 
 const PageHeader =  ({className, heading, displayButton, onClick, name, isTest, timer,submitted }) => {
   const userRole = localStorage.getItem("role");

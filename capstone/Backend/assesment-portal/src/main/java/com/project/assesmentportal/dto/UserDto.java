@@ -26,14 +26,16 @@ public class UserDto {
      * The first name of the user.
      */
     @NotBlank(message = ErrorConstants.FIRST_NAME_REQUIRED)
-    @Pattern(regexp = "^[a-zA-Z]*$", message = ErrorConstants.FIRST_NAME_PATTERN)
+    @Pattern(regexp = "^[a-zA-Z]*$", message =
+            ErrorConstants.FIRST_NAME_PATTERN)
     private String firstName;
 
     /**
      * The last name of the user.
      */
     @NotBlank(message = ErrorConstants.LAST_NAME_REQUIRED)
-    @Pattern(regexp = "^[a-zA-Z]*$", message = ErrorConstants.LAST_NAME_PATTERN)
+    @Pattern(regexp = "^[a-zA-Z]*$", message =
+            ErrorConstants.LAST_NAME_PATTERN)
     private String lastName;
 
     /**
@@ -47,8 +49,8 @@ public class UserDto {
      * The email address of the user.
      */
     @NotBlank(message = ErrorConstants.EMAIL_REQUIRED)
-    @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@nucleusteq\\.com$", message =
-            ErrorConstants.USER_EMAIL_DOMAIN)
+    @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@nucleusteq\\.com$",
+        message = ErrorConstants.USER_EMAIL_DOMAIN)
     private String email;
 
     /**

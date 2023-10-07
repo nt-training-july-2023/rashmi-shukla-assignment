@@ -29,7 +29,8 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(
             final ResourceNotFoundException ex) {
         String message = ex.getMessage();
-        ApiResponse apiResponse = new ApiResponse(message, HttpStatus.NOT_FOUND.value());
+        ApiResponse apiResponse =
+                new ApiResponse(message, HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<ApiResponse>(apiResponse,
                 HttpStatus.NOT_FOUND);
     }
@@ -44,7 +45,8 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ApiResponse> invalidDataExceptionHandler(
             final InvalidDataException ex) {
         String message = ex.getMessage();
-        ApiResponse apiResponse = new ApiResponse(message, HttpStatus.UNAUTHORIZED.value());
+        ApiResponse apiResponse =
+                new ApiResponse(message, HttpStatus.UNAUTHORIZED.value());
         return new ResponseEntity<ApiResponse>(apiResponse,
                 HttpStatus.UNAUTHORIZED);
     }
@@ -59,7 +61,8 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ApiResponse> duplicateResourceExceptionHandler(
             final DuplicateResourceException ex) {
         String message = ex.getMessage();
-        ApiResponse apiResponse = new ApiResponse(message, HttpStatus.CONFLICT.value());
+        ApiResponse apiResponse =
+                new ApiResponse(message, HttpStatus.CONFLICT.value());
         return new ResponseEntity<ApiResponse>(apiResponse,
                 HttpStatus.CONFLICT);
     }
@@ -72,17 +75,16 @@ public class GlobalExceptionHandler {
      *         validation error messages.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public final ResponseEntity<ApiResponse>
-        handleMethodArgsNotValidException(
+    public final ResponseEntity<ApiResponse> handleMethodArgsNotValidException(
             final MethodArgumentNotValidException ex) {
-            Map<String, String> errors = new HashMap<>();
-            ex.getBindingResult().getAllErrors().forEach((error) -> {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String message = error.getDefaultMessage();
             errors.put(fieldName, message);
         });
-        ApiResponse apiResponse = new ApiResponse(
-                "Validation failed",HttpStatus.BAD_REQUEST.value(), errors);
+        ApiResponse apiResponse = new ApiResponse("Validation failed",
+                HttpStatus.BAD_REQUEST.value(), errors);
         return new ResponseEntity<ApiResponse>(apiResponse,
                 HttpStatus.BAD_REQUEST);
     }

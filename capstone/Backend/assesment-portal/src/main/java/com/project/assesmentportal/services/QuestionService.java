@@ -40,6 +40,7 @@ public interface QuestionService {
     /**
      * delete question by Id.
      * @param questionId id of the question to be deleted.
+     * @return ApiResponse
      */
     ApiResponse deleteQuestion(long questionId);
 }

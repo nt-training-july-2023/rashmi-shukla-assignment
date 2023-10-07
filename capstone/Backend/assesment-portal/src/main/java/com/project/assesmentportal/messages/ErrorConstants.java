@@ -1,6 +1,16 @@
 package com.project.assesmentportal.messages;
 
-public class ErrorConstants {
+/**
+ * This class defines error messages for application.
+ */
+public final class ErrorConstants {
+    /**
+     * constructor for class.
+     */
+    private ErrorConstants() {
+
+    }
+
 //VALIDATIONS
     /**
      * Error message for CategoryDto: "Category title is required".

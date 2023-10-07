@@ -41,8 +41,8 @@ public class QuestionController {
     /**
      * The instance of Logger Class.
      */
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(QuestionController.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(QuestionController.class);
 
     /**
      * handle add question.
@@ -53,9 +53,11 @@ public class QuestionController {
     public final ResponseEntity<ApiResponse> addQuestion(
             @RequestBody @Valid final QuestionDto questionDto) {
         LOGGER.info(MessageConstants.ADD_QUESTION_INVOKED);
-        ApiResponse addQuestion = this.questionService.addQuestion(questionDto);
+        ApiResponse addQuestion =
+                this.questionService.addQuestion(questionDto);
         LOGGER.info(MessageConstants.QUESTION_ADDED_SUCCESSFULLY);
-        return new ResponseEntity<ApiResponse>(addQuestion, HttpStatus.CREATED);
+        return new ResponseEntity<ApiResponse>(addQuestion,
+                HttpStatus.CREATED);
     }
 
     /**
@@ -79,9 +81,10 @@ public class QuestionController {
     public final ResponseEntity<QuestionDto> getQuestionById(
             @PathVariable("id") final long questionId) {
         LOGGER.info(MessageConstants.GET_QUESTION_INVOKED);
-        QuestionDto questionDto = questionService
-                .getQuestionById(questionId);
-        LOGGER.info(MessageConstants.QUESTIONS_RETRIEVED_SUCCESSFULLY + questionId);
+        QuestionDto questionDto =
+                questionService.getQuestionById(questionId);
+        LOGGER.info(MessageConstants.QUESTIONS_RETRIEVED_SUCCESSFULLY
+                + questionId);
         return new ResponseEntity<QuestionDto>(questionDto, HttpStatus.OK);
     }
 
@@ -96,8 +99,8 @@ public class QuestionController {
             @RequestBody @Valid final QuestionDto questionDto,
             @PathVariable("id") final long questionId) {
         LOGGER.info(MessageConstants.UPDATE_QUESTION_INVOKED);
-        ApiResponse response = questionService.updateQuestion(questionDto,
-                questionId);
+        ApiResponse response =
+                questionService.updateQuestion(questionDto, questionId);
         LOGGER.info(MessageConstants.QUESTION_UPDATED_SUCCESSFULLY);
         return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
     }
@@ -113,7 +116,6 @@ public class QuestionController {
         LOGGER.info(MessageConstants.DELETE_QUESTION_INVOKED);
         ApiResponse response = questionService.deleteQuestion(questionId);
         LOGGER.info(MessageConstants.QUESTION_DELETED_SUCCESSFULLY);
-        return new ResponseEntity<ApiResponse>(response,
-                HttpStatus.OK);
+        return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
     }
 }

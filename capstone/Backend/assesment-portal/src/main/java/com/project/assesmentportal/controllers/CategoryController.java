@@ -42,9 +42,8 @@ public class CategoryController {
     /**
      * Creating a instance of Logger Class.
      */
-    private static final Logger LOGGER
-            = LoggerFactory
-                    .getLogger(CategoryController.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(CategoryController.class);
 
     /**
      * Adds a new category.
@@ -86,7 +85,8 @@ public class CategoryController {
             @PathVariable("id") final long catId) {
         LOGGER.info(MessageConstants.GET_CATEGORY_INVOKED);
         CategoryDto categoryDto = categoryService.getCategoryById(catId);
-        LOGGER.info(MessageConstants.CATEGORY_RETRIEVED_SUCCESSFULLY+ catId);
+        LOGGER.info(
+                MessageConstants.CATEGORY_RETRIEVED_SUCCESSFULLY + catId);
         return new ResponseEntity<CategoryDto>(categoryDto, HttpStatus.OK);
     }
 
@@ -102,7 +102,8 @@ public class CategoryController {
             @PathVariable("id") final long catId,
             @RequestBody @Valid final CategoryDto categoryDto) {
         LOGGER.info(MessageConstants.UPDATE_CATEGORY_INVOKED);
-        ApiResponse response = categoryService.updateCategory(categoryDto, catId);
+        ApiResponse response =
+                categoryService.updateCategory(categoryDto, catId);
         LOGGER.info(MessageConstants.CATEGORY_UPDATED_SUCCESSFULLY);
         return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
     }
@@ -119,8 +120,7 @@ public class CategoryController {
         LOGGER.info(MessageConstants.DELETE_CATEGORY_INVOKED);
         ApiResponse response = categoryService.deleteCategory(catId);
         LOGGER.info(MessageConstants.CATEGORY_DELETED_SUCCESSFULLY);
-        return new ResponseEntity<ApiResponse>(response,
-                HttpStatus.OK);
+        return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
     }
 
     /**
@@ -133,7 +133,7 @@ public class CategoryController {
             @PathVariable("id") final long id) {
         LOGGER.info(MessageConstants.GET_QUIZZES_BY_CATEGORY_INVOKED);
         List<QuizDto> quizzes = categoryService.getQuizzesByCategory(id);
-        LOGGER.info(MessageConstants.QUIZZES_BY_CATEGORY_RETRIEVED+id);
+        LOGGER.info(MessageConstants.QUIZZES_BY_CATEGORY_RETRIEVED + id);
         return new ResponseEntity<List<QuizDto>>(quizzes, HttpStatus.OK);
     }
 }

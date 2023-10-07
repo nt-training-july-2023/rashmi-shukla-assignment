@@ -67,9 +67,9 @@ public class Category {
 
     /**
      * all args constructor of category.
-     * @param catId    unique id of category.
-     * @param catTitle title of category.
-     * @param catDesc  description of category.
+     * @param id    unique id of category.
+     * @param title title of category.
+     * @param description  description of category.
      */
     public Category(final long id, final String title,
             final String description) {

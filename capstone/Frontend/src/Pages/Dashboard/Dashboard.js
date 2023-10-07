@@ -6,17 +6,14 @@ import usersImg from '../../Assests/images/icon-users.png';
 import ErrorPage from '../ErrorPage/ErrorPage'
 import UserService from '../../Services/UserService';
 import PageHeader from '../../Components/Header/PageHeader';
+import DisableBackButton from '../../Components/DisableBackButton';
 
 const Dashboard = () => {
   const userName = localStorage.getItem("userName");
   const [numOfUsers, setNumOfUsers] = useState(0);
 
   useEffect(() => {
-    window.history.pushState(null, '', '/dashboard');
-    window.addEventListener('popstate', () => {
-      window.history.pushState(null, '', '/dashboard');
-    });
-    getAllUsers();
+    return () => getAllUsers();
   }, []);
 
   const getAllUsers = () => {
@@ -37,6 +34,7 @@ const Dashboard = () => {
 
   return (
     <div className='dashboard-container'>
+      <DisableBackButton/>
       <Navbar/>
       <PageHeader className="dashboard-header" heading="ADMIN DASHBOARD"
           displayButton="" onClick="" name="" />

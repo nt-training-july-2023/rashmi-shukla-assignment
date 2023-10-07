@@ -77,9 +77,9 @@ public class Question {
      * @return quiz belongs to.
      */
     public final Quiz getQuiz() {
-            return new Quiz(quiz.getQuizId(), quiz.getQuizTitle(),
-                    quiz.getQuizDescription(), quiz.getQuizTimer(),
-                    quiz.getCategory());
+        return new Quiz(quiz.getQuizId(), quiz.getQuizTitle(),
+                quiz.getQuizDescription(), quiz.getQuizTimer(),
+                quiz.getCategory());
     }
 
     /**
@@ -87,24 +87,24 @@ public class Question {
      * @param quizEntity which the quiz belongs to.
      */
     public final void setQuiz(final Quiz quizEntity) {
-            this.quiz = new Quiz(quizEntity.getQuizId(), quizEntity.getQuizTitle(),
-                    quizEntity.getQuizDescription(), quizEntity.getQuizTimer(),
-                    quizEntity.getCategory());
+        this.quiz = new Quiz(quizEntity.getQuizId(),
+                quizEntity.getQuizTitle(), quizEntity.getQuizDescription(),
+                quizEntity.getQuizTimer(), quizEntity.getCategory());
     }
 
     /**
      * all args constructor for question.
-     * @param id    id for question
-     * @param title title for question
-     * @param option1   option 1
-     * @param option2   option 2
-     * @param option3   option 3
-     * @param option4   option 4
-     * @param ans    correct answer
+     * @param id      id for question
+     * @param title   title for question
+     * @param option1 option 1
+     * @param option2 option 2
+     * @param option3 option 3
+     * @param option4 option 4
+     * @param ans     correct answer
      */
-    public Question(final long id, final String title, final String option1,
-            final String option2, final String option3, final String option4,
-            final String ans) {
+    public Question(final long id, final String title,
+            final String option1, final String option2,
+            final String option3, final String option4, final String ans) {
         this.questionId = id;
         this.questionTitle = title;
         this.optionOne = option1;

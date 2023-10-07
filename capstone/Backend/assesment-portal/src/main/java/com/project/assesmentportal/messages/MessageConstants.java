@@ -1,10 +1,17 @@
 package com.project.assesmentportal.messages;
 
 /**
- * This class defines constants for log messages used throughout the
+ * This class defines constants for messages used throughout the
  * application.
  */
-public class MessageConstants {
+public final class MessageConstants {
+    /**
+     * constructor for class.
+     */
+    private MessageConstants() {
+
+    }
+
 //Category Services
     /**
      * Log message: Add category method invoked.
@@ -181,17 +188,17 @@ public class MessageConstants {
     public static final String QUIZZES_RETRIEVED_SUCCESSFULLY =
             "Retrieved a list of quizzes successfully.";
     /**
-     * Log message: Successfully retrieved questions for quiz ID:
+     * Log message: Successfully retrieved questions for quiz ID:.
      */
     public static final String QUESTIONS_BY_QUIZ_RETRIEVED =
             "Successfully retrieved questions for quiz ID:";
     /**
-     * Log message: Successfully retrieved quiz with ID:
+     * Log message: Successfully retrieved quiz with ID:.
      */
     public static final String QUIZ_RETRIEVED_SUCCESSFULLY =
             "Successfully retrieved quiz with ID: ";
     /**
-     * Log message: Successfully updated quiz with ID:
+     * Log message: Successfully updated quiz with ID:.
      */
     public static final String QUIZ_UPDATED_SUCCESSFULLY =
             "Quiz Updated Successfully!";
@@ -263,7 +270,7 @@ public class MessageConstants {
             " Update question method ended.";
 
     /**
-     * Log message: Question added successfully!
+     * Log message: Question added successfully!.
      */
     public static final String QUESTION_ADDED_SUCCESSFULLY =
             "Question added successfully!";
@@ -275,19 +282,19 @@ public class MessageConstants {
             "Retrieved a list of questions successfully.";
 
     /**
-     * Log message: Successfully retrieved question with ID:
+     * Log message: Successfully retrieved question with ID:.
      */
     public static final String QUESTION_RETRIEVED_SUCCESSFULLY =
             "Successfully retrieved question with ID: ";
 
     /**
-     * Log message: Successfully updated question with ID:
+     * Log message: Successfully updated question with ID:.
      */
     public static final String QUESTION_UPDATED_SUCCESSFULLY =
             "Question Updated Successfully!";
 
     /**
-     * Log message: Successfully deleted question with ID:
+     * Log message: Successfully deleted question with ID:.
      */
     public static final String QUESTION_DELETED_SUCCESSFULLY =
             "Question Deleted Successfully!";
@@ -330,7 +337,7 @@ public class MessageConstants {
             " Get result by user email method ended.";
 
     /**
-     * Log message: Result added successfully!
+     * Log message: Result added successfully!.
      */
     public static final String RESULT_ADDED_SUCCESSFULLY =
             "Result added successfully!";
@@ -342,7 +349,7 @@ public class MessageConstants {
             "Retrieved a list of results successfully.";
 
     /**
-     * Log message: Successfully retrieved result for Email:
+     * Log message: Successfully retrieved result for Email:.
      */
     public static final String RESULT_RETRIEVED_SUCCESSFULLY =
             "Successfully retrieved result for Email: ";

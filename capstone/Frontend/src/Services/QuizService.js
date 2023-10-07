@@ -8,7 +8,7 @@ class QuizService{
         return axios.post(QUIZ_BASE_URL, Quiz);
     }
 
-    getAllQuizzes(){
+    getQuizzes(){
         return axios.get(QUIZ_BASE_URL);
     }
 

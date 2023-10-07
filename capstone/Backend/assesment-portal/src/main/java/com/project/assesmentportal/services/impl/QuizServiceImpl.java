@@ -56,8 +56,8 @@ public class QuizServiceImpl implements QuizService {
     /**
      * Creating a instance of Logger Class.
      */
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(QuizServiceImpl.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(QuizServiceImpl.class);
 
     /**
      * Adds a new quiz.
@@ -75,18 +75,22 @@ public class QuizServiceImpl implements QuizService {
         if (checkExistingCategory.isEmpty()) {
             LOGGER.error(ErrorConstants.CATEGORY_DOESNOT_EXISTS
                     + quiz.getCategory().getCategoryId());
-            throw new ResourceNotFoundException(ErrorConstants.CATEGORY_DOESNOT_EXISTS + quiz.getCategory().getCategoryId());
+            throw new ResourceNotFoundException(
+                    ErrorConstants.CATEGORY_DOESNOT_EXISTS
+                            + quiz.getCategory().getCategoryId());
         }
-        Optional<Quiz> checkExistingQuiz = quizRepository
-                .findByQuizTitle(quiz.getQuizTitle());
+        Optional<Quiz> checkExistingQuiz =
+                quizRepository.findByQuizTitle(quiz.getQuizTitle());
         if (checkExistingQuiz.isPresent()) {
             LOGGER.error(ErrorConstants.QUIZ_ALREADY_EXISTS);
-            throw new DuplicateResourceException(ErrorConstants.QUIZ_ALREADY_EXISTS);
+            throw new DuplicateResourceException(
+                    ErrorConstants.QUIZ_ALREADY_EXISTS);
         }
         quizRepository.save(quiz);
         LOGGER.info(MessageConstants.ADD_QUIZ_ENDED);
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUIZ_ADDED_SUCCESSFULLY,
-                HttpStatus.CREATED.value());
+        ApiResponse apiResponse =
+                new ApiResponse(MessageConstants.QUIZ_ADDED_SUCCESSFULLY,
+                        HttpStatus.CREATED.value());
         return apiResponse;
     }
 
@@ -98,9 +102,9 @@ public class QuizServiceImpl implements QuizService {
     public final List<QuizDto> getQuizzes() {
         LOGGER.info(MessageConstants.GET_QUIZZES_INVOKED);
         List<Quiz> quizzes = this.quizRepository.findAll();
-        List<QuizDto> quizDtos = quizzes.stream()
-                .map((quiz) -> this.entityToDto(quiz))
-                .collect(Collectors.toList());
+        List<QuizDto> quizDtos =
+                quizzes.stream().map((quiz) -> this.entityToDto(quiz))
+                        .collect(Collectors.toList());
         LOGGER.info(MessageConstants.GET_QUIZZES_ENDED);
         return quizDtos;
     }
@@ -121,7 +125,8 @@ public class QuizServiceImpl implements QuizService {
             return this.entityToDto(quiz.get());
         } else {
             LOGGER.error(ErrorConstants.QUIZ_DOESNOT_EXISTS + quizId);
-            throw new ResourceNotFoundException(ErrorConstants.QUIZ_DOESNOT_EXISTS + quizId);
+            throw new ResourceNotFoundException(
+                    ErrorConstants.QUIZ_DOESNOT_EXISTS + quizId);
         }
     }
 
@@ -137,9 +142,10 @@ public class QuizServiceImpl implements QuizService {
     public final ApiResponse updateQuiz(final QuizDto quizDto,
             final long quizId) {
         LOGGER.info(MessageConstants.UPDATE_QUIZ_INVOKED);
-        Quiz exisitingQuiz = quizRepository.findById(quizId)
-                .orElseGet(() -> {
-                    LOGGER.error(ErrorConstants.QUIZ_DOESNOT_EXISTS + quizId);
+        Quiz exisitingQuiz =
+                quizRepository.findById(quizId).orElseGet(() -> {
+                    LOGGER.error(
+                            ErrorConstants.QUIZ_DOESNOT_EXISTS + quizId);
                     throw new ResourceNotFoundException(
                             ErrorConstants.QUIZ_DOESNOT_EXISTS + quizId);
                 });
@@ -147,15 +153,18 @@ public class QuizServiceImpl implements QuizService {
         Optional<Category> checkExistingCategory = categoryRepository
                 .findById(quizDto.getCategory().getCategoryId());
         if (checkExistingCategory.isEmpty()) {
-            LOGGER.error(ErrorConstants.CATEGORY_DOESNOT_EXISTS + quizDto.getCategory().getCategoryId());
-            throw new ResourceNotFoundException(ErrorConstants.CATEGORY_DOESNOT_EXISTS + quizDto.getCategory().getCategoryId());
+            LOGGER.error(ErrorConstants.CATEGORY_DOESNOT_EXISTS
+                    + quizDto.getCategory().getCategoryId());
+            throw new ResourceNotFoundException(
+                    ErrorConstants.CATEGORY_DOESNOT_EXISTS
+                            + quizDto.getCategory().getCategoryId());
         }
 
         // Checks if the updated title is the same as the existing one
         if (!quizDto.getQuizTitle().equals(exisitingQuiz.getQuizTitle())) {
             // Title has changed, checks for duplicates
-            Optional<Quiz> checkExistingQuiz = quizRepository
-                    .findByQuizTitle(quizDto.getQuizTitle());
+            Optional<Quiz> checkExistingQuiz =
+                    quizRepository.findByQuizTitle(quizDto.getQuizTitle());
             if (checkExistingQuiz.isPresent()) {
 
                 LOGGER.error(ErrorConstants.QUIZ_ALREADY_EXISTS);
@@ -167,18 +176,18 @@ public class QuizServiceImpl implements QuizService {
         exisitingQuiz.setQuizTitle(quizDto.getQuizTitle());
         exisitingQuiz.setQuizDescription(quizDto.getQuizDescription());
         exisitingQuiz.setQuizTimer(quizDto.getQuizTimer());
-        
-        Category updatedCategory = new Category(
-                quizDto.getCategory().getCategoryId(),
-                quizDto.getCategory().getCategoryTitle(),
-                quizDto.getCategory().getCategoryDescription()
-                );
-        
+
+        Category updatedCategory =
+                new Category(quizDto.getCategory().getCategoryId(),
+                        quizDto.getCategory().getCategoryTitle(),
+                        quizDto.getCategory().getCategoryDescription());
+
         exisitingQuiz.setCategory(updatedCategory);
         quizRepository.save(exisitingQuiz);
         LOGGER.info(MessageConstants.UPDATE_QUIZ_ENDED);
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUIZ_UPDATED_SUCCESSFULLY,
-                HttpStatus.OK.value());
+        ApiResponse apiResponse =
+                new ApiResponse(MessageConstants.QUIZ_UPDATED_SUCCESSFULLY,
+                        HttpStatus.OK.value());
         return apiResponse;
     }
 
@@ -193,12 +202,14 @@ public class QuizServiceImpl implements QuizService {
         LOGGER.info(MessageConstants.DELETE_QUIZ_INVOKED);
         quizRepository.findById(quizId).orElseGet(() -> {
             LOGGER.error(ErrorConstants.QUIZ_DOESNOT_EXISTS + quizId);
-            throw new ResourceNotFoundException(ErrorConstants.QUIZ_DOESNOT_EXISTS + quizId);
+            throw new ResourceNotFoundException(
+                    ErrorConstants.QUIZ_DOESNOT_EXISTS + quizId);
         });
         quizRepository.deleteById(quizId);
         LOGGER.info(MessageConstants.DELETE_QUIZ_ENDED);
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUIZ_DELETED_SUCCESSFULLY,
-                HttpStatus.OK.value());
+        ApiResponse apiResponse =
+                new ApiResponse(MessageConstants.QUIZ_DELETED_SUCCESSFULLY,
+                        HttpStatus.OK.value());
         return apiResponse;
     }
 
@@ -211,8 +222,9 @@ public class QuizServiceImpl implements QuizService {
     public final List<QuestionDto> getQuestionsByQuiz(final long quizId) {
         LOGGER.info(MessageConstants.GET_QUESTIONS_BY_QUIZ_INVOKED);
         Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> {
-            LOGGER.error(ErrorConstants.QUIZ_DOESNOT_EXISTS+quizId);
-            throw new ResourceNotFoundException(ErrorConstants.QUIZ_DOESNOT_EXISTS+quizId);
+            LOGGER.error(ErrorConstants.QUIZ_DOESNOT_EXISTS + quizId);
+            throw new ResourceNotFoundException(
+                    ErrorConstants.QUIZ_DOESNOT_EXISTS + quizId);
         });
         List<Question> questions = quiz.getQuestions();
         LOGGER.info(MessageConstants.GET_QUESTIONS_BY_QUIZ_INVOKED);
@@ -229,7 +241,8 @@ public class QuizServiceImpl implements QuizService {
         // Map the QuizDto to a Quiz entity
         Quiz quiz = modelMapper.map(quizDto, Quiz.class);
         if (quizDto.getCategory() != null) {
-            Category category = new Category(quizDto.getCategory().getCategoryId(),
+            Category category = new Category(
+                    quizDto.getCategory().getCategoryId(),
                     quizDto.getCategory().getCategoryTitle(),
                     quizDto.getCategory().getCategoryDescription());
             quiz.setCategory(category);
@@ -245,9 +258,10 @@ public class QuizServiceImpl implements QuizService {
     public final QuizDto entityToDto(final Quiz quiz) {
         QuizDto quizDto = modelMapper.map(quiz, QuizDto.class);
         if (quiz.getCategory() != null) {
-            CategoryDto categoryDto = new CategoryDto(quiz.getCategory().getCategoryId(),
-                    quiz.getCategory().getCategoryTitle(),
-                    quiz.getCategory().getCategoryDescription());
+            CategoryDto categoryDto =
+                    new CategoryDto(quiz.getCategory().getCategoryId(),
+                            quiz.getCategory().getCategoryTitle(),
+                            quiz.getCategory().getCategoryDescription());
             quizDto.setCategory(categoryDto);
         }
         return quizDto;
@@ -270,15 +284,15 @@ public class QuizServiceImpl implements QuizService {
         questionDto.setOptions(options);
         questionDto.setAnswer(question.getAnswer());
         QuizDto quizDto = new QuizDto();
-        quizDto.setQuizId(question.getQuiz().getQuizId()); 
+        quizDto.setQuizId(question.getQuiz().getQuizId());
         quizDto.setQuizTitle(question.getQuiz().getQuizTitle());
-        quizDto.setQuizDescription(question.getQuiz().getQuizDescription());
+        quizDto.setQuizDescription(
+                question.getQuiz().getQuizDescription());
         quizDto.setQuizTimer(question.getQuiz().getQuizTimer());
         CategoryDto categoryDto = new CategoryDto(
                 question.getQuiz().getCategory().getCategoryId(),
                 question.getQuiz().getCategory().getCategoryTitle(),
-                question.getQuiz().getCategory().getCategoryDescription()
-                );
+                question.getQuiz().getCategory().getCategoryDescription());
         quizDto.setCategory(categoryDto);
         questionDto.setQuiz(quizDto);
         return questionDto;

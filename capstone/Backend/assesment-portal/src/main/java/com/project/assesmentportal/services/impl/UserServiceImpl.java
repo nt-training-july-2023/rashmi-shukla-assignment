@@ -76,7 +76,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         LOGGER.info(MessageConstants.USER_REGISTRATION_ENDED);
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.USER_REGISTERED_SUCCESSFULLY,
+        ApiResponse apiResponse = new ApiResponse(
+                MessageConstants.USER_REGISTERED_SUCCESSFULLY,
                 HttpStatus.CREATED.value());
         return apiResponse;
 

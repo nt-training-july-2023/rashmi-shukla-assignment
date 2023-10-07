@@ -37,10 +37,10 @@ public class ResultController {
     private ResultService resultService;
 
     /**
-    * Creating a instance of Logger Class.
-    */
-   private static final Logger LOGGER = LoggerFactory
-           .getLogger(ResultController.class);
+     * Creating a instance of Logger Class.
+     */
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(ResultController.class);
 
     /**
      * handles add result.
@@ -53,7 +53,8 @@ public class ResultController {
         LOGGER.info(MessageConstants.ADD_RESULT_INVOKED);
         ApiResponse addResult = this.resultService.addResult(resultDto);
         LOGGER.info(MessageConstants.RESULT_ADDED_SUCCESSFULLY);
-        return new ResponseEntity<ApiResponse>(addResult, HttpStatus.CREATED);
+        return new ResponseEntity<ApiResponse>(addResult,
+                HttpStatus.CREATED);
     }
 
     /**
@@ -77,9 +78,10 @@ public class ResultController {
     public final List<ResultDto> getResultByUserEmail(
             @PathVariable final String userEmail) {
         LOGGER.info(MessageConstants.GET_RESULT_INVOKED);
-        List<ResultDto> resultDtos = resultService.getResultByUserEmail(
-                userEmail);
-        LOGGER.info(MessageConstants.RESULT_RETRIEVED_SUCCESSFULLY+userEmail);
+        List<ResultDto> resultDtos =
+                resultService.getResultByUserEmail(userEmail);
+        LOGGER.info(MessageConstants.RESULT_RETRIEVED_SUCCESSFULLY
+                + userEmail);
         return resultDtos;
     }
 

@@ -42,6 +42,7 @@ public interface CategoryService {
     /**
      * Deletes a category by its ID.
      * @param categoryId The ID of the category to delete.
+     * @return ApiResponse.
      */
     ApiResponse deleteCategory(long categoryId);
 

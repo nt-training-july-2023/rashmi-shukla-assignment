@@ -53,7 +53,8 @@ public class ResultServiceImpl implements ResultService {
         Result result = this.modelMapper.map(resultDto, Result.class);
         resultRepository.save(result);
         LOGGER.info(MessageConstants.ADD_RESULT_ENDED);
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.RESULT_ADDED_SUCCESSFULLY,
+        ApiResponse apiResponse = new ApiResponse(
+                MessageConstants.RESULT_ADDED_SUCCESSFULLY,
                 HttpStatus.CREATED.value());
         return apiResponse;
     }

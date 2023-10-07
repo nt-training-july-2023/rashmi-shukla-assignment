@@ -4,16 +4,24 @@ import welcomeImg from "../../Assests/images/welcome-img.png";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../../Components/Header/PageHeader";
+import progressImg from "../../Assests/images/growth.png";
+import DisableBackButton from "../../Components/DisableBackButton";
 
 const UserDashboard = () => {
   const userName = localStorage.getItem("userName");
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.history.pushState(null, "", "/user-dashboard");
-    window.addEventListener("popstate", () => {
-      window.history.pushState(null, "", "/user-dashboard");
-    });
+    localStorage.removeItem("timerInSeconds");
+    localStorage.removeItem("selectedAnswers");
+    localStorage.removeItem("quizTitle");
+    localStorage.removeItem("categoryTitle");
+    localStorage.removeItem("totalQuestions");	
+    localStorage.removeItem("totalMarks");	
+    localStorage.removeItem("reloadAttempts");
+    localStorage.removeItem("obtainedMarks");
+    localStorage.removeItem("attemptedQuestions");
+    localStorage.removeItem("dateTime");
   }, []);
 
   const userRole = localStorage.getItem("role");
@@ -23,6 +31,7 @@ const UserDashboard = () => {
 
   return (
     <div className="dashboard-container">
+      <DisableBackButton/>
       <Navbar />
       <PageHeader
         className="dashboard-header"
@@ -35,15 +44,18 @@ const UserDashboard = () => {
         <div className="welcome-box">
           <h1>Welcome, {userName}</h1>
           <div>
-            <img className="welcome-img" src={welcomeImg} alt="img" />
+            <img src={welcomeImg} alt="img" />
           </div>
         </div>
         <div className="user-profile-box">
-          <div className="user-box">
-            <h2>Check Your Progress:</h2>
+          <div>
+          <img className="growth-img" src={progressImg} alt="progress icon"></img>
+          <div/>
+          <div>
             <button class="custom-button" onClick={() => navigate("/results")}>
-              Results
+              Check Your Progress
             </button>
+          </div>
           </div>
         </div>
       </div>

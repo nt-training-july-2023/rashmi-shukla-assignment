@@ -47,8 +47,8 @@ public class QuestionServiceImpl implements QuestionService {
     /**
      * Creating a instance of Logger Class.
      */
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(QuestionServiceImpl.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(QuestionServiceImpl.class);
 
     /**
      * add new question.
@@ -59,15 +59,19 @@ public class QuestionServiceImpl implements QuestionService {
     public final ApiResponse addQuestion(final QuestionDto questionDto) {
         LOGGER.info(MessageConstants.ADD_QUESTION_INVOKED);
         Question question = this.dtoToEntity(questionDto);
-        Optional<Quiz> existingQuiz = quizRepository
-                .findById(question.getQuiz().getQuizId());
+        Optional<Quiz> existingQuiz =
+                quizRepository.findById(question.getQuiz().getQuizId());
         if (existingQuiz.isEmpty()) {
-            LOGGER.error(ErrorConstants.QUIZ_DOESNOT_EXISTS+question.getQuiz().getQuizId());
-            throw new ResourceNotFoundException(ErrorConstants.QUIZ_DOESNOT_EXISTS+question.getQuiz().getQuizId());
+            LOGGER.error(ErrorConstants.QUIZ_DOESNOT_EXISTS
+                    + question.getQuiz().getQuizId());
+            throw new ResourceNotFoundException(
+                    ErrorConstants.QUIZ_DOESNOT_EXISTS
+                            + question.getQuiz().getQuizId());
         }
         questionRepository.save(question);
         LOGGER.info(MessageConstants.ADD_QUESTION_ENDED);
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_ADDED_SUCCESSFULLY,
+        ApiResponse apiResponse = new ApiResponse(
+                MessageConstants.QUESTION_ADDED_SUCCESSFULLY,
                 HttpStatus.CREATED.value());
         return apiResponse;
     }
@@ -96,20 +100,25 @@ public class QuestionServiceImpl implements QuestionService {
     public final ApiResponse updateQuestion(final QuestionDto questionDto,
             final long questionId) {
         LOGGER.info(MessageConstants.UPDATE_QUESTION_INVOKED);
-        Question exisitingQuestion = questionRepository
-                .findById(questionId).orElseGet(() -> {
-                    LOGGER.error(ErrorConstants.QUESTION_DOESNOT_EXISTS+questionId);
+        Question exisitingQuestion =
+                questionRepository.findById(questionId).orElseGet(() -> {
+                    LOGGER.error(ErrorConstants.QUESTION_DOESNOT_EXISTS
+                            + questionId);
                     throw new ResourceNotFoundException(
-                            ErrorConstants.QUESTION_DOESNOT_EXISTS+questionId);
+                            ErrorConstants.QUESTION_DOESNOT_EXISTS
+                                    + questionId);
                 });
 
         Question question = dtoToEntity(questionDto);
 
-        Optional<Quiz> existingQuiz = quizRepository
-                .findById(question.getQuiz().getQuizId());
+        Optional<Quiz> existingQuiz =
+                quizRepository.findById(question.getQuiz().getQuizId());
         if (existingQuiz.isEmpty()) {
-            LOGGER.error(ErrorConstants.QUIZ_DOESNOT_EXISTS+question.getQuiz().getQuizId());
-            throw new ResourceNotFoundException(ErrorConstants.QUIZ_DOESNOT_EXISTS+question.getQuiz().getQuizId());
+            LOGGER.error(ErrorConstants.QUIZ_DOESNOT_EXISTS
+                    + question.getQuiz().getQuizId());
+            throw new ResourceNotFoundException(
+                    ErrorConstants.QUIZ_DOESNOT_EXISTS
+                            + question.getQuiz().getQuizId());
         }
 
         exisitingQuestion.setQuestionTitle(question.getQuestionTitle());
@@ -122,7 +131,8 @@ public class QuestionServiceImpl implements QuestionService {
 
         questionRepository.save(exisitingQuestion);
         LOGGER.info(MessageConstants.UPDATE_QUESTION_ENDED);
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_UPDATED_SUCCESSFULLY,
+        ApiResponse apiResponse = new ApiResponse(
+                MessageConstants.QUESTION_UPDATED_SUCCESSFULLY,
                 HttpStatus.OK.value());
         return apiResponse;
     }
@@ -134,12 +144,13 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public final QuestionDto getQuestionById(final long questionId) {
         LOGGER.info(MessageConstants.GET_QUESTION_INVOKED);
-        Question question = questionRepository.findById(questionId)
-                .orElseGet(() -> {
+        Question question =
+                questionRepository.findById(questionId).orElseGet(() -> {
                     LOGGER.error(ErrorConstants.QUESTION_DOESNOT_EXISTS
                             + questionId);
                     throw new ResourceNotFoundException(
-                            ErrorConstants.QUESTION_DOESNOT_EXISTS+questionId);
+                            ErrorConstants.QUESTION_DOESNOT_EXISTS
+                                    + questionId);
                 });
         LOGGER.info(MessageConstants.GET_QUESTION_ENDED);
         return this.entityToDto(question);
@@ -160,7 +171,8 @@ public class QuestionServiceImpl implements QuestionService {
         });
         questionRepository.deleteById(questionId);
         LOGGER.info(MessageConstants.DELETE_QUESTION_ENDED);
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_DELETED_SUCCESSFULLY,
+        ApiResponse apiResponse = new ApiResponse(
+                MessageConstants.QUESTION_DELETED_SUCCESSFULLY,
                 HttpStatus.OK.value());
         return apiResponse;
     }
@@ -183,12 +195,12 @@ public class QuestionServiceImpl implements QuestionService {
         String correctAnswerMatch = questionDto.getAnswer();
         if (correctAnswerMatch
                 .equals(questionDto.getOptions().getOptionI())
-                || correctAnswerMatch.equals(
-                        questionDto.getOptions().getOptionII())
-                || correctAnswerMatch.equals(
-                        questionDto.getOptions().getOptionIII())
-                || correctAnswerMatch.equals(
-                        questionDto.getOptions().getOptionIV())) {
+                || correctAnswerMatch
+                        .equals(questionDto.getOptions().getOptionII())
+                || correctAnswerMatch
+                        .equals(questionDto.getOptions().getOptionIII())
+                || correctAnswerMatch
+                        .equals(questionDto.getOptions().getOptionIV())) {
             found = true;
         }
         if (!found) {
@@ -198,15 +210,16 @@ public class QuestionServiceImpl implements QuestionService {
         question.setAnswer(correctAnswerMatch);
 
         Quiz quiz = new Quiz();
-        quiz.setQuizId(questionDto.getQuiz().getQuizId()); 
+        quiz.setQuizId(questionDto.getQuiz().getQuizId());
         quiz.setQuizTitle(questionDto.getQuiz().getQuizTitle());
-        quiz.setQuizDescription(questionDto.getQuiz().getQuizDescription());
+        quiz.setQuizDescription(
+                questionDto.getQuiz().getQuizDescription());
         quiz.setQuizTimer(questionDto.getQuiz().getQuizTimer());
         Category category = new Category(
                 questionDto.getQuiz().getCategory().getCategoryId(),
                 questionDto.getQuiz().getCategory().getCategoryTitle(),
-                questionDto.getQuiz().getCategory().getCategoryDescription()
-                );
+                questionDto.getQuiz().getCategory()
+                        .getCategoryDescription());
         quiz.setCategory(category);
         question.setQuiz(quiz);
         return question;
@@ -228,15 +241,15 @@ public class QuestionServiceImpl implements QuestionService {
                 question.getOptionFour());
         questionDto.setOptions(options);
         QuizDto quizDto = new QuizDto();
-        quizDto.setQuizId(question.getQuiz().getQuizId()); 
+        quizDto.setQuizId(question.getQuiz().getQuizId());
         quizDto.setQuizTitle(question.getQuiz().getQuizTitle());
-        quizDto.setQuizDescription(question.getQuiz().getQuizDescription());
+        quizDto.setQuizDescription(
+                question.getQuiz().getQuizDescription());
         quizDto.setQuizTimer(question.getQuiz().getQuizTimer());
         CategoryDto categoryDto = new CategoryDto(
                 question.getQuiz().getCategory().getCategoryId(),
                 question.getQuiz().getCategory().getCategoryTitle(),
-                question.getQuiz().getCategory().getCategoryDescription()
-                );
+                question.getQuiz().getCategory().getCategoryDescription());
         quizDto.setCategory(categoryDto);
         questionDto.setQuiz(quizDto);
         return questionDto;

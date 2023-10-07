@@ -14,7 +14,7 @@ const ListCategory = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    getAllCategories();
+    return () => getAllCategories();
   }, []);
 
   const getAllCategories = () => {

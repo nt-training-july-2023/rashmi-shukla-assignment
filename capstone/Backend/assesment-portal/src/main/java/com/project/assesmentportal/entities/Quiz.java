@@ -64,9 +64,9 @@ public class Quiz {
      * @return category the quiz belongs to.
      */
     public final Category getCategory() {
-            return new Category(category.getCategoryId(),
-                    category.getCategoryTitle(),
-                    category.getCategoryDescription());
+        return new Category(category.getCategoryId(),
+                category.getCategoryTitle(),
+                category.getCategoryDescription());
     }
 
     /**
@@ -74,8 +74,9 @@ public class Quiz {
      * @param categoryEntity which the quiz belongs to.
      */
     public final void setCategory(final Category categoryEntity) {
-            this.category = new Category(categoryEntity.getCategoryId(),
-                    categoryEntity.getCategoryTitle(), categoryEntity.getCategoryDescription());
+        this.category = new Category(categoryEntity.getCategoryId(),
+                categoryEntity.getCategoryTitle(),
+                categoryEntity.getCategoryDescription());
     }
 
     /**
@@ -102,23 +103,21 @@ public class Quiz {
 
     /**
      * all args constructor for quiz.
-     * @param id    unique id for quiz.
-     * @param title title of the quiz.
-     * @param description  description of the quiz.
-     * @param time   timer for the quiz.
+     * @param id             unique id for quiz.
+     * @param title          title of the quiz.
+     * @param description    description of the quiz.
+     * @param time           timer for the quiz.
      * @param categoryEntity category.
      */
-    public Quiz(final long id, final String title, final String description,
-            final int time, final Category categoryEntity) {
+    public Quiz(final long id, final String title,
+            final String description, final int time,
+            final Category categoryEntity) {
         this.quizId = id;
         this.quizTitle = title;
         this.quizDescription = description;
         this.quizTimer = time;
-//        if (cat != null) {
-            this.category = new Category(categoryEntity.getCategoryId(),
-                    categoryEntity.getCategoryTitle(), categoryEntity.getCategoryDescription());
-//        } else {
-//            this.category = null;
-//        }
+        this.category = new Category(categoryEntity.getCategoryId(),
+                categoryEntity.getCategoryTitle(),
+                categoryEntity.getCategoryDescription());
     }
 }
