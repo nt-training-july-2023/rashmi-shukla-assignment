@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import "./Form.css";
@@ -19,7 +18,7 @@ const LoginForm = () => {
     } else if (IsLoggedIn === "true" && userRole === "user") {
       navigate("/user-dashboard"); 
     }
-  }, []);
+  }, [IsLoggedIn,navigate,userRole]);
 
   const handleLoginClick = async (event) => {
     event.preventDefault();
@@ -45,6 +44,7 @@ const LoginForm = () => {
         localStorage.setItem("userName", response.data.fullName)
         localStorage.setItem("userEmail", response.data.email)
       }).catch((error) => {
+        if(error.response){
         const submitError = error.response.data.message;
         Swal.fire({
           title: "Error",
@@ -53,6 +53,14 @@ const LoginForm = () => {
           confirmButtonText: "Retry",
           confirmButtonColor: "red",
         });
+      } else {
+        Swal.fire({
+          title:"Server not responding",
+          icon: "error",
+          confirmButtonText: "Retry Later",
+          confirmButtonColor: "red",
+        });
+      }
         setEmail("");
         setPassword("");
       })
@@ -69,8 +77,8 @@ const LoginForm = () => {
     <div className="form-body">
       <div className="content-container">
         <h1>ASSESSMENT PORTAL</h1>
-        <p>"Assess, Excel, Succeed"</p>
-        <button onClick={redirectToRegister}>Get Started</button>
+        <p className="large-p">"Assess, Excel, Succeed"</p>
+        <button onClick={redirectToRegister}>Register Now</button>
       </div>
       <div className="Auth-form-container">
         <form className="Auth-form" onSubmit={handleLoginClick}>

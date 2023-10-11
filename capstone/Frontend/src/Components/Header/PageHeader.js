@@ -2,6 +2,7 @@ import React from 'react'
 
 const PageHeader =  ({className, heading, displayButton, onClick, name, isTest, timer,submitted }) => {
   const userRole = localStorage.getItem("role");
+  const totalMarks = parseInt(localStorage.getItem("totalMarks"), 10);
 
   const renderButton = () => (
     <button onClick={onClick}>
@@ -12,7 +13,7 @@ const PageHeader =  ({className, heading, displayButton, onClick, name, isTest, 
   const renderQuizControls = () => (
     <>
       <p>Time Remaining: {timer}</p>
-      <button onClick={onClick} disabled={submitted}>
+      <button onClick={onClick} disabled={isNaN(totalMarks)}>
         Submit Quiz
       </button>
     </>

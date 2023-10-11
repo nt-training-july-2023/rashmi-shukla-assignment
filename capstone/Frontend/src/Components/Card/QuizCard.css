@@ -61,7 +61,7 @@
     margin-top: 20px;
     text-align: center;
     text-decoration: none;
-    background-color: green;
+    background-color: #008026;
     color: white;
     padding: 10px 20px;
     border: wheat;
@@ -84,15 +84,19 @@
   }
 
   .view-btn:hover {
+    cursor: pointer;
     background-color: #123C89; 
   }
   
   .update-btn:hover{
+    cursor: pointer;
     background-color: #4A55A2;
   }
   .delete-btn:hover {
+    cursor: pointer;
     background-color: gray; 
   }
   .start-btn:hover {
-    background-color: darkgreen; 
+    cursor: pointer;
+    background-color: #026b22; 
   }

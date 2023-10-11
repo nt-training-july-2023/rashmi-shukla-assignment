@@ -65,7 +65,7 @@ body, html {
   .custom-button {
     background-color: #007bff;
     color: #fff;
-    border: none; /* Remove button border */
+    border: none; 
     border-radius: 4px; 
     padding: 10px 20px; 
     cursor: pointer; 
@@ -73,5 +73,6 @@ body, html {
   }
   
   .custom-button:hover {
+    cursor: pointer;
     background-color: #0056b3; 
   }

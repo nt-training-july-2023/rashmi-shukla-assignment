@@ -315,10 +315,6 @@ class QuizServiceImplTest {
         Quiz quiz = new Quiz();
         quiz.setQuizId(quizId);
         quiz.setCategory(new Category());
-        
-        QuizDto quizdto = new QuizDto();
-        quizdto.setQuizId(quizId);
-        quizdto.setCategory(new CategoryDto());
 
         List<Question> questions = new ArrayList<>();
         Question question = new Question(1L,"Complete sequence a,c,e..", "a","f","c","h","f");
@@ -327,10 +323,6 @@ class QuizServiceImplTest {
         quiz.setQuestions(questions);
 
         when(quizRepository.findById(quizId)).thenReturn(Optional.of(quiz));
-        when(modelMapper.map(question.getQuiz(),
-                QuizDto.class)).thenReturn(quizdto);
-        when(modelMapper.map(question.getQuiz().getCategory(),
-                CategoryDto.class)).thenReturn(new CategoryDto());
 
         List<QuestionDto> questionDtos = quizServiceImpl.getQuestionsByQuiz(quizId);
 

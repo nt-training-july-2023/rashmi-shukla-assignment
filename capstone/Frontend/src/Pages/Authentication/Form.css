@@ -27,10 +27,16 @@
   font-family: 'Montserrat', sans-serif;
   margin-bottom: 10px;
 }
-.content-container p{
+.large-p{
   font-size: 20px;
+}
+
+.small-p{
+  font-size: 15px;
+  margin-left: 10px;
   margin-top: 0px;
 }
+
 .content-container button{
   width: 300px;
   border: wheat;
@@ -40,6 +46,12 @@
   font-size: 20px;
   color: white;
 }
+
+.content-container button:hover{
+  cursor: pointer;
+  background-image: linear-gradient(#f50000, #f56004);
+}
+
 .Auth-form-container {
   display: flex;
   justify-content: center;
@@ -132,6 +144,7 @@ label {
 }
 
 .button:hover {
+  cursor: pointer;
   background-color: #0056b3;
 }
 

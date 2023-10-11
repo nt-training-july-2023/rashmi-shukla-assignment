@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import axios from 'axios'
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom'
 import './Form.css';
@@ -24,7 +23,7 @@ const RegistrationForm = () => {
       } else if (IsLoggedIn === "true" && userRole === "user") {
         navigate("/user-dashboard"); 
       }
-    }, []);
+    }, [IsLoggedIn,navigate,userRole]);
     
     const handleSubmit=async(e) =>{
       e.preventDefault()
@@ -58,6 +57,7 @@ const RegistrationForm = () => {
             });
             navigate("/")
           }).catch((error) => {
+            if(error.response){
             const submitError=error.response.data.message
             Swal.fire({
               title: "Error",
@@ -66,6 +66,14 @@ const RegistrationForm = () => {
               confirmButtonText: "Retry",
               confirmButtonColor:"red"
             });
+          } else{
+            Swal.fire({
+              title:"Server not responding",
+              icon: "error",
+              confirmButtonText: "Retry Later",
+              confirmButtonColor: "red",
+            });
+          }
           });
       }
       else{
@@ -120,7 +128,7 @@ const RegistrationForm = () => {
         <div className="form-group">
           <label>Phone Number</label>
           <input
-            type="phone"
+            type="number"
             className="form-input"
             value={phoneNumber || ''}
             onChange={(e) => {

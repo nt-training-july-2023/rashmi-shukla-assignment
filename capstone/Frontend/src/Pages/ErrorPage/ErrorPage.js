@@ -31,9 +31,10 @@ const ErrorPage = () => {
   return (
     <div className='pageContainer'>
       <div className='contentContainer'>
+        <span className='error-warning'>&#9888;</span>
         <h1>Unauthorized Access</h1>
-        <p>Oops! The page you are looking for is unaccessible.</p>
-        <button onClick = {handleNavigate}>
+        <p>Oops! The page you are looking for is inaccessible.</p>
+        <button className='error-button' onClick = {handleNavigate}>
           Go to homepage
         </button>
       </div>

@@ -16,8 +16,8 @@ const AddQuestion = () => {
   const [quiz, setQuiz] = useState(null);
   const [errors, setErrors] = useState("");
   const navigate = useNavigate();
-  const { id } = useParams(); //in case of add question
-  const { quizId, questionId } = useParams(); //in case of update question
+  const { id } = useParams(); 
+  const { quizId, questionId } = useParams(); 
 
   useEffect(() => {
     if (id) {
@@ -31,6 +31,7 @@ const AddQuestion = () => {
         setQuiz(reponse.data);
       })
       .catch((error) => {
+        console.error(error);
       });
   };
 

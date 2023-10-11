@@ -22,6 +22,7 @@ const Dashboard = () => {
       setNumOfUsers(response.data.length);
     })
     .catch((error) => {
+      console.error(error);
     });
   }
 
@@ -51,9 +52,8 @@ const Dashboard = () => {
               </div>
             <h2>User Profiles: {numOfUsers}</h2>
           </div>
+        </div>
       </div>
-      
-    </div>
   )
 }
 

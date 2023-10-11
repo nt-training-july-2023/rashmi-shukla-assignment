@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import ResultService from "../../Services/ResultService";
 import PageHeader from "../../Components/Header/PageHeader";
 import DisableBackButton from "../../Components/DisableBackButton";
+import NoDataAvailable from "../../Components/NoDataAvailable/NoDataAvailable";
 
 const ListQuestion = () => {
   const [questions, setQuestions] = useState([]);
@@ -237,6 +238,9 @@ const ListQuestion = () => {
             : handleSubmit
         }
       />
+      {questions.length===0 ? (
+        <NoDataAvailable />
+      ):(
       <div className="question-container">
         {questions.map((question, index) => (
           <div key={index} className="question-card">
@@ -312,6 +316,7 @@ const ListQuestion = () => {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 };

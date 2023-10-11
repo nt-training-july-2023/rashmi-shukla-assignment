@@ -33,7 +33,6 @@ public class UserDto {
     /**
      * The last name of the user.
      */
-    @NotBlank(message = ErrorConstants.LAST_NAME_REQUIRED)
     @Pattern(regexp = "^[a-zA-Z]*$", message =
             ErrorConstants.LAST_NAME_PATTERN)
     private String lastName;

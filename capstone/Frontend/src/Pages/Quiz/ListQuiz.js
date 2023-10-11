@@ -6,7 +6,8 @@ import "./Quiz.css";
 import { useNavigate, useParams } from "react-router-dom";
 import CategoryService from "../../Services/CategoryService";
 import PageHeader from "../../Components/Header/PageHeader";
-import QuizCard from "../../Components/Quiz-Card/QuizCard";
+import QuizCard from "../../Components/Card/QuizCard";
+import NoDataAvailable from "../../Components/NoDataAvailable/NoDataAvailable";
 
 const ListQuiz = () => {
   const [quiz, setQuiz] = useState([]);
@@ -26,12 +27,10 @@ const ListQuiz = () => {
     localStorage.removeItem("attemptedQuestions");
     localStorage.removeItem("dateTime");
     if (id) {
-      return () => { 
-        getQuizzesByCategory();
-        getCategoryName();
-      }
+      getQuizzesByCategory();
+      getCategoryName();
     } else {
-      return () => getQuizzes();
+      getQuizzes();
     }
   }, [id]);
 
@@ -40,7 +39,9 @@ const ListQuiz = () => {
       .then((response) => {
         setQuiz(response.data);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.error(error)
+      });
   };
 
   const getCategoryName = () => {
@@ -58,7 +59,9 @@ const ListQuiz = () => {
       .then((response) => {
         setQuiz(response.data);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.error(error)
+      });
   };
 
   const deleteQuiz = (quizId) => {
@@ -73,7 +76,9 @@ const ListQuiz = () => {
         });
         getQuizzes();
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.error(error)
+      });
   };
 
   const heading = () => {
@@ -94,13 +99,15 @@ const ListQuiz = () => {
         onClick={() => navigate(`/quizzes/add`)}
         name="Add Quiz"
       />
+      {quiz.length===0 ? (
+        <NoDataAvailable />
+      ):(
       <div className="quiz-container">
         {quiz.map((quizItem) => (
-
           <QuizCard key={quizItem.quizId} quizItem={quizItem} deleteQuiz={deleteQuiz}/>
-
         ))}
       </div>
+      )}
     </div>
   );
 };

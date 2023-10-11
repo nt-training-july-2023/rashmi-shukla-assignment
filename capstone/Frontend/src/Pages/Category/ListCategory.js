@@ -6,15 +6,14 @@ import CategoryService from "../../Services/CategoryService";
 import Navbar from "../../Components/Navbar/Navbar";
 import PageHeader from "../../Components/Header/PageHeader";
 import Table from "../../Components/Table/Table";
+import NoDataAvailable from "../../Components/NoDataAvailable/NoDataAvailable";
 
 const ListCategory = () => {
-  const userRole = localStorage.getItem("role");
-
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    return () => getAllCategories();
+    getAllCategories();
   }, []);
 
   const getAllCategories = () => {
@@ -23,6 +22,7 @@ const ListCategory = () => {
         setCategories(response.data);
       })
       .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -39,28 +39,40 @@ const ListCategory = () => {
         getAllCategories();
       })
       .catch((error) => {
+        console.log(error);
       });
   };
 
   return (
     <div className="page-container">
       <Navbar />
-      <PageHeader className="category-header"
-         heading="CATEGORIES" displayButton="true" 
-         onClick={() => navigate(`/categories/add`)}
-         name="Add Category" />
+      <PageHeader
+        className="category-header"
+        heading="CATEGORIES"
+        displayButton="true"
+        onClick={() => navigate(`/categories/add`)}
+        name="Add Category"
+      />
 
-      <div className="table-container">
-        <Table
-          className="category-table"
-          rows = {["Category Id", "Category title","Category Description","Actions" ]}
-          responseData={categories}
-          fields={["categoryTitle","categoryDescription"]}
-          displayButtons="true"
-          deleteFunction = {deleteCategory}
-         />
-      </div>
-      
+      {categories.length === 0 ? (
+        <NoDataAvailable />
+      ) : (
+        <div className="table-container">
+          <Table
+            className="category-table"
+            rows={[
+              "Category Id",
+              "Category title",
+              "Category Description",
+              "Actions",
+            ]}
+            responseData={categories}
+            fields={["categoryTitle", "categoryDescription"]}
+            displayButtons="true"
+            deleteFunction={deleteCategory}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -36,6 +36,7 @@
 }
 
 .question-header button:hover {
+  cursor: pointer;
   background-color: #e0e0e0; 
 }  
 
@@ -99,9 +100,11 @@
 }
 
 .ques-update-btn:hover{
+  cursor: pointer;
   background-color: #4A55A2;
 }
 .ques-delete-btn:hover {
+  cursor: pointer;
   background-color: gray; 
 }
 

@@ -52,7 +52,7 @@ const UserDashboard = () => {
           <img className="growth-img" src={progressImg} alt="progress icon"></img>
           <div/>
           <div>
-            <button class="custom-button" onClick={() => navigate("/results")}>
+            <button className="custom-button" onClick={() => navigate("/results")}>
               Check Your Progress
             </button>
           </div>

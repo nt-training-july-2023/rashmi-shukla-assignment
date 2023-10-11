@@ -55,7 +55,6 @@ class CategoryServiceImplTest {
         category.setCategoryDescription(categoryDto.getCategoryDescription());
         
         when(modelMapper.map(categoryDto, Category.class)).thenReturn(category);
-        when(modelMapper.map(category, CategoryDto.class)).thenReturn(categoryDto);
         when(categoryRepository.findByCategoryTitle(category.getCategoryTitle())).thenReturn(Optional.empty());
         when(categoryRepository.save(any(Category.class))).thenReturn(category);
         
@@ -78,7 +77,6 @@ class CategoryServiceImplTest {
         category.setCategoryDescription(categoryDto.getCategoryDescription());
         
         when(modelMapper.map(categoryDto, Category.class)).thenReturn(category);
-        when(modelMapper.map(category, CategoryDto.class)).thenReturn(categoryDto);
         when(categoryRepository.findByCategoryTitle(category.getCategoryTitle())).thenReturn(Optional.of(category));
         
         assertThrows(DuplicateResourceException.class, () -> {
@@ -101,7 +99,6 @@ class CategoryServiceImplTest {
         
         when(modelMapper.map(category, CategoryDto.class)).thenReturn(categoryDto);
         when(categoryRepository.findById(category.getCategoryId())).thenReturn(Optional.of(category));
-        when(categoryRepository.save(any(Category.class))).thenReturn(category);
         
         CategoryDto resultCategoryDto = categoryServiceImpl.getCategoryById(1);
         assertNotNull(resultCategoryDto);

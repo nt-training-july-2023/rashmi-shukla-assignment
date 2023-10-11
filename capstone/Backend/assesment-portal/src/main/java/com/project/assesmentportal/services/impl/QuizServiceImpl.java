@@ -273,8 +273,6 @@ public class QuizServiceImpl implements QuizService {
      * @return questionDto.
      */
     public final QuestionDto questionEntityToDto(final Question question) {
-//        QuestionDto questionDto = modelMapper.map(question,
-//                QuestionDto.class);
         QuestionDto questionDto = new QuestionDto();
         questionDto.setQuestionId(question.getQuestionId());
         questionDto.setQuestionTitle(question.getQuestionTitle());

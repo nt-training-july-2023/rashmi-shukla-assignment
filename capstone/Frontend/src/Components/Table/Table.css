@@ -81,12 +81,15 @@ th{
 }
 
 .update-button:hover{
+  cursor: pointer;
   background-color: #4A55A2;
 }
 .delete-button:hover {
+  cursor: pointer;
   background-color: gray; 
 }
 .view-button:hover {
+  cursor: pointer;
   background-color: #123C89; 
 }
 
