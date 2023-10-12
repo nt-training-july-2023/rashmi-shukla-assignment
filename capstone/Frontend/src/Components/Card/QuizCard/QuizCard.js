@@ -1,9 +1,9 @@
 import React from 'react'
-import Button from '../Button/Button';
+import Button from '../../Button/Button';
 import './QuizCard.css'
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import instructions from '../../Pages/Quiz/Instructions';
+import instructions from '../../../Pages/Quiz/Instructions';
 
 const QuizCard = ({quizItem, deleteQuiz}) => {
   const userRole = localStorage.getItem("role")

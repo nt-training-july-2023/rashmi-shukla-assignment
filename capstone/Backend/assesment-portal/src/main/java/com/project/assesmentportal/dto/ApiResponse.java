@@ -3,6 +3,7 @@ package com.project.assesmentportal.dto;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -105,4 +106,30 @@ public class ApiResponse {
                 inputErrors != null ? new HashMap<>(inputErrors) : null;
     }
 
+    /**
+     * Equals method for apiResponse.
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ApiResponse response = (ApiResponse) o;
+        return status == response.status
+                && Objects.equals(message, response.message);
+    }
+
+    /**
+     * Returns a hash code value for this Response based on its HTTP status
+     * code and message.
+     *
+     * @return A hash code value for this SuccessResponse.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(status, message);
+    }
 }

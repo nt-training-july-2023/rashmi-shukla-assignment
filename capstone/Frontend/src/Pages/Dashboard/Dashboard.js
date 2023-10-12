@@ -6,7 +6,7 @@ import usersImg from '../../Assests/images/icon-users.png';
 import ErrorPage from '../ErrorPage/ErrorPage'
 import UserService from '../../Services/UserService';
 import PageHeader from '../../Components/Header/PageHeader';
-import DisableBackButton from '../../Components/DisableBackButton';
+import DisableBack from '../../Components/DisableBack';
 
 const Dashboard = () => {
   const userName = localStorage.getItem("userName");
@@ -35,7 +35,7 @@ const Dashboard = () => {
 
   return (
     <div className='dashboard-container'>
-      <DisableBackButton/>
+      <DisableBack/>
       <Navbar/>
       <PageHeader className="dashboard-header" heading="ADMIN DASHBOARD"
           displayButton="" onClick="" name="" />

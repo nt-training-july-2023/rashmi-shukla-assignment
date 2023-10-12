@@ -55,7 +55,7 @@ class UserServiceImplTest {
         userDto.setPassword("12345");
         userDto.setPhoneNumber("9234567890");
         userDto.setRole("user");
-          
+        
         User user = new User();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
@@ -68,14 +68,17 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(userDto.getEmail())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
         when(modelMapper.map(userDto, User.class)).thenReturn(user);
-        when(modelMapper.map(user, UserDto.class)).thenReturn(userDto);
         when(userRepository.save(any(User.class))).thenReturn(user);
+        
+        ApiResponse expectedResponse = new ApiResponse(
+                MessageConstants.USER_REGISTERED_SUCCESSFULLY,
+                HttpStatus.CREATED.value()
+                );
         
         ApiResponse response = userService.register(userDto);
         
         assertNotNull(response);
-        assertEquals(MessageConstants.USER_REGISTERED_SUCCESSFULLY,response.getMessage());
-        assertEquals(HttpStatus.CREATED.value(),response.getStatus());
+        assertEquals(response, expectedResponse);
         
     }
     
@@ -101,7 +104,6 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(userDto.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
         when(modelMapper.map(userDto, User.class)).thenReturn(user);
-        when(modelMapper.map(user, UserDto.class)).thenReturn(userDto);
         when(userRepository.save(any(User.class))).thenReturn(user);
         
         assertThrows(DuplicateResourceException.class, () -> {
@@ -165,17 +167,24 @@ class UserServiceImplTest {
     @Test
     public void testGetUsers() {
         List<User> userList = new ArrayList<>();
-        userList.add(new User(1,"Rashmi","Shukla","rs@gmail.com","12345","9234567890","user"));
-        userList.add(new User(2,"Pranjal","Yadav","py@gmail.com","135689","9298567890","admin"));
+        User user1 = new User(1,"Rashmi","Shukla","rs@gmail.com","12345","9234567890","user");
+        User user2 = new User(2,"Pranjal","Yadav","py@gmail.com","135689","9298567890","admin");
+        userList.add(user1);
+        userList.add(user2);
+        
+        List<UserDto> userDtosList = new ArrayList<>();
+        UserDto userDto1 = new UserDto(1,"Rashmi","Shukla","rs@gmail.com","12345","9234567890","user");
+        UserDto userDto2 = new UserDto(2,"Pranjal","Yadav","py@gmail.com","135689","9298567890","admin");
+        userDtosList.add(userDto1);
+        userDtosList.add(userDto2);
 
         when(userRepository.findAll()).thenReturn(userList);
-        List<UserDto> userDtos = userService.getUsers();
+        when(modelMapper.map(user1, UserDto.class)).thenReturn(userDto1);
+        when(modelMapper.map(user2, UserDto.class)).thenReturn(userDto2);
+        
+        List<UserDto> response = userService.getUsers();
 
-        // Assert
-        assertNotNull(userDtos);
-        assertEquals(2, userDtos.size()); // Assuming there are 2 users in the list
+        assertNotNull(response);
+        assertEquals(response, userDtosList);
     }
-    
-    
-
 }

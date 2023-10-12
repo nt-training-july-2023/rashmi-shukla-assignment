@@ -73,11 +73,15 @@ class QuizServiceImplTest {
         when(categoryRepository.findById(quiz.getCategory().getCategoryId())).thenReturn(Optional.of(category));
         when(quizRepository.findByQuizTitle(quiz.getQuizTitle())).thenReturn(Optional.empty());
         when(quizRepository.save(any(Quiz.class))).thenReturn(quiz);
+        
+        ApiResponse expectedResponse = new ApiResponse(
+                MessageConstants.QUIZ_ADDED_SUCCESSFULLY,
+                HttpStatus.CREATED.value()
+                );
 
         ApiResponse result = quizServiceImpl.addQuiz(quizDto);
         assertNotNull(result);
-        assertEquals(result.getMessage(), MessageConstants.QUIZ_ADDED_SUCCESSFULLY);
-        assertEquals(HttpStatus.CREATED.value(), result.getStatus());
+        assertEquals(result,expectedResponse);
         
     }
     
@@ -94,7 +98,6 @@ class QuizServiceImplTest {
         quiz.setCategory(category);
         
         when(modelMapper.map(quizDto, Quiz.class)).thenReturn(quiz);
-        when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
         when(categoryRepository.findById(quiz.getCategory().getCategoryId())).thenReturn(Optional.of(category));
         when(quizRepository.findByQuizTitle(quiz.getQuizTitle())).thenReturn(Optional.of(quiz));
         
@@ -116,7 +119,6 @@ class QuizServiceImplTest {
         quiz.setCategory(category);
         
         when(modelMapper.map(quizDto, Quiz.class)).thenReturn(quiz);
-        when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizDto);
         when(categoryRepository.findById(quiz.getCategory().getCategoryId())).thenReturn(Optional.empty());
         
         assertThrows(ResourceNotFoundException.class, ()-> {
@@ -144,8 +146,7 @@ class QuizServiceImplTest {
         
         QuizDto resultQuizDto = quizServiceImpl.getQuizById(1);
         assertNotNull(resultQuizDto);
-        assertEquals(resultQuizDto.getQuizId(), quiz.getQuizId());
-        assertEquals(resultQuizDto.getQuizTitle(), quiz.getQuizTitle());
+        assertEquals(resultQuizDto, quizDto);
     }
     
     @Test
@@ -166,17 +167,17 @@ class QuizServiceImplTest {
         Quiz quiz = new Quiz(1, "React", "descr", 20, category);
         quizList.add(quiz);
         
-        List<Quiz> quizDtoList = new ArrayList<>();
+        List<QuizDto> quizDtoList = new ArrayList<>();
         CategoryDto categoryDto = new CategoryDto(1L,"IT","Corporate Quiz");
         QuizDto quizdto = new QuizDto(1, "React", "descr", 20, categoryDto);
-        quizDtoList.add(quiz);
+        quizDtoList.add(quizdto);
         
         when(modelMapper.map(quiz, QuizDto.class)).thenReturn(quizdto);
-        when(quizRepository.findAll()).thenReturn(quizDtoList);
-        List<QuizDto> quizDtos = quizServiceImpl.getQuizzes();
+        when(quizRepository.findAll()).thenReturn(quizList);
+        List<QuizDto> response = quizServiceImpl.getQuizzes();
         
-        assertNotNull(quizDtos);
-        assertEquals(1, quizDtos.size());
+        assertNotNull(response);
+        assertEquals(response, quizDtoList);
     }
     
     @Test
@@ -200,10 +201,14 @@ class QuizServiceImplTest {
         when(quizRepository.findByQuizTitle(quizDto.getQuizTitle())).thenReturn(Optional.empty());
         when(quizRepository.save(any(Quiz.class))).thenReturn(existingQuiz);
         
+        ApiResponse expectedResponse = new ApiResponse(
+                MessageConstants.QUIZ_UPDATED_SUCCESSFULLY,
+                HttpStatus.OK.value()
+                );
+        
         ApiResponse result = quizServiceImpl.updateQuiz(quizDto,quizIdToUpdate);
         assertNotNull(result);
-        assertEquals(result.getMessage(), MessageConstants.QUIZ_UPDATED_SUCCESSFULLY);
-        assertEquals(HttpStatus.OK.value(), result.getStatus());
+        assertEquals(result,expectedResponse);
     }
     
     @Test
@@ -291,11 +296,15 @@ class QuizServiceImplTest {
         quizToDelete.setQuizId(quizIdToDelete);
 
         when(quizRepository.findById(quizIdToDelete)).thenReturn(Optional.of(quizToDelete));
+        
+        ApiResponse expectedResponse = new ApiResponse(
+                MessageConstants.QUIZ_DELETED_SUCCESSFULLY,
+                HttpStatus.OK.value()
+                );
 
         ApiResponse response = quizServiceImpl.deleteQuiz(quizIdToDelete);
         verify(quizRepository, times(1)).deleteById(quizIdToDelete);
-        assertEquals(response.getMessage(), MessageConstants.QUIZ_DELETED_SUCCESSFULLY);
-        assertEquals(HttpStatus.OK.value(), response.getStatus());
+        assertEquals(response,expectedResponse);
     }
     
     @Test

@@ -1,7 +1,6 @@
 package com.project.assesmentportal.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -47,9 +46,12 @@ class QuestionControllerTest {
         
         ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_ADDED_SUCCESSFULLY, HttpStatus.CREATED.value());
         when(questionService.addQuestion(questionDto)).thenReturn(apiResponse);
+        
+        ResponseEntity<ApiResponse> expectedResponse = new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.CREATED);
+        
         ResponseEntity<ApiResponse> response = questionController.addQuestion(questionDto);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(apiResponse, response.getBody());
+        assertEquals(expectedResponse, response);
     }
     
     @Test
@@ -58,10 +60,11 @@ class QuestionControllerTest {
         CategoryDto categoryDto = new CategoryDto(1,"IT","Corporate");
         QuizDto quizDto = new QuizDto(1,"Gk","quiz",20,categoryDto);
         questions.add(new QuestionDto(1L, "question",new Options("1","2","3","4"),"4", quizDto) );
+        
         when(questionService.getQuestions()).thenReturn(questions);
-        List<QuestionDto> result = questionController.getQuestions();
-        assertEquals(1, result.size());
-        assertEquals("question", result.get(0).getQuestionTitle());
+        
+        List<QuestionDto> response = questionController.getQuestions();
+        assertEquals(questions, response);
     }
     
     @Test
@@ -75,10 +78,12 @@ class QuestionControllerTest {
         questionDto.setAnswer(options.getOptionII());
         
         when(questionService.getQuestionById(questionId)).thenReturn(questionDto);
-        ResponseEntity<QuestionDto> result = questionController.getQuestionById(questionId);
-        assertEquals(questionDto, result.getBody());
-        assertEquals("2+2=?", result.getBody().getQuestionTitle());
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        
+        ResponseEntity<QuestionDto> expectedResponse = new ResponseEntity<QuestionDto>(questionDto,
+                HttpStatus.OK);
+        
+        ResponseEntity<QuestionDto> response = questionController.getQuestionById(questionId);
+        assertEquals(expectedResponse, response);
     }
     
     @Test
@@ -93,9 +98,12 @@ class QuestionControllerTest {
         
         ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_UPDATED_SUCCESSFULLY, HttpStatus.OK.value());
         when(questionService.updateQuestion(questionDto,questionId)).thenReturn(apiResponse);
-        ResponseEntity<ApiResponse> result = questionController.updateQuestion(questionDto, questionId);
-        assertEquals(apiResponse, result.getBody());
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        
+        ResponseEntity<ApiResponse> expectedResponse = new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.OK);
+        
+        ResponseEntity<ApiResponse> response = questionController.updateQuestion(questionDto, questionId);
+        assertEquals(expectedResponse, response);
     }
     
     @Test
@@ -105,10 +113,11 @@ class QuestionControllerTest {
         ApiResponse apiResponse = new ApiResponse(MessageConstants.QUESTION_DELETED_SUCCESSFULLY, HttpStatus.OK.value());
         when(questionService.deleteQuestion(questionId)).thenReturn(apiResponse);
         
-        ResponseEntity<ApiResponse> result = questionController.deleteQuestion(questionId);
-        assertEquals(apiResponse, result.getBody());
-        assertEquals(HttpStatus.OK, result.getStatusCode());
-        verify(questionService).deleteQuestion(questionId);
+        ResponseEntity<ApiResponse> expectedResponse = new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.OK);
+        
+        ResponseEntity<ApiResponse> response = questionController.deleteQuestion(questionId);
+        assertEquals(expectedResponse, response);
     }
 
 }

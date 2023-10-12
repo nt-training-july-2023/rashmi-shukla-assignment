@@ -38,44 +38,41 @@ class UserControllerTest {
     }
     
     @Test
-    void testRegister_Sucess() {
+    void testRegister() {
         UserDto userDto = new UserDto();
         userDto.setFirstName("Rashmi");
+        
         ApiResponse apiResponse = new ApiResponse(MessageConstants.USER_REGISTERED_SUCCESSFULLY, HttpStatus.CREATED.value());
         when(userService.register(userDto)).thenReturn(apiResponse);
+        
+        ResponseEntity<ApiResponse> expectedResponse = new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.CREATED);
+        
         ResponseEntity<ApiResponse> response = userController.register(userDto);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(apiResponse, response.getBody());
-        assertEquals(201, response.getBody().getStatus());
+        assertEquals(expectedResponse, response);
     }
     
     @Test
-    public void testLogin_Success() {
+    public void testLogin() {
         LoginRequestDto userDto = new LoginRequestDto(); 
         LoginResponseDto loginResponseDto = new LoginResponseDto();
+        
         when(userService.login(userDto)).thenReturn(loginResponseDto);
+        
+        ResponseEntity<LoginResponseDto> expectedResponse = new ResponseEntity<LoginResponseDto>(loginResponseDto,
+                HttpStatus.OK);
 
         ResponseEntity<LoginResponseDto> response = userController.login(userDto);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(loginResponseDto, response.getBody());
-    }
-    
-    @Test
-    public void testLoginWithInvalidUser() {
-        LoginRequestDto userDto = new LoginRequestDto(); // Create an invalid UserDto object
-        when(userService.login(userDto)).thenReturn(null);
-
-        ResponseEntity<LoginResponseDto> response = userController.login(userDto);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(null, response.getBody());
+        assertEquals(expectedResponse, response);
     }
     
     @Test
     public void testGetUsers() {
         List<UserDto> users = new ArrayList<>();
+        
         when(userService.getUsers()).thenReturn(users);
+        
         List<UserDto> response = userController.getUsers();
         assertEquals(users, response);
     }

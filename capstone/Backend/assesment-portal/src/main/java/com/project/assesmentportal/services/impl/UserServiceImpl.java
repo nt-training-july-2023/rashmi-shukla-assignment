@@ -97,9 +97,9 @@ public class UserServiceImpl implements UserService {
         User registeredUser = userRepository
                 .findByEmail(inputUserDto.getEmail())
                 .orElseGet(() -> {
-                    LOGGER.error(ErrorConstants.USER_NOT_FOUND);
+                    LOGGER.error(ErrorConstants.INVALID_CREDENTIALS);
                     throw new ResourceNotFoundException(
-                        ErrorConstants.USER_NOT_FOUND);
+                        ErrorConstants.INVALID_CREDENTIALS);
                 });
 
         if (!passwordEncoder.matches(inputUserDto.getPassword(),

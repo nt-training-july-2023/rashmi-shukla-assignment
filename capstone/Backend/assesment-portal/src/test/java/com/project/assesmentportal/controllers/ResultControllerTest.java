@@ -35,12 +35,15 @@ class ResultControllerTest {
     @Test
     void testAddResult() {
         ResultDto resultDto = new ResultDto();
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.RESULT_ADDED_SUCCESSFULLY, HttpStatus.CREATED.value());
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.RESULT_ADDED_SUCCESSFULLY,
+                HttpStatus.CREATED.value());
         when(resultService.addResult(resultDto)).thenReturn(apiResponse);
+        
+        ResponseEntity<ApiResponse> expectedResponse = new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.CREATED);
+        
         ResponseEntity<ApiResponse> response = resultController.addResult(resultDto);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(apiResponse, response.getBody());
-        assertEquals(201, response.getBody().getStatus());
+        assertEquals(expectedResponse, response);
     }
     
     @Test
@@ -58,9 +61,11 @@ class ResultControllerTest {
         resultDto.setCategoryTitle("Another Category");
         List<ResultDto> resultDtoList = new ArrayList<>();
         resultDtoList.add(resultDto);
+        
         when(resultService.getResults()).thenReturn(resultDtoList);
+        
         List<ResultDto> response = resultController.getResults();
-        assertEquals(resultDtoList.size(), response.size());
+        assertEquals(resultDtoList, response);
     }
     
     @Test
@@ -68,9 +73,11 @@ class ResultControllerTest {
         String userEmail = "rsh@gmail.com";
         List<ResultDto> resultDtoList = new ArrayList<>();
         resultDtoList.add(new ResultDto());
+        
         when(resultService.getResultByUserEmail(userEmail)).thenReturn(resultDtoList);
+        
         List<ResultDto> response = resultController.getResultByUserEmail(userEmail);
-        assertEquals(resultDtoList.size(), response.size());
+        assertEquals(resultDtoList, response);
     }
 
 }

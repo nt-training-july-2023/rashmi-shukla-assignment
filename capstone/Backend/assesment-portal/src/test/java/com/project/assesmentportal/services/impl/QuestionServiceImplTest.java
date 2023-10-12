@@ -75,9 +75,13 @@ class QuestionServiceImplTest {
         when(quizRepository.findById(question.getQuiz().getQuizId())).thenReturn(Optional.of(new Quiz()));
         when(questionRepository.save(question)).thenReturn(question);
         
+        ApiResponse expectedResponse = new ApiResponse(
+                MessageConstants.QUESTION_ADDED_SUCCESSFULLY,
+                HttpStatus.CREATED.value()
+                );
+
         ApiResponse result = questionService.addQuestion(questionDto);
-        assertEquals(MessageConstants.QUESTION_ADDED_SUCCESSFULLY, result.getMessage());
-        assertEquals(HttpStatus.CREATED.value(), result.getStatus());
+        assertEquals(expectedResponse, result);
     }
     
     @Test
@@ -180,9 +184,13 @@ class QuestionServiceImplTest {
         when(questionRepository.findById(questionIdToUpdate)).thenReturn(Optional.of(question));
         when(questionRepository.save(question)).thenReturn(question);
         
+        ApiResponse expectedResponse = new ApiResponse(
+                MessageConstants.QUESTION_UPDATED_SUCCESSFULLY,
+                HttpStatus.OK.value()
+                );
+        
         ApiResponse result = questionService.updateQuestion(questionDto, questionIdToUpdate);
-        assertEquals(MessageConstants.QUESTION_UPDATED_SUCCESSFULLY, result.getMessage());
-        assertEquals(HttpStatus.OK.value(), result.getStatus());
+        assertEquals(expectedResponse, result);
     }
     
     @Test
@@ -278,10 +286,14 @@ class QuestionServiceImplTest {
         long questionIdToDelete = 1;
         when(questionRepository.findById(questionIdToDelete)).thenReturn(Optional.of(new Question()));
         
+        ApiResponse expectedResponse = new ApiResponse(
+                MessageConstants.QUESTION_DELETED_SUCCESSFULLY,
+                HttpStatus.OK.value()
+                );
+        
         ApiResponse result = questionService.deleteQuestion(questionIdToDelete);
         verify(questionRepository, times(1)).deleteById(questionIdToDelete);
-        assertEquals(MessageConstants.QUESTION_DELETED_SUCCESSFULLY, result.getMessage());
-        assertEquals(HttpStatus.OK.value(), result.getStatus());
+        assertEquals(expectedResponse, result);
     }
     
     @Test

@@ -218,9 +218,4 @@ public final class ErrorConstants {
      * Exception message for User Service: "Invalid Credentials".
      */
     public static final String INVALID_CREDENTIALS = "Invalid Credentials";
-
-    /**
-     * Exception message for User Service: "User not found".
-     */
-    public static final String USER_NOT_FOUND = "User not found";
 }

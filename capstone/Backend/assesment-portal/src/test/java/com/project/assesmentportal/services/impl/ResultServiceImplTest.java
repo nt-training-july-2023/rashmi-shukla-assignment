@@ -1,6 +1,5 @@
 package com.project.assesmentportal.services.impl;
 
-import static org.hamcrest.CoreMatchers.any;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -44,41 +43,50 @@ class ResultServiceImplTest {
         when(modelMapper.map(resultDto, Result.class)).thenReturn(result);
         when(resultRepository.save(result)).thenReturn(result);
         
-        ApiResponse output = resultService.addResult(resultDto);
-        assertEquals(MessageConstants.RESULT_ADDED_SUCCESSFULLY, output.getMessage());
-        assertEquals(HttpStatus.CREATED.value(), output.getStatus());
+        ApiResponse expectedResponse = new ApiResponse(
+                MessageConstants.RESULT_ADDED_SUCCESSFULLY,
+                HttpStatus.CREATED.value()
+                );
+        
+        ApiResponse response = resultService.addResult(resultDto);
+        assertEquals(response, expectedResponse);
     }
     
     @Test
     void testGetResults_Success() {
+        Result result = new Result();
         List<Result> resultList = new ArrayList<>();
-        resultList.add(new Result());
-        when(resultRepository.findAll()).thenReturn(resultList);
-
-        List<ResultDto> resultDtoList = new ArrayList<>();
-        resultDtoList.add(new ResultDto());
+        resultList.add(result);
         
-        when(modelMapper.map(any(Result.class), ResultDto.class)).thenReturn(new ResultDto());
+        ResultDto resultDto = new ResultDto();
+        List<ResultDto> resultDtoList = new ArrayList<>();
+        resultDtoList.add(resultDto);
+        
+        when(resultRepository.findAll()).thenReturn(resultList);
+        when(modelMapper.map(result, ResultDto.class)).thenReturn(resultDto);
 
-        List<ResultDto> actualResult = resultService.getResults();
+        List<ResultDto> response = resultService.getResults();
 
-        assertEquals(resultDtoList.size(), actualResult.size());
+        assertEquals(response, resultDtoList);
     }
     
     @Test 
     void GetResultByUserEmail_Success(){
         String userEmail = "rsh@gmail.com";
+        Result result = new Result();
         List<Result> resultList = new ArrayList<>();
-        resultList.add(new Result());
-        when(resultRepository.findByUserEmail(userEmail)).thenReturn(resultList);
-
+        resultList.add(result);
+        
+        ResultDto resultDto = new ResultDto();
         List<ResultDto> resultDtoList = new ArrayList<>();
-        resultDtoList.add(new ResultDto());
-        when(modelMapper.map(any(Result.class), ResultDto.class)).thenReturn(new ResultDto());
+        resultDtoList.add(resultDto);
+        
+        when(resultRepository.findByUserEmail(userEmail)).thenReturn(resultList);
+        when(modelMapper.map(result, ResultDto.class)).thenReturn(resultDto);
 
-        List<ResultDto> output = resultService.getResultByUserEmail(userEmail);
+        List<ResultDto> response = resultService.getResultByUserEmail(userEmail);
 
-        assertEquals(resultDtoList.size(), output.size());
+        assertEquals(response, resultDtoList);
     }
 
 }

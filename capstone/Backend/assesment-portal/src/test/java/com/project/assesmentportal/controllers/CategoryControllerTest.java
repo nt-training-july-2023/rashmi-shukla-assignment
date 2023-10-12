@@ -1,7 +1,6 @@
 package com.project.assesmentportal.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -39,11 +38,11 @@ class CategoryControllerTest {
         List<CategoryDto> categories = new ArrayList<>();
         categories.add(new CategoryDto(1, "GK","GK Category"));
         categories.add(new CategoryDto(2, "Maths","Maths Category"));
+        
         when(categoryService.getCategories()).thenReturn(categories);
+        
         List<CategoryDto> result = categoryController.getCategories();
-        assertEquals(2, result.size());
-        assertEquals("GK", result.get(0).getCategoryTitle());
-        assertEquals("Maths Category", result.get(1).getCategoryDescription());
+        assertEquals(result, categories);
     }
     
     @Test
@@ -56,9 +55,11 @@ class CategoryControllerTest {
         ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_ADDED_SUCCESSFULLY, HttpStatus.CREATED.value());
         when(categoryService.addCategory(categoryDto)).thenReturn(apiResponse);
         
+        ResponseEntity<ApiResponse> expectedResponse = new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.CREATED);
+        
         ResponseEntity<ApiResponse> response = categoryController.addCategory(categoryDto);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(apiResponse, response.getBody());
+        assertEquals(response, expectedResponse);
     }
     
     @Test
@@ -67,11 +68,14 @@ class CategoryControllerTest {
         CategoryDto categoryDTO = new CategoryDto();
         categoryDTO.setCategoryId(categoryId);
         categoryDTO.setCategoryTitle("GK");
+        
         when(categoryService.getCategoryById(categoryId)).thenReturn(categoryDTO);
-        ResponseEntity<CategoryDto> result = categoryController.getCategoryById(categoryId);
-        assertEquals(categoryDTO, result.getBody());
-        assertEquals("GK", result.getBody().getCategoryTitle());
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+
+        ResponseEntity<CategoryDto> expectedResponse = new ResponseEntity<CategoryDto>(categoryDTO,
+                HttpStatus.OK);
+
+        ResponseEntity<CategoryDto> response = categoryController.getCategoryById(categoryId);
+        assertEquals(expectedResponse, response);
     }
     
     @Test
@@ -84,9 +88,11 @@ class CategoryControllerTest {
         ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_UPDATED_SUCCESSFULLY, HttpStatus.OK.value());
         when(categoryService.updateCategory(categoryDTO,categoryId)).thenReturn(apiResponse);
        
-        ResponseEntity<ApiResponse> result = categoryController.updateCategory(categoryId, categoryDTO);
-        assertEquals(apiResponse, result.getBody());
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        ResponseEntity<ApiResponse> expectedResponse = new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.OK);
+        
+        ResponseEntity<ApiResponse> response = categoryController.updateCategory(categoryId, categoryDTO);
+        assertEquals(expectedResponse, response);
     }
     
     @Test
@@ -96,10 +102,11 @@ class CategoryControllerTest {
         ApiResponse apiResponse = new ApiResponse(MessageConstants.CATEGORY_DELETED_SUCCESSFULLY, HttpStatus.OK.value());
         when(categoryService.deleteCategory(categoryId)).thenReturn(apiResponse);
         
-        ResponseEntity<ApiResponse> result = categoryController.deleteCategory(categoryId);
-        assertEquals(apiResponse, result.getBody());
-        assertEquals(HttpStatus.OK, result.getStatusCode());
-        verify(categoryService).deleteCategory(categoryId);
+        ResponseEntity<ApiResponse> expectedResponse = new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.OK);
+        
+        ResponseEntity<ApiResponse> response = categoryController.deleteCategory(categoryId);
+        assertEquals(expectedResponse, response);
     }
     
     @Test
@@ -108,11 +115,13 @@ class CategoryControllerTest {
         List<QuizDto> quizList = new ArrayList<>();
 
         when(categoryService.getQuizzesByCategory(categoryId)).thenReturn(quizList);
+        
+        ResponseEntity<List<QuizDto>> expectedResponse = new ResponseEntity<List<QuizDto>>(quizList,
+                HttpStatus.OK);
 
         ResponseEntity<List<QuizDto>> response = categoryController.getQuizzesById(categoryId);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(quizList, response.getBody());
+        assertEquals(expectedResponse, response);
     }
 
 }

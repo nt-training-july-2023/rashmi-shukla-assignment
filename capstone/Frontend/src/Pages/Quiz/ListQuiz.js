@@ -6,7 +6,7 @@ import "./Quiz.css";
 import { useNavigate, useParams } from "react-router-dom";
 import CategoryService from "../../Services/CategoryService";
 import PageHeader from "../../Components/Header/PageHeader";
-import QuizCard from "../../Components/Card/QuizCard";
+import QuizCard from "../../Components/Card/QuizCard/QuizCard";
 import NoDataAvailable from "../../Components/NoDataAvailable/NoDataAvailable";
 
 const ListQuiz = () => {

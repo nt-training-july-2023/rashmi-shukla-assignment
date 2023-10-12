@@ -7,7 +7,7 @@ import QuizService from "../../Services/QuizService";
 import Swal from "sweetalert2";
 import ResultService from "../../Services/ResultService";
 import PageHeader from "../../Components/Header/PageHeader";
-import DisableBackButton from "../../Components/DisableBackButton";
+import DisableBack from "../../Components/DisableBack";
 import NoDataAvailable from "../../Components/NoDataAvailable/NoDataAvailable";
 
 const ListQuestion = () => {
@@ -57,7 +57,7 @@ const ListQuestion = () => {
     } else if (localStorage.getItem('reloadAttempts') > 6) {
          handleSubmit();
     }
-}}, []);
+}}, [userRole]);
 
   useEffect(() => {
     const storedSelectedAnswers = localStorage.getItem("selectedAnswers");
@@ -86,7 +86,7 @@ const ListQuestion = () => {
     const countdownInterval = setInterval(handleCountdown, 1000);
     // Clean up the interval when the component unmounts
     return () => clearInterval(countdownInterval);
-  }}, [timeInSeconds,userRole]);
+  }}, [timeInSeconds,userRole,numberOfQuestions]);
 
   // Format the remaining time as HH:MM:SS
   const formattedTime = new Date(timeInSeconds * 1000)
@@ -223,7 +223,7 @@ const ListQuestion = () => {
 
   return (
     <div>
-      {userRole === "user" && numberOfQuestions>0 &&<DisableBackButton/>}
+      {userRole === "user" && numberOfQuestions>0 &&<DisableBack/>}
       {userRole === "admin" && <Navbar />}
       <PageHeader
         className="question-header"

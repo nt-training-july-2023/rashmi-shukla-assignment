@@ -1,7 +1,6 @@
 package com.project.assesmentportal.controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -41,11 +40,11 @@ class QuizControllerTest {
         CategoryDto categoryDto = new CategoryDto(1,"Gk","category");
         quizzes.add(new QuizDto(1L, "GK","GK Quiz", 20, categoryDto));
         quizzes.add(new QuizDto(2L, "Maths","Maths Quiz",30, categoryDto));
+        
         when(quizService.getQuizzes()).thenReturn(quizzes);
-        List<QuizDto> result = quizController.getQuizzes();
-        assertEquals(2, result.size());
-        assertEquals("GK", result.get(0).getQuizTitle());
-        assertEquals("Maths Quiz", result.get(1).getQuizDescription());
+        
+        List<QuizDto> response = quizController.getQuizzes();
+        assertEquals(quizzes, response);
     }
     
     @Test
@@ -55,11 +54,15 @@ class QuizControllerTest {
         quizDto.setQuizTitle("Maths");
         quizDto.setQuizDescription("Maths Category");
         
-        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUIZ_ADDED_SUCCESSFULLY, HttpStatus.CREATED.value());
+        ApiResponse apiResponse = new ApiResponse(MessageConstants.QUIZ_ADDED_SUCCESSFULLY,
+                HttpStatus.CREATED.value());
         when(quizService.addQuiz(quizDto)).thenReturn(apiResponse);
+        
+        ResponseEntity<ApiResponse> expectedResponse = new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.CREATED);
+        
         ResponseEntity<ApiResponse> response = quizController.addQuiz(quizDto);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(apiResponse, response.getBody());
+        assertEquals(expectedResponse, response);
     }
     
     @Test
@@ -68,11 +71,14 @@ class QuizControllerTest {
         QuizDto quizDto = new QuizDto();
         quizDto.setQuizId(quizId);
         quizDto.setQuizTitle("React");
+        
         when(quizService.getQuizById(quizId)).thenReturn(quizDto);
-        ResponseEntity<QuizDto> result = quizController.getQuizById(quizId);
-        assertEquals(quizDto, result.getBody());
-        assertEquals("React", result.getBody().getQuizTitle());
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        
+        ResponseEntity<QuizDto> expectedResponse = new ResponseEntity<QuizDto>(quizDto,
+                HttpStatus.OK);
+        
+        ResponseEntity<QuizDto> response = quizController.getQuizById(quizId);
+        assertEquals(expectedResponse, response);
     }
     
     @Test
@@ -85,9 +91,11 @@ class QuizControllerTest {
         ApiResponse apiResponse = new ApiResponse(MessageConstants.QUIZ_UPDATED_SUCCESSFULLY, HttpStatus.OK.value());
         when(quizService.updateQuiz(quizDto,quizId)).thenReturn(apiResponse);
         
-        ResponseEntity<ApiResponse> result = quizController.updateQuiz(quizId, quizDto);
-        assertEquals(apiResponse, result.getBody());
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+        ResponseEntity<ApiResponse> expectedResponse = new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.OK);
+        
+        ResponseEntity<ApiResponse> response = quizController.updateQuiz(quizId, quizDto);
+        assertEquals(expectedResponse, response);
     }
     
     @Test
@@ -97,10 +105,11 @@ class QuizControllerTest {
         ApiResponse apiResponse = new ApiResponse(MessageConstants.QUIZ_DELETED_SUCCESSFULLY, HttpStatus.OK.value());
         when(quizService.deleteQuiz(quizId)).thenReturn(apiResponse);
         
-        ResponseEntity<ApiResponse> result = quizController.deleteQuiz(quizId);
-        assertEquals(apiResponse, result.getBody());
-        assertEquals(HttpStatus.OK, result.getStatusCode());
-        verify(quizService).deleteQuiz(quizId);
+        ResponseEntity<ApiResponse> expectedResponse = new ResponseEntity<ApiResponse>(apiResponse,
+                HttpStatus.OK);
+        
+        ResponseEntity<ApiResponse> response = quizController.deleteQuiz(quizId);
+        assertEquals(expectedResponse, response);
     }
     
     @Test
@@ -109,10 +118,13 @@ class QuizControllerTest {
         List<QuestionDto> questionList = new ArrayList<>();
 
         when(quizService.getQuestionsByQuiz(quizId)).thenReturn(questionList);
+        
+        ResponseEntity<List<QuestionDto>> expectedResponse = new ResponseEntity<List<QuestionDto>>(questionList,
+                HttpStatus.OK);
+        
         ResponseEntity<List<QuestionDto>> response = quizController.getQuestionsByQuiz(quizId);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(questionList, response.getBody());
+        assertEquals(expectedResponse, response);
     }
 
 

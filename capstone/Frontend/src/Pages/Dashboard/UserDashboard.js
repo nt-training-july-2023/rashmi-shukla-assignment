@@ -5,7 +5,8 @@ import ErrorPage from "../ErrorPage/ErrorPage";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../../Components/Header/PageHeader";
 import progressImg from "../../Assests/images/growth.png";
-import DisableBackButton from "../../Components/DisableBackButton";
+import DisableBack from "../../Components/DisableBack";
+import Button from "../../Components/Button/Button";
 
 const UserDashboard = () => {
   const userName = localStorage.getItem("userName");
@@ -31,7 +32,7 @@ const UserDashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <DisableBackButton/>
+      <DisableBack/>
       <Navbar />
       <PageHeader
         className="dashboard-header"
@@ -52,9 +53,7 @@ const UserDashboard = () => {
           <img className="growth-img" src={progressImg} alt="progress icon"></img>
           <div/>
           <div>
-            <button className="custom-button" onClick={() => navigate("/results")}>
-              Check Your Progress
-            </button>
+            <Button className="custom-button" onClick={() => navigate("/results")} name ="Check Your Progress"/>
           </div>
           </div>
         </div>
